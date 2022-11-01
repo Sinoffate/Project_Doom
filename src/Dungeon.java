@@ -1,17 +1,17 @@
 
 
 public class Dungeon {
-    private Point myHeroPosition;
     private int myMapSize;
+    private Point myHeroPosition;
     private Point myEnterPos;
     private Point myExitPos;
 
 
-    public Dungeon(final myMapSize) {
-        this.myMapSize = myMapSize;
+    public Dungeon(final theMapSize) {
+        this.myMapSize = theMapSize;
         this.myHeroPosition = new Point(0, 0);
         this.myEnterPos = new Point(0, 0);
-        this.myExitPos = new Point(myMapSize - 1, myMapSize - 1);
+        this.myExitPos = new Point(theMapSize - 1, theMapSize - 1);
     }
 
     private Room[][] generateDungeon() {
@@ -24,7 +24,7 @@ public class Dungeon {
         return dungeon;
     }
 
-    public Point getMyHeroPosition() {
+    public Point getPlayerPos() {
         return myHeroPosition;
     }
 
@@ -52,7 +52,7 @@ public class Dungeon {
         return false;
     }
 
-    public void setPlayerPos(final Point pos) {
+    public void setPlayerPos(final Point thePos) {
         myHeroPosition = pos;
     }
 
