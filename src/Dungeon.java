@@ -7,7 +7,7 @@ public class Dungeon {
     private Point myExitPos;
 
 
-    public Dungeon(final theMapSize) {
+    public Dungeon(final int theMapSize) {
         this.myMapSize = theMapSize;
         this.myHeroPosition = new Point(0, 0);
         this.myEnterPos = new Point(0, 0);
@@ -53,7 +53,7 @@ public class Dungeon {
     }
 
     public void setPlayerPos(final Point thePos) {
-        myHeroPosition = pos;
+        myHeroPosition = thePos;
     }
 
     public String toString() {
