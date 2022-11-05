@@ -54,8 +54,6 @@ public abstract class DungeonCharacter {
         //Roll Damage
         final float multiplier = DICE_ROLL.nextFloat() + DAMAGE_MULTIPLIER_OFFSET;
         return theOpponent.takeDamage(multiplier * myDamage);
-
-//        return "Attacked for: " + (multiplier * myDamage);
     }
 
     /**
