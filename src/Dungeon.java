@@ -1,11 +1,9 @@
 
-
 public class Dungeon {
     private int myMapSize;
     private Point myHeroPosition;
     private Point myEnterPos;
     private Point myExitPos;
-
 
     public Dungeon(final int theMapSize) {
         this.myMapSize = theMapSize;
