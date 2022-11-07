@@ -59,11 +59,15 @@ public class Room {
      *
      * @param theItem item to use.
      * @pre if item exists in list, returns it (otherwise, return "")
+     * @throws if monster does not exist, return error message.
      * @spec.effect Items are not removed from the inventory
      * @modifies Inventory is not modified.
      * @return name of item
      */
     public String getInventory(String theItem) {
+        if (!myInventory.contains(theItem)) {
+            throw new IllegalArgumentException("Item does not exist");
+        }
         Iterator<String> itemIterator = myInventory.iterator();
         String result = "";
         while(itemIterator.hasNext()) {
@@ -80,11 +84,16 @@ public class Room {
      *
      * @param theMonster Baron of Hell, Caco, etc
      * @pre if monster exists, return it (otherwise, return "")
+     * @throws if monster does not exist, return error message.
      * @spec.effect Monsters are not removed from Room
      * @modifies List of monsters is not modified
      * @return name of monster
      */
     public String getMonster(String theMonster) {
+        //TODO: Throw exception when theMonster
+        if (!myMonster.contains(theMonster)) {
+            throw new IllegalArgumentException("Monster does not exist");
+        }
         Iterator<String> monsterIterator = myMonster.iterator();
         String result = "";
         while (monsterIterator.hasNext()) {
