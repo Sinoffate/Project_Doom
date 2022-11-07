@@ -1,13 +1,3 @@
-/*
-Disjoint of stats between DC and DG for weapons
-    implement base stats in Monster sub-abstract, remove from DCha abstract?
-    give monsters monster-weapons?
-Inventory in get method, good/bad? Redundant methods.
-DAMAGE_OFFSET as weapon stat? weapons could roll their own damage variance?
-    damage = base damage * (randInRange(1 +- OFFSET))
-    can differentiate weapons and balance under the thought of balancing offset against accuracy
- */
-
 public class DoomGuy extends DungeonCharacter{
 
     /** Max health allowed for DGuy. */
