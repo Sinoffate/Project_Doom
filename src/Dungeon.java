@@ -1,4 +1,5 @@
 
+import java.awt.Point;
 
 public class Dungeon {
     private int myMapSize;
