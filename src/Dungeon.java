@@ -1,3 +1,4 @@
+import java.awt.*;
 
 public class Dungeon {
     private int myMapSize;
@@ -8,7 +9,7 @@ public class Dungeon {
     /**
      * Creates a new Dungeon object.
      *
-     * @param theMapSize
+     * @param theMapSize size of map x and y.
      */
     public Dungeon(final int theMapSize) {
         this.myMapSize = theMapSize;
@@ -58,6 +59,7 @@ public class Dungeon {
     public Monster getMonster() {
         return myMonster;
     }
+
     /**
      * @return A list of items
      */
