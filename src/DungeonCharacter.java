@@ -1,39 +1,21 @@
-import java.util.Random;
-
 public abstract class DungeonCharacter {
-
-    /** Random value source. */
-    protected static final Random DICE_ROLL = new Random();
-
-    /**Number to shift random generator output by for damage calculation. */
-    private static final float DAMAGE_MULTIPLIER_OFFSET = 0.5f;
 
     /** Current health. */
     private int myHealth;
-    /** Accuracy of shot. */
-    private final double myAccuracy;
-    /** Fire-rate during combat. */
-    private final double myFireRate;
-    /** Damage value of basic combat attack. */
-    private final double myDamage;
     /** Name of character. */
     private final String myName;
+    /** Weapon currently equipped. */
+    protected Weapon myEquippedWeapon;
 
     /**
      * Default constructor for DC abstract objects.
      * @param theHealth starting health of DC.
-     * @param theAcc attack accuracy of DC.
-     * @param theFireRate fire-rate/speed of DC.
-     * @param theDamage unarmed damage of DC.
      * @param theName name of DC.
      */
-    public DungeonCharacter(final int theHealth, final double theAcc,
-                             final double theFireRate, final double theDamage, final String theName) {
+    public DungeonCharacter(final int theHealth, final String theName, final Weapon theStartingWeapon) {
         myHealth = theHealth;
-        myAccuracy = theAcc;
-        myFireRate = theFireRate;
-        myDamage = theDamage;
         myName = theName;
+        myEquippedWeapon = theStartingWeapon;
     }
 
     /**
@@ -47,13 +29,12 @@ public abstract class DungeonCharacter {
         }
 
         //Roll accuracy
-        if (DICE_ROLL.nextFloat() > myAccuracy) {
+        if (DiceRoll.nextFloat() > myEquippedWeapon.getAccuracy()) {
             return "Attack Missed";
         }
 
         //Roll Damage
-        final float multiplier = DICE_ROLL.nextFloat() + DAMAGE_MULTIPLIER_OFFSET;
-        return theOpponent.takeDamage(multiplier * myDamage);
+        return theOpponent.takeDamage(myEquippedWeapon.rollDamage());
     }
 
     /**
@@ -72,18 +53,39 @@ public abstract class DungeonCharacter {
     /**
      * Applies relative health gain amounts to DC. Does not allow for health loss.
      * @param theGains amount of health to gain.
-     * @return String containing resulting information for use in view.
      */
-    public String gainHealth(final int theGains) {
+    public void gainHealth(final int theGains) {
         if (theGains > 0) {
             myHealth += theGains;
         } else {
             throw new IllegalArgumentException("DunCha.gainHealth, negative number given: " + theGains);
         }
-        return Integer.toString(myHealth);
     }
 
-    //GetSet Methods
+    /**
+     * Returns accuracy of current weapon.
+     * @return accuracy.
+     */
+    public double getAccuracy() {
+        return myEquippedWeapon.getAccuracy();
+    }
+
+    /**
+     * Returns FireRate of current weapon.
+     * @return FireRate.
+     */
+    public double getFireRate() {
+        return myEquippedWeapon.getFireRate();
+    }
+
+    /**
+     * Returns Damage for the current weapon.
+     * @return Damage.
+     */
+    public double getDamage() {
+        return myEquippedWeapon.getDamage();
+    }
+
 
     /**
      * Get current health value.
@@ -91,30 +93,6 @@ public abstract class DungeonCharacter {
      */
     public int getHealth() {
         return myHealth;
-    }
-
-    /**
-     * Get accuracy value.
-     * @return accuracy.
-     */
-    public double getAccuracy() {
-        return myAccuracy;
-    }
-
-    /**
-     * Get damage value.
-     * @return damage.
-     */
-    public double getDamage() {
-        return myDamage;
-    }
-
-    /**
-     * Get firerate value.
-     * @return firerate.
-     */
-    public double getFireRate() {
-        return myFireRate;
     }
 
     /**
@@ -132,4 +110,13 @@ public abstract class DungeonCharacter {
     public void setHealth(final int theHealth) {
         myHealth = theHealth;
     }
+
+    /**
+     * Get currently equipped weapon.
+     * @return active weapon.
+     */
+    public Weapon getEquippedWeapon() {
+        return myEquippedWeapon;
+    }
+
 }

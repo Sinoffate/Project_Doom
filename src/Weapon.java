@@ -5,6 +5,9 @@
  */
 public class Weapon extends Item {
 
+    /** Hard-coded deviance for weapons. */
+    private static final float DEVIANCE = 0.2f;
+
     /** Damage for weapon. */
     private double myDamage;
     /** Fire-rate for weapon. */
@@ -33,6 +36,10 @@ public class Weapon extends Item {
         myFireRate = theFR;
         myAccuracy = theAcc;
         myAmmo = theAmm;
+    }
+
+    public double rollDamage() {
+        return ((DiceRoll.nextFloat(DEVIANCE) + (1-(DEVIANCE/2))) * this.myDamage );
     }
 
     @Override
