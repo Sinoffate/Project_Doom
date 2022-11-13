@@ -25,8 +25,10 @@ public class DungeonController implements ActionListener, PropertyChangeListener
      */
     public DungeonController() {
         myDungeon = new Dungeon(5);
-        myDoomGuy = new DoomGuy(100, 0.5, 0.5, 10, "DoomGuy", new Weapon(10, 0.8, 0.5, 10, "Pistol"));
-        myMonster = new Monster(100, 0.8, 0.5, 10, "Baron of Hell", new Weapon(10, 0.8, 0.5, 10, "Whip"));
+        myDoomGuy = new DoomGuy(100, 0.5, 0.5, 10, "DoomGuy",
+                                new Weapon(10, 0.8, 0.5, 10, "Pistol"));
+        myMonster = new Monster(100, 0.8, 0.5, 10, "Baron of Hell",
+                                new Weapon(10, 0.8, 0.5, 10, "Whip"));
         myView = new DungeonView(myDungeon.getMapSize(), myDungeon.getPlayerPos());
         tossToView();
 
