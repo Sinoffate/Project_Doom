@@ -1,4 +1,5 @@
-import java.awt.*;
+
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -9,6 +10,8 @@ import java.beans.PropertyChangeListener;
 
 /**
  *
+ * @author Jered Wiegel
+ * @version 1.0
  */
 public class DungeonController implements ActionListener, PropertyChangeListener, KeyListener {
     private Dungeon myDungeon;
@@ -20,27 +23,29 @@ public class DungeonController implements ActionListener, PropertyChangeListener
      * Creates a new DungeonController object.
      *
      */
-    public DungeonController () {
+    public DungeonController() {
         myDungeon = new Dungeon(5);
         myDoomGuy = new DoomGuy(100, 0.5, 0.5, 10, "DoomGuy", new Weapon(10, 0.8, 0.5, 10, "Pistol"));
         myMonster = new Monster(100, 0.8, 0.5, 10, "Baron of Hell", new Weapon(10, 0.8, 0.5, 10, "Whip"));
         myView = new DungeonView(myDungeon.getMapSize(), myDungeon.getPlayerPos());
-    }
-
-    @Override
-    public void actionPerformed(final ActionEvent e) {
-
+        tossToView();
 
     }
 
     @Override
-    public void keyTyped(final KeyEvent e) {
+    public void actionPerformed(final ActionEvent theEvt) {
+
+
+    }
+
+    @Override
+    public void keyTyped(final KeyEvent theEvt) {
         return;
     }
 
     @Override
-    public void keyPressed(final KeyEvent e) {
-        switch (e.getKeyCode()) {
+    public void keyPressed(final KeyEvent theEvt) {
+        switch (theEvt.getKeyCode()) {
             case KeyEvent.VK_W ->
                     myDungeon.setPlayerPos(new Point(myDungeon.getPlayerPos().x, myDungeon.getPlayerPos().y + 1));
             case KeyEvent.VK_A ->
@@ -55,7 +60,7 @@ public class DungeonController implements ActionListener, PropertyChangeListener
     }
 
     @Override
-    public void keyReleased(final KeyEvent e) {
+    public void keyReleased(final KeyEvent theEvt) {
         return;
     }
 
@@ -63,7 +68,6 @@ public class DungeonController implements ActionListener, PropertyChangeListener
     public void propertyChange(final PropertyChangeEvent theEvent) {
         if (theEvent.getPropertyName().equals("move")) {
             myDungeon.setPlayerPos((Point) theEvent.getNewValue());
-            myView.update( );
         }
         if (theEvent.getPropertyName().equals("menu")) {
             myView.update();
@@ -76,16 +80,11 @@ public class DungeonController implements ActionListener, PropertyChangeListener
     }
 
 
-    public static void main(String[] args) {
+    public static void main(final String[] theArgs) {
         DungeonController controller = new DungeonController();
         controller.myView.display();
-        while (true) {
 
-        }
     }
-
-
-
 }
 
 
