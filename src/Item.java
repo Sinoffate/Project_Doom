@@ -13,6 +13,9 @@ public abstract class Item {
      * @param theName name of item.
      */
     public Item(final String theName) {
+        if (theName == null || "".equals(theName)) {
+            throw new IllegalArgumentException("Item.con fucked itself. Name empty or null.");
+        }
         myName = theName;
     }
 
