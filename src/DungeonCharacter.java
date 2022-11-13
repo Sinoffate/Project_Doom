@@ -1,21 +1,23 @@
 public abstract class DungeonCharacter {
 
+    /** Weapon currently equipped. */
+    protected Weapon myEquippedWeapon;
+
     /** Current health. */
     private int myHealth;
     /** Name of character. */
     private final String myName;
-    /** Weapon currently equipped. */
-    protected Weapon myEquippedWeapon;
 
     /**
      * Default constructor for DC abstract objects.
      * @param theHealth starting health of DC.
      * @param theName name of DC.
+     * @param theWeapon starting weapon of DC.
      */
-    public DungeonCharacter(final int theHealth, final String theName, final Weapon theStartingWeapon) {
+    public DungeonCharacter(final int theHealth, final String theName, final Weapon theWeapon) {
         myHealth = theHealth;
         myName = theName;
-        myEquippedWeapon = theStartingWeapon;
+        myEquippedWeapon = theWeapon;
     }
 
     /**
@@ -119,4 +121,8 @@ public abstract class DungeonCharacter {
         return myEquippedWeapon;
     }
 
+    @Override
+    public String toString() {
+        return myName;
+    }
 }

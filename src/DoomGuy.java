@@ -1,4 +1,4 @@
-public class DoomGuy extends DungeonCharacter{
+public class DoomGuy extends DungeonCharacter {
 
     /** Max health allowed for DGuy. */
     private final int myMaxHealth;

@@ -71,7 +71,7 @@ public class DungeonView implements PropertyChangeListener {
      */
     @Override
     public void propertyChange(final PropertyChangeEvent theEvt) {
-        if ("HERO_POS".equals(theEvt.getPropertyName())) {
+        if (Dungeon.HERO_POS.equals(theEvt.getPropertyName())) {
             drawMap((Point) theEvt.getNewValue());
         }
     }
