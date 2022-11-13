@@ -1,4 +1,9 @@
+import main.Inventory;
+
 public class DoomGuy extends DungeonCharacter{
+
+    /**TEMP Number to shift random generator output by for damage calculation. */
+    private static final float DAMAGE_MULTIPLIER_OFFSET = 0.5f;
 
     /** Max health allowed for DGuy. */
     private final int myMaxHealth;
@@ -21,50 +26,50 @@ public class DoomGuy extends DungeonCharacter{
         super(theHealth,theAcc,theFireRate,theDamage,theName);
         myMaxHealth = theHealth;
         myInventory = new Inventory();
-        myInventory.addItem(theStartingWeapon);
-        equipWeapon(theStartingWeapon);
+//        myInventory.addItem(theStartingWeapon);
+//        equipWeapon(theStartingWeapon);
     }
 
     /**
      * Add specified item to DGuy inventory.
      * @param theItem item to add.
      */
-    public void addToInventory(final Item theItem) {
-        if (theItem == null) {
-            throw new NullPointerException("DG.addToInventory : null item passed");
-        }
-        myInventory.addItem(theItem);
-    }
+//    public void addToInventory(final Item theItem) {
+//        if (theItem == null) {
+//            throw new NullPointerException("DG.addToInventory : null item passed");
+//        }
+//        myInventory.addItem(theItem);
+//    }
 
     /**
      * Remove specified item from DGuy inventory.
      * @param theItem item to remove.
      */
-    public void removeFromInventory(final Item theItem) {
-        if (theItem == null) {
-            throw new NullPointerException("DG.removeFromInventory : null item passed");
-        }
-        myInventory.removeItem(theItem);
-    }
+//    public void removeFromInventory(final Item theItem) {
+//        if (theItem == null) {
+//            throw new NullPointerException("DG.removeFromInventory : null item passed");
+//        }
+//        myInventory.removeItem(theItem);
+//    }
 
     /**
      * Set specified weapon as active weapon.
      * @param theWeapon weapon object to equip.
      */
-    public void equipWeapon(final Weapon theWeapon) {
-        if (myInventory.containsItem(theWeapon)) {
-            myEquippedWeapon = theWeapon;
-        }
-    }
+//    public void equipWeapon(final Weapon theWeapon) {
+//        if (myInventory.containsItem(theWeapon)) {
+//            myEquippedWeapon = theWeapon;
+//        }
+//    }
 
     /**
      * Check if DGuy inventory contains specified item.
      * @param theItem item to find.
      * @return true if found.
      */
-    public boolean inventoryContains(final Item theItem) {
-        return myInventory.containsItem(theItem);
-    }
+//    public boolean inventoryContains(final Item theItem) {
+//        return myInventory.containsItem(theItem);
+//    }
 
     //Overridden methods
 
@@ -95,7 +100,7 @@ public class DoomGuy extends DungeonCharacter{
      */
     @Override
     public double getAccuracy() {
-        return myEquippedWeapon.getAccuracy;
+        return myEquippedWeapon.getAccuracy();
     }
 
     /**
@@ -104,7 +109,7 @@ public class DoomGuy extends DungeonCharacter{
      */
     @Override
     public double getFireRate() {
-        return myEquippedWeapon.getFireRate;
+        return myEquippedWeapon.getFireRate();
     }
 
     /**
@@ -113,7 +118,7 @@ public class DoomGuy extends DungeonCharacter{
      */
     @Override
     public double getDamage() {
-        return myEquippedWeapon.getDamage;
+        return myEquippedWeapon.getDamage();
     }
 
     //GetSet Methods
@@ -141,4 +146,5 @@ public class DoomGuy extends DungeonCharacter{
     public Weapon getEquippedWeapon() {
         return myEquippedWeapon;
     }
+
 }
