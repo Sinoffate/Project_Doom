@@ -16,38 +16,41 @@ import java.util.Map.Entry;
  */
 public class Inventory {
 
-    final static int MAX_ITEM_NUMBER = 15;
-
+    
     /** contain non-null objects*/
     private Map<String, Integer> myInventory;
 
     //TODO: Use this until database of items is functioning.
+    //TODO: Need to throw error if theObjects contain null.
     /**  */
-    private final String[] myItemData = {"Health_Potion", "BFG", "ChainGun", "Pistol"};
     
     /**
      * List of items will be stored stored into a list of items
      * 
      * @requires: number of items in myInventory > 0
-     * @param theItems
+     * @param String[] theObjects a list of items stored in database
      * @constructor of Inventory
      */
-    public Inventory() {
-        this.myInventory = generateInventory(myItemData);
+    public Inventory(String[] theObjects, int theMax) {
+        if (theMax < 0) {
+            throw new IllegalArgumentException("Number must be >= 0");
+        }
+        this.myInventory = generateInventory(theObjects, theMax);
     }
 
     /**
      * Generates a map of the list of items that will be stored in each inventory.
      * It will generate a random number number of items in the list
      * 
-     * @param theList
+     * @param String[] theList of objects stored in Database.
+    *         int theMax maximum number of objects. 
      * @requires: Item will not contain null; RandomNumberGenerator is required
      * @throws: If itemList does not contain null, will not add the thing in the list
      * @spec.modifies: Item[]
      * @spec.effect: Generates a TreeMap of Item and a corresponding number of it.
      * @return count of items generated from the list
      */
-    private Map<String, Integer> generateInventory(String[] theList) {
+    private Map<String, Integer> generateInventory(String[] theList, int theMax) {
         
         // checks if itemList contains Null
         for (int i = theList.length - 1; i > 0; i--) {
@@ -57,15 +60,15 @@ public class Inventory {
         Map<String, Integer> inventory = new TreeMap<>();
         RandomNumberGenerator rand = new RandomNumberGenerator();
 
-        // choose a random number between 1 - MAX_ITEM_NUMBER
-        int numberOfItems = rand.nextInt(MAX_ITEM_NUMBER) + 1;
-        int itemOption = myItemData.length;
+        // choose a random number between 1 - theMax
+        int numberOfItems = rand.nextInt(theMax) + 1;
+        int itemOption = theList.length;
         
         // add items in the list with a random in a map
         for (int i = 0; i < numberOfItems; i++) {
             
             // randomly choose an thing from the list
-            String randomItem = myItemData[rand.nextInt(itemOption)];
+            String randomItem = theList[rand.nextInt(itemOption)];
             
             // add new word in a Item list
             if (!inventory.containsKey(randomItem)) {
@@ -157,7 +160,7 @@ public class Inventory {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, Integer> thing : myInventory.entrySet()) {
-            sb.append(thing.getKey() + ":" + thing.getValue() + " ");
+            sb.append(thing.getKey() + ":" + thing.getValue() + "\n");
         }
         return sb.toString();
     }

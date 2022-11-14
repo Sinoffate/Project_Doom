@@ -13,6 +13,9 @@ public class Room {
 
     /** Non-null objects */
     /** Hard coded items to be used for items */
+    private final int MAX_ITEM_NUMBER = 15;
+    private final int MAX_MONSTER_NUMBER = 10;
+
     private final String[] ITEMS = {"Health_Potion", "BFG", "ChainGun", "Pistol"};
     private final String[] MONSTERS = {"Baron_of_Hell", "Caco", "Imp"};
 
@@ -22,12 +25,14 @@ public class Room {
 
     /**
      * Room contains a {item(1), ... , item(n), monster(1), ... , monster(n)}
-     * @requires: Items and Monsters must not contain null objects
+     * @requires: Items and Monsters must not contain null objects;
+     *          number of max >= 0
+     * @throws: IllegalArgumentException if number < 0
      * 
      */
     public Room() {
-        this.myInventory = new Inventory(ITEMS);
-        this.myMonster = new Inventory(MONSTERS);
+        this.myInventory = new Inventory(ITEMS, MAX_ITEM_NUMBER);
+        this.myMonster = new Inventory(MONSTERS, MAX_MONSTER_NUMBER);
     }
 
     /**
@@ -49,7 +54,7 @@ public class Room {
      * @modifies set.length = set.length + 1
      */
     public void setMonster(String theMonster) {
-        myMonster.add(theMonster);
+        myMonster.addItem(theMonster);
     }
 
     /**
