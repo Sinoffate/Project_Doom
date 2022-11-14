@@ -44,4 +44,18 @@ public class RandomNumberGenerator {
     public double nextDouble() {
         return rand.nextDouble();
     }
+
+    /**
+     * Returns a random integer upto (exclusively) the maximum number
+     * @param theMax
+     * @requires: theMax > 0
+     * @throws: if max < 0, throw IllegalArgumentException 
+     * @return randomNumber between 0 and max (exclusively)
+     */
+    public int nextInt(int theMax) {
+        if (theMax < 0) {
+            throw new IllegalArgumentException("Number must be > 0");
+        }
+        return rand.nextInt(theMax);
+    }
 }
