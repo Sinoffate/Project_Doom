@@ -2,6 +2,7 @@
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A hero can view the entire list of items in disposal.
@@ -11,16 +12,14 @@ import java.util.List;
  */
 public class Inventory {
 
-    // Database Connection
-    private Connection myConn;
 
     /** Referred item may not be null */
-    private List<String> myItems;
+    private Set<String> myItems;
 
     /**
      * Should this sql table contain table for items only?
      */
-    public Inventory(List<String> theItems) {
+    public Inventory(Set<String> theItems) {
         this.myItems = theItems;
     }
 
@@ -75,11 +74,7 @@ public class Inventory {
         if (theItem == null) {
             throw new IllegalArgumentException("You cannot find null");
         }
-
-        for (int i = 0; i < inventorySize(); i++) {
-            if (myItems.get(i) == theItem) return true;
-        }
-        return false;
+        return myItems.contains(theItem);
     }
 
     //TODO: Make sure to return the copy of list instance, not the actual instance
@@ -93,15 +88,16 @@ public class Inventory {
         return myItems.size();
     }
 
+    //TODO: make Inventory compatible with Set data structure
     /**
      * Prints a String version of the entire list of items.
+     * 
      * @return: String version of the item inventory.
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(myItems.get(0));
-        for (int i = 1; i < inventorySize(); i++) {
-            sb.append(", " + myItems.get(i));
+        for (String thing : myItems) {
+            sb.append(thing);
         }
         return sb.toString();
     }
