@@ -6,12 +6,13 @@ import java.util.Set;
 
 /**
   * Name: Hyunggil Woo
-  * Version: 1.1
-  * Date: November 2, 2022
+  * Version: 1.2
+  * Date: November 14, 2022
   */
 public class Room {
 
-    private Set<String> myInventory;
+    /** Inventory is non-null object*/
+    private Inventory myInventory;
     private Set<String> myMonster;
 
     /**
@@ -20,20 +21,20 @@ public class Room {
      * @param theInventory list of items that can be accessed.
      * @param theMonster list of monsters that are present
      */
-    public Room(Set<String> theInventory, Set<String> theMonster) {
+    public Room(Inventory theInventory, Set<String> theMonster) {
         this.myInventory = theInventory;
         this.myMonster = theMonster;
     }
 
     /**
-     * More item is added into the room
-     *
-     * @pre Inventory cannot be null.
+     * Sets up an inventory in each room.
+     * 
+     * @requires: 
      * @param theInventory
-     * @modifies Adds more items in the inventory
+     * @mspec.odifies Adds more items in the inventory
      */
     public void setInventory(String theInventory) {
-        myInventory.add(theInventory);
+        myInventory.addItem(theInventory);
     }
 
     /**
@@ -52,13 +53,22 @@ public class Room {
      *
      * @param theItem item to use.
      * @pre if item exists in list, returns it (otherwise, return "")
+     * @throw IllegalArgumentException if item is null. If item does not exist, return ""
      * @spec.effect Items are not removed from the inventory
      * @modifies Inventory is not modified.
      * @return name of item
      */
     public String getInventory(String theItem) {
+        if (theItem == null) {
+            throw new IllegalArgumentException("Cannot find null item");
+        } else if (!myInventory.contains(theItem)) {
+            return "";
+        }
+
         Iterator<String> itemIterator = myInventory.iterator();
         String result = "";
+
+        // iterates through a list to obtain the specified
         while(itemIterator.hasNext()) {
             String item = itemIterator.next();
             if (item == theItem) {
@@ -67,19 +77,28 @@ public class Room {
         }
         return result;
     }
-
+    
     /**
      * Shows the monster inside the list.
      *
      * @param theMonster Baron of Hell, Caco, etc
      * @pre if monster exists, return it (otherwise, return "")
+     * @throw IllegalArgumentException if monster is null. If monster does not exist, return ""
      * @spec.effect Monsters are not removed from Room
      * @modifies List of monsters is not modified
      * @return name of monster
      */
     public String getMonster(String theMonster) {
+        if (theMonster == null) {
+            throw new IllegalArgumentException("Enter a monster's name");
+        } else if (!myMonster.contains(theMonster)) {
+            return "";
+        }
+
         Iterator<String> monsterIterator = myMonster.iterator();
         String result = "";
+        
+        // Checks through the list of monsters to find it.
         while (monsterIterator.hasNext()) {
             String monster = monsterIterator.next();
             if (monster == theMonster) {
@@ -99,10 +118,12 @@ public class Room {
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("______\n");
-        sb.append("|    |\n");
-        sb.append("|    |\n");
-        sb.append("------\n");
+
+        //TODO: Need to iterate over a generic class
+        
+        for (Inventory item: myInventory) {
+            sb.append(item.toString() + "\n");
+        }
         return sb.toString();
     }
 }
