@@ -68,7 +68,7 @@ public class Dungeon {
     }
 
     /**
-     * @return The Monster
+     * @return The Monster in the room
      */
     public Monster getMonster() {
         return myMonster;
@@ -78,8 +78,8 @@ public class Dungeon {
      * @return A list of items
      */
 
-    public Inventory getItems() {
-        return myItems;
+    public String getItems() {
+        return Room.getInventory();
     }
 
     public boolean hasMonster() {
