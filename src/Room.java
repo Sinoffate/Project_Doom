@@ -11,19 +11,23 @@ import java.util.Set;
   */
 public class Room {
 
+    /** Non-null objects */
+    /** Hard coded items to be used for items */
+    private final String[] ITEMS = {"Health_Potion", "BFG", "ChainGun", "Pistol"};
+    private final String[] MONSTERS = {"Baron_of_Hell", "Caco", "Imp"};
+
     /** Inventory is non-null object*/
     private Inventory myInventory;
-    private Set<String> myMonster;
+    private Inventory myMonster;
 
     /**
      * Room contains a {item(1), ... , item(n), monster(1), ... , monster(n)}
-     *
-     * @param theInventory list of items that can be accessed.
-     * @param theMonster list of monsters that are present
+     * @requires: Items and Monsters must not contain null objects
+     * 
      */
-    public Room(Inventory theInventory, Set<String> theMonster) {
-        this.myInventory = theInventory;
-        this.myMonster = theMonster;
+    public Room() {
+        this.myInventory = new Inventory(ITEMS);
+        this.myMonster = new Inventory(MONSTERS);
     }
 
     /**
@@ -51,7 +55,7 @@ public class Room {
     /**
      * Shows the item inside the inventory
      *
-     * @param theItem item to use.
+     * @param theItem String item to use.
      * @pre if item exists in list, returns it (otherwise, return "")
      * @throw IllegalArgumentException if item is null. If item does not exist, return ""
      * @spec.effect Items are not removed from the inventory
@@ -109,21 +113,24 @@ public class Room {
     }
 
     /**
-     * Draws a room to be drawn on the console.
+     * Prints a list of items and monsters in a room.
      *
-     * Does not return null
-     * @return Block representation of a Room.
+     * @requires: Not return null
      * @spec.effect No effect
      * @modifies Returns a String representation of a room
+     * @return List of items and monsters in a room.
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        //TODO: Need to iterate over a generic class
-        
-        for (Inventory item: myInventory) {
-            sb.append(item.toString() + "\n");
-        }
+        // prints each item in the room
+        sb.append("Inventory:\n");
+        sb.append(myInventory.toString());
+
+        // prints each monsters in the room
+        sb.append("Monsters:\n");
+        sb.append(myMonster.toString());
+
         return sb.toString();
     }
 }
