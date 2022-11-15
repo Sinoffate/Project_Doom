@@ -68,7 +68,7 @@ public class Dungeon {
     }
 
     /**
-     * @return The Monster
+     * @return The Monster in the room
      */
     public Monster getMonster() {
         return myMonster;
@@ -78,8 +78,8 @@ public class Dungeon {
      * @return A list of items
      */
 
-    public Inventory getItems() {
-        return myItems;
+    public String getItems() {
+        return Room.getInventory();
     }
 
     public boolean hasMonster() {
@@ -96,8 +96,9 @@ public class Dungeon {
      * @param thePos the myHeroPosition to set
      */
     public void setPlayerPos(final Point thePos) {
-        if (thePos.getX() < 0 || thePos.getX() >= myMapSize || thePos.getY() < 0 || thePos.getY() >= myMapSize) {
-            return ;
+        if (thePos.getX() < 0 || thePos.getX() >= myMapSize
+            || thePos.getY() < 0 || thePos.getY() >= myMapSize) {
+            return;
         }
         final Point oldPos = myHeroPosition;
         myHeroPosition = thePos;
@@ -108,16 +109,14 @@ public class Dungeon {
      * @param theListener the listener to add
      * @param thePropertyName the property to listen to
      */
-    public void addPropertyChangeListener(final String thePropertyName, final PropertyChangeListener theListener) {
+    public void addPropertyChangeListener(final String thePropertyName,
+                                          final PropertyChangeListener theListener) {
         myPcs.addPropertyChangeListener(thePropertyName, theListener);
     }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Map Size: " + myMapSize)
-          .append(" Hero Position: " + myHeroPosition)
-          .append(" Enter Position: " + myEnterPos)
-          .append(" Exit Position: " + myExitPos);
+        sb.append("Map Size: ").append(myMapSize).append(" Hero Position: ").append(myHeroPosition).append(" Enter Position: ").append(myEnterPos).append(" Exit Position: ").append(myExitPos);
         return sb.toString();
     }
 }

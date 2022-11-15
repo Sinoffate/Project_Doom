@@ -4,16 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 
 /**
- *
+ * Controller for the Project_Doom game.
  * @author Jered Wiegel
  * @version 1.0
  */
-public class DungeonController implements ActionListener, PropertyChangeListener, KeyListener {
+public class DungeonController implements ActionListener, KeyListener {
     private Dungeon myDungeon;
     private DungeonView myView;
     private DoomGuy myDoomGuy;
@@ -25,12 +23,12 @@ public class DungeonController implements ActionListener, PropertyChangeListener
      */
     public DungeonController() {
         myDungeon = new Dungeon(5);
-        myDoomGuy = new DoomGuy(100, 0.5, 0.5, 10, "DoomGuy",
+        myDoomGuy = new DoomGuy(100, "DoomGuy",
                                 new Weapon(10, 0.8, 0.5, 10, "Pistol"));
-        myMonster = new Monster(100, 0.8, 0.5, 10, "Baron of Hell",
+        myMonster = new Monster(100, "Baron of Hell",
                                 new Weapon(10, 0.8, 0.5, 10, "Whip"));
         myView = new DungeonView(myDungeon.getMapSize(), myDungeon.getPlayerPos());
-        tossToView();
+        myDungeon.addPropertyChangeListener(Dungeon.HERO_POS, myView);
 
     }
 
@@ -66,26 +64,8 @@ public class DungeonController implements ActionListener, PropertyChangeListener
         return;
     }
 
-    @Override
-    public void propertyChange(final PropertyChangeEvent theEvent) {
-        if (theEvent.getPropertyName().equals("move")) {
-            myDungeon.setPlayerPos((Point) theEvent.getNewValue());
-        }
-        if (theEvent.getPropertyName().equals("menu")) {
-            myView.update();
-        }
-    }
-
-
-    public void tossToView() {
-        myDungeon.addPropertyChangeListener(Dungeon.HERO_POS, this);
-    }
-
-
     public static void main(final String[] theArgs) {
         DungeonController controller = new DungeonController();
-        controller.myView.display();
-
     }
 }
 
