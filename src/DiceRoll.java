@@ -33,4 +33,8 @@ public class DiceRoll {
     public static float nextFloat(final float theBound) {
         return DICE_ROLL.nextFloat(theBound);
     }
+
+    public static int nextInt(final int theBound) {
+        return DICE_ROLL.nextInt(theBound);
+    }
 }
