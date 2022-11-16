@@ -11,13 +11,12 @@ import java.util.Map.Entry;
  * Name: Hyunggil Woo
  * Version: 1.4
  * Date: November 15, 2022
- * @param <E>
  */
 public class Inventory<E> {
 
     
     /** contain non-null objects*/
-    private Map<String, Integer> myInventory;
+    private Map< E , Integer > myInventory;
 
     //TODO: Use this until database of items is functioning.
     //TODO: Need to throw error if theObjects contain null.
@@ -30,7 +29,7 @@ public class Inventory<E> {
      * @param String[] theObjects a list of items stored in database
      * @constructor of Inventory
      */
-    public Inventory(String[] theObjects, int theMax) {
+    public Inventory(E[] theObjects, final int theMax) {
         if (theMax < 0) {
             throw new IllegalArgumentException("Number must be >= 0");
         }
@@ -41,7 +40,7 @@ public class Inventory<E> {
      * Generates a map of the list of items that will be stored in each inventory.
      * It will generate a random number number of items in the list
      * 
-     * @param String[] theList of objects stored in Database.
+     * @param E[] theList of objects stored in Database.
     *         int theMax maximum number of objects. 
      * @requires: Item will not contain null; DiceRoll is required
      * @throws: If itemList does not contain null, will not add the thing in the list
@@ -49,14 +48,14 @@ public class Inventory<E> {
      * @spec.effect: Generates a TreeMap of Item and a corresponding number of it.
      * @return count of items generated from the list
      */
-    private Map<String, Integer> generateInventory(String[] theList, int theMax) {
+    private Map<E, Integer> generateInventory(final E[] theList, final int theMax) {
         
         // checks if itemList contains Null
         for (int i = theList.length - 1; i > 0; i--) {
             assert theList[i] == null; 
         }
 
-        Map<String, Integer> inventory = new TreeMap<>();
+        Map< E , Integer > inventory = new TreeMap<>();
 
         // choose a random number between 1 - theMax
         int numberOfItems = DiceRoll.nextInt(theMax) + 1;
@@ -66,7 +65,7 @@ public class Inventory<E> {
         for (int i = 0; i < numberOfItems; i++) {
             
             // randomly choose an thing from the list
-            String randomItem = theList[DiceRoll.nextInt(itemOption)];
+            E randomItem = theList[DiceRoll.nextInt(itemOption)];
             
             // add new word in a Item list
             if (!inventory.containsKey(randomItem)) {
@@ -90,7 +89,7 @@ public class Inventory<E> {
     *           If same thing already exists, increment counter 
     * @spec.modifies: this
     */
-    public void addItem(String theObject) {
+    public void addItem(final E theObject) {
         if (theObject == null) {
             throw new IllegalArgumentException("Item is null");
         }
@@ -115,7 +114,7 @@ public class Inventory<E> {
      *           if (number) this = 1, (number) this = 0, else nothing
      * @spec.modifies: this
      */
-    public void removeItem(String theObject) {
+    public void removeItem(E theObject) {
         if (theObject == null) {
             throw new IllegalArgumentException("You cannot remove null");
         }
@@ -131,7 +130,7 @@ public class Inventory<E> {
      * @spec.modifies: NA
      * @return: true if thing is present, ow false.
      */
-    public boolean contains(String theObject) {
+    public boolean contains(E theObject) {
         if (theObject == null) {
             throw new IllegalArgumentException("You cannot find null");
         }
@@ -151,37 +150,13 @@ public class Inventory<E> {
     }
 
     /**
-     * InventoryIterator class provides a set of utilities for iterating over 
-     * Inventory and possibly removing values from the Inventory.
-     */
-    private class InventoryIterator implements Iterator<E> {
-
-        @Override
-        public boolean hasNext() {
-            // TODO Auto-generated method stub
-            return false;
-        }
-
-        /**
-         * Cited from https://courses.cs.washington.edu/courses/cse143/22wi/lectures/ArrayIntListIterator.java
-         * 
-         * @return true if there are more elements left, ow false.
-         */
-        @Override
-        public E next() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-        
-    }
-    /**
      * Prints a String version of the entire list of items.
      * 
      * @return: String version of a general inventory.
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, Integer> thing : myInventory.entrySet()) {
+        for (Map.Entry<E, Integer> thing : myInventory.entrySet()) {
             sb.append(thing.getKey() + ":" + thing.getValue() + "\n");
         }
         return sb.toString();
