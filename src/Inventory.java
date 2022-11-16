@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
@@ -41,7 +42,7 @@ public class Inventory {
      * 
      * @param String[] theList of objects stored in Database.
     *         int theMax maximum number of objects. 
-     * @requires: Item will not contain null; RandomNumberGenerator is required
+     * @requires: Item will not contain null; DiceRoll is required
      * @throws: If itemList does not contain null, will not add the thing in the list
      * @spec.modifies: Item[]
      * @spec.effect: Generates a TreeMap of Item and a corresponding number of it.
@@ -55,17 +56,16 @@ public class Inventory {
         }
 
         Map<String, Integer> inventory = new TreeMap<>();
-        RandomNumberGenerator rand = new RandomNumberGenerator();
 
         // choose a random number between 1 - theMax
-        int numberOfItems = rand.nextInt(theMax) + 1;
+        int numberOfItems = DiceRoll.nextInt(theMax) + 1;
         int itemOption = theList.length;
         
         // add items in the list with a random in a map
         for (int i = 0; i < numberOfItems; i++) {
             
             // randomly choose an thing from the list
-            String randomItem = theList[rand.nextInt(itemOption)];
+            String randomItem = theList[DiceRoll.nextInt(itemOption)];
             
             // add new word in a Item list
             if (!inventory.containsKey(randomItem)) {
@@ -160,5 +160,11 @@ public class Inventory {
             sb.append(thing.getKey() + ":" + thing.getValue() + "\n");
         }
         return sb.toString();
+    }
+
+    @Override
+    public Iterator iterator() {
+        // TODO Auto-generated method stub
+        return myInventory.iterator();
     }
 }
