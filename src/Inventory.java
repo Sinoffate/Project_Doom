@@ -9,10 +9,11 @@ import java.util.Map.Entry;
  * that can be accessed.
  * 
  * Name: Hyunggil Woo
- * Version: 1.3
- * Date: November 14, 2022
+ * Version: 1.4
+ * Date: November 15, 2022
+ * @param <E>
  */
-public class Inventory {
+public class Inventory<E> {
 
     
     /** contain non-null objects*/
@@ -150,6 +151,30 @@ public class Inventory {
     }
 
     /**
+     * InventoryIterator class provides a set of utilities for iterating over 
+     * Inventory and possibly removing values from the Inventory.
+     */
+    private class InventoryIterator implements Iterator<E> {
+
+        @Override
+        public boolean hasNext() {
+            // TODO Auto-generated method stub
+            return false;
+        }
+
+        /**
+         * Cited from https://courses.cs.washington.edu/courses/cse143/22wi/lectures/ArrayIntListIterator.java
+         * 
+         * @return true if there are more elements left, ow false.
+         */
+        @Override
+        public E next() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+        
+    }
+    /**
      * Prints a String version of the entire list of items.
      * 
      * @return: String version of a general inventory.
@@ -160,11 +185,5 @@ public class Inventory {
             sb.append(thing.getKey() + ":" + thing.getValue() + "\n");
         }
         return sb.toString();
-    }
-
-    @Override
-    public Iterator iterator() {
-        // TODO Auto-generated method stub
-        return myInventory.iterator();
     }
 }
