@@ -1,10 +1,15 @@
+/**
+ * This class represents a health potion that can be used to heal the player.
+ * @author Jered Wiegel
+ * @version 1.0
+ */
 public class HealthPotion extends Item {
 
     /** Amount of health to restore. */
     private static final int HEAL_AMOUNT = 50;
 
 
-/**
+    /**
      * Default constructor.
      * @param theName name of item.
      */
