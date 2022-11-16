@@ -4,6 +4,8 @@ import java.beans.PropertyChangeSupport;
 
 public class Dungeon {
     private int myMapSize;
+
+    private Room[][] myRooms;
     private Point myHeroPosition;
     private Point myEnterPos;
     private Point myExitPos;
@@ -23,7 +25,7 @@ public class Dungeon {
         this.myEnterPos = new Point(0, 0);
         this.myExitPos = new Point(theMapSize - 1, theMapSize - 1);
         this.myPcs = new PropertyChangeSupport(this);
-        generateDungeon();
+        myRooms = generateDungeon();
     }
 
     private Room[][] generateDungeon() {
@@ -36,11 +38,18 @@ public class Dungeon {
         return dungeon;
     }
 
+    public Room getRoom(final int theRow, final int theCol) {
+        if (theRow < 0 || theRow >= myMapSize || theCol < 0 || theCol >= myMapSize) {
+            throw new IllegalArgumentException("Out of bounds");
+        }
+        return myRooms[theRow][theCol];
+    }
+
     /**
      * @return the myMapSize
      */
     public int getMapSize() {
-        return myMapSize;
+        return this.myMapSize;
     }
 
     /**
@@ -70,17 +79,17 @@ public class Dungeon {
     /**
      * @return The Monster in the room
      */
-    public Monster getMonster() {
-        return myMonster;
-    }
+//    public Monster getMonster() {
+//        return Room.getMonster();
+//    }
 
     /**
      * @return A list of items
      */
 
-    public String getItems() {
-        return Room.getInventory();
-    }
+//    public String getItems() {
+//        return Room.getInventory();
+//    }
 
     public boolean hasMonster() {
         return false;

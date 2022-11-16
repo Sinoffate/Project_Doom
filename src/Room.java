@@ -19,6 +19,9 @@ public class Room {
     private Inventory myInventory;
     private Inventory myMonster;
 
+    /** Flag to check if the room is visited */
+    private boolean myIsVisited;
+
     /**
      * Room contains a {item(1), ... , item(n), monster(1), ... , monster(n)}
      * @requires: Items and Monsters must not contain null objects;
@@ -29,6 +32,7 @@ public class Room {
     public Room() {
         this.myInventory = new Inventory(ITEMS, MAX_ITEM_NUMBER);
         this.myMonster = new Inventory(MONSTERS, MAX_MONSTER_NUMBER);
+        this.myIsVisited = false;
     }
 
     /**
@@ -133,5 +137,13 @@ public class Room {
         sb.append(myMonster.toString());
 
         return sb.toString();
+    }
+
+    /**
+     * This class sets up whether the room has been obscured or not. Related to Fog of War.
+     * @param theDiscovered boolean value to set up whether the room has been discovered or not.
+     */
+    public void setDiscovered(final boolean theDiscovered) {
+        myIsVisited = theDiscovered;
     }
 }
