@@ -74,16 +74,9 @@ public class Room {
             return "";
         }
 
-        Iterator<String> itemIterator = myInventory.iterator();
+
         String result = "";
 
-        // iterates through a list to obtain the specified
-        while(itemIterator.hasNext()) {
-            String item = itemIterator.next();
-            if (item == theItem) {
-                result = item;
-            }
-        }
         return result;
     }
     
