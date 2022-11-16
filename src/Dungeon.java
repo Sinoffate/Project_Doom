@@ -39,6 +39,9 @@ public class Dungeon {
     }
 
     public Room getRoom(final int theRow, final int theCol) {
+        if (theRow <= 0 || theRow >= myMapSize || theCol <= 0 || theCol >= myMapSize) {
+            throw new IllegalArgumentException("Out of bounds");
+        }
         return myRooms[theRow][theCol];
     }
 
