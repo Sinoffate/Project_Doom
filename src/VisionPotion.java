@@ -19,11 +19,15 @@ public class VisionPotion extends Item {
         super(theName);
     }
 
-    public void usePotion(final Point thePlayer) {
+    public int getRadius() {
+        return RADIUS;
+    }
+
+    public void usePotion(final Point thePlayer, final int theDungeonSize, final Room theCurrentRoom) {
         for (int row = (int) (thePlayer.getX() - RADIUS); row <= thePlayer.getX() + RADIUS; row++) {
             for (int col = (int) (thePlayer.getY() - RADIUS); col <= thePlayer.getY() + RADIUS; col++) {
-                if (row >= 0 && row < Dungeon.getMapSize() && col >= 0 && col < Dungeon.getMapSize()) {
-                    Dungeon.getRoom(row, col).setDiscovered(true);
+                if (row >= 0 && row < theDungeonSize && col >= 0 && col < theDungeonSize) {
+                    theCurrentRoom.setDiscovered(true);
                 }
             }
         }
