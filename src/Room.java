@@ -5,13 +5,11 @@
   */
 public class Room {
 
-    /** Non-null objects */
 
-    private final String[] MONSTERS = {"Baron_of_Hell", "Caco", "Imp"};
 
     /** Inventory<String> is non-null object*/
     private Inventory myInventory;
-    private String myMonster;
+    private Monster myMonster;
 
     /** Flag to check if the room is visited */
     private boolean myIsVisited;
@@ -21,10 +19,10 @@ public class Room {
      * Room contains a {item(1), ... , item(n) and 1 random monster
      * 
      * @requires: Items and Monsters must not contain null objects;
-     *          number of max >= 0
-     * @throws: IllegalArgumentException if number < 0
+     *          
      */
     public Room() {
+        this.myInventory = new Inventory();
         this.myMonster = null;
         this.myIsVisited = false;
     }
@@ -36,10 +34,10 @@ public class Room {
      * @param theInventory
      * @mspec.odifies Adds more items in the inventory
      */
-    public void setInventory(final String theInventory) {
+    public void setInventory(final Inventory theInventory) {
         assert theInventory != null;
 
-        myInventory.addItem(theInventory);
+        myInventory = theInventory;
     }
 
     /**
@@ -49,10 +47,10 @@ public class Room {
      * @param theMonster Baron of Hell, Caco, etc
      * @modifies myMonster = a random monster from a list.
      */
-    public void setMonster(final String theMonster) {
+    public void setMonster(final Monster theMonster) {
         assert theMonster != null;
 
-        myMonster = MONSTERS[DiceRoll.nextInt(MONSTERS.length)];
+        this.myMonster = theMonster;
     }
 
     /**
@@ -73,7 +71,7 @@ public class Room {
      * @modifies List of monsters is not modified
      * @return name of monster
      */
-    public String getMonster() {
+    public Monster getMonster() {
         return this.myMonster;
     }
 
