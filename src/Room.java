@@ -1,5 +1,3 @@
-import java.util.Iterator;
-
 /**
   * Name: Hyunggil Woo
   * Version: 1.2
@@ -7,114 +5,74 @@ import java.util.Iterator;
   */
 public class Room {
 
-    /** Non-null objects */
-    /** Hard coded items to be used for items */
-    private final int MAX_ITEM_NUMBER = 15;
-    private final int MAX_MONSTER_NUMBER = 10;
 
-    private final String[] ITEMS = {"Health_Potion", "BFG", "ChainGun", "Pistol"};
-    private final String[] MONSTERS = {"Baron_of_Hell", "Caco", "Imp"};
 
-    /** Inventory is non-null object*/
+    /** Inventory<String> is non-null object*/
     private Inventory myInventory;
-    private Inventory myMonster;
+    private Monster myMonster;
 
     /** Flag to check if the room is visited */
     private boolean myIsVisited;
 
     /**
-     * Room contains a {item(1), ... , item(n), monster(1), ... , monster(n)}
-     * @requires: Items and Monsters must not contain null objects;
-     *          number of max >= 0
-     * @throws: IllegalArgumentException if number < 0
+     * Instantiates a room containing list of items.
+     * Room contains a {item(1), ... , item(n) and 1 random monster
      * 
+     * @requires: Items and Monsters must not contain null objects;
+     *          
      */
     public Room() {
-        this.myInventory = new Inventory(ITEMS, MAX_ITEM_NUMBER);
-        this.myMonster = new Inventory(MONSTERS, MAX_MONSTER_NUMBER);
+        this.myInventory = new Inventory();
+        this.myMonster = null;
         this.myIsVisited = false;
     }
 
     /**
      * Sets up an inventory in each room.
      * 
-     * @requires: 
+     * @requires: theInventory is non-null
      * @param theInventory
      * @mspec.odifies Adds more items in the inventory
      */
-    public void setInventory(String theInventory) {
-        myInventory.addItem(theInventory);
+    public void setInventory(final Inventory theInventory) {
+        assert theInventory != null;
+
+        myInventory = theInventory;
     }
 
     /**
-     * Creates monsters in the room
+     * Creates monsters in the room.
      *
      * @pre Monster cannot be null
      * @param theMonster Baron of Hell, Caco, etc
-     * @modifies set.length = set.length + 1
+     * @modifies myMonster = a random monster from a list.
      */
-    public void setMonster(String theMonster) {
-        myMonster.addItem(theMonster);
+    public void setMonster(final Monster theMonster) {
+        assert theMonster != null;
+
+        this.myMonster = theMonster;
     }
 
     /**
-     * Shows the item inside the inventory
-     *
-     * @param theItem String item to use.
-     * @pre if item exists in list, returns it (otherwise, return "")
-     * @throw IllegalArgumentException if item is null. If item does not exist, return ""
+     * Shows the entire items inside the inventory
+     * 
      * @spec.effect Items are not removed from the inventory
-     * @modifies Inventory is not modified.
+     * @modifies Inventory<String> is not modified.
      * @return name of item
      */
-    public String getInventory(String theItem) {
-        if (theItem == null) {
-            throw new IllegalArgumentException("Cannot find null item");
-        } else if (!myInventory.contains(theItem)) {
-            return "";
-        }
-
-        Iterator<String> itemIterator = myInventory.iterator();
-        String result = "";
-
-        // iterates through a list to obtain the specified
-        while(itemIterator.hasNext()) {
-            String item = itemIterator.next();
-            if (item == theItem) {
-                result = item;
-            }
-        }
-        return result;
+    public Inventory getInventory() {
+        return this.myInventory;
     }
-    
+
     /**
-     * Shows the monster inside the list.
+     * Shows the entire monsters inside the Inventory<String>.
      *
-     * @param theMonster Baron of Hell, Caco, etc
-     * @pre if monster exists, return it (otherwise, return "")
-     * @throw IllegalArgumentException if monster is null. If monster does not exist, return ""
      * @spec.effect Monsters are not removed from Room
      * @modifies List of monsters is not modified
      * @return name of monster
      */
-    public String getMonster(String theMonster) {
-        if (theMonster == null) {
-            throw new IllegalArgumentException("Enter a monster's name");
-        } else if (!myMonster.contains(theMonster)) {
-            return "";
-        }
-
-        Iterator<String> monsterIterator = myMonster.iterator();
-        String result = "";
-        
-        // Checks through the list of monsters to find it.
-        while (monsterIterator.hasNext()) {
-            String monster = monsterIterator.next();
-            if (monster == theMonster) {
-                result = monster;
-            }
-        }
-        return result;
+    public Monster getMonster() {
+        return this.myMonster;
     }
 
     /**
@@ -129,7 +87,7 @@ public class Room {
         StringBuilder sb = new StringBuilder();
 
         // prints each item in the room
-        sb.append("Inventory:\n");
+        sb.append("Inventory<String>:\n");
         sb.append(myInventory.toString());
 
         // prints each monsters in the room
