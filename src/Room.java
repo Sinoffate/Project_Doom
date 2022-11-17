@@ -6,14 +6,11 @@
 public class Room {
 
     /** Non-null objects */
-    /** Hard coded items to be used for items */
-    private final int MAX_ITEM_NUMBER = 15;
 
-    private final String[] ITEMS = {"Health_Potion", "BFG", "ChainGun", "Pistol"};
     private final String[] MONSTERS = {"Baron_of_Hell", "Caco", "Imp"};
 
     /** Inventory<String> is non-null object*/
-    private Inventory<String> myInventory;
+    private Inventory myInventory;
     private String myMonster;
 
     /** Flag to check if the room is visited */
@@ -28,7 +25,6 @@ public class Room {
      * @throws: IllegalArgumentException if number < 0
      */
     public Room() {
-        this.myInventory = new Inventory<String>(ITEMS, MAX_ITEM_NUMBER);
         this.myMonster = null;
         this.myIsVisited = false;
     }
@@ -66,7 +62,7 @@ public class Room {
      * @modifies Inventory<String> is not modified.
      * @return name of item
      */
-    public Inventory<String> getInventory() {
+    public Inventory getInventory() {
         return this.myInventory;
     }
 
