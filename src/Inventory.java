@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -11,70 +12,20 @@ import java.util.TreeMap;
  * Date: November 15, 2022
  * @param <E>
  */
-public class Inventory<E> {
+public class Inventory {
 
     /** contain non-null objects*/
-    private Map< E , Integer > myInventory;
+    private Map< Item , Integer > myInventory;
 
-    //TODO: Use this until database of items is functioning.
-    //TODO: Need to throw error if theObjects contain null.
-    /**  */
-    
     /**
      * List of items will be stored stored into a list of items
      * 
      * @requires: number of items in myInventory > 0
-     * @param String[] theObjects a list of items stored in database
+     * @param theObjects a list of items stored in database
      * @constructor of Inventory
      */
-    public Inventory(E[] theObjects, final int theMax) {
-        if (theMax < 0) {
-            throw new IllegalArgumentException("Number must be >= 0");
-        }
-        this.myInventory = generateInventory(theObjects, theMax);
-    }
-
-    /**
-     * Generates a map of the list of items that will be stored in each inventory.
-     * It will generate a random number number of items in the list
-     * 
-     * @param E[] theList of objects stored in Database.
-    *         int theMax maximum number of objects. 
-     * @requires: Item will not contain null; DiceRoll is required
-     * @throws: If itemList does not contain null, will not add the thing in the list
-     * @spec.modifies: Item[]
-     * @spec.effect: Generates a TreeMap of Item and a corresponding number of it.
-     * @return count of items generated from the list
-     */
-    private Map<E, Integer> generateInventory(final E[] theList, final int theMax) {
-        
-        // checks if itemList contains Null
-        for (int i = theList.length - 1; i > 0; i--) {
-            assert theList[i] == null; 
-        }
-
-        Map< E , Integer > inventory = new TreeMap<>();
-
-        // choose a random number between 1 - theMax
-        int numberOfItems = DiceRoll.nextInt(theMax) + 1;
-        int itemOption = theList.length;
-        
-        // add items in the list with a random in a map
-        for (int i = 0; i < numberOfItems; i++) {
-            
-            // randomly choose an thing from the list
-            E randomItem = theList[DiceRoll.nextInt(itemOption)];
-            
-            // add new word in a Item list
-            if (!inventory.containsKey(randomItem)) {
-                inventory.put(randomItem, 1);
-            } else {
-                // increment count of thing that already exist
-                int oldValue = inventory.get(randomItem);
-                inventory.put(randomItem, oldValue + 1);
-            }
-        }
-        return inventory;
+    public Inventory() {
+        this.myInventory = new HashMap<>();
     }
 
     /**
@@ -87,7 +38,7 @@ public class Inventory<E> {
     *           If same thing already exists, increment counter 
     * @spec.modifies: this
     */
-    public void addItem(final E theObject) {
+    public void addItem(final Item theObject) {
         if (theObject == null) {
             throw new IllegalArgumentException("Item is null");
         }
@@ -112,7 +63,7 @@ public class Inventory<E> {
      *           if (number) this = 1, (number) this = 0, else nothing
      * @spec.modifies: this
      */
-    public void removeItem(final E theObject) {
+    public void removeItem(final Item theObject) {
         if (theObject == null) {
             throw new IllegalArgumentException("You cannot remove null");
         }
@@ -128,7 +79,7 @@ public class Inventory<E> {
      * @spec.modifies: NA
      * @return: true if thing is present, ow false.
      */
-    public boolean contains(final E theObject) {
+    public boolean contains(final Item theObject) {
         if (theObject == null) {
             throw new IllegalArgumentException("You cannot find null");
         }
@@ -154,8 +105,8 @@ public class Inventory<E> {
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry<E, Integer> thing : myInventory.entrySet()) {
-            sb.append(thing.getKey() + ":" + thing.getValue() + "\n");
+        for (Map.Entry<Item, Integer> thing : myInventory.entrySet()) {
+            sb.append(thing.getKey() + ":").append( + thing.getValue() + "\n");
         }
         return sb.toString();
     }
