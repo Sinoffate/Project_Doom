@@ -106,7 +106,7 @@ public class Inventory {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<Item, Integer> thing : myInventory.entrySet()) {
-            sb.append(thing.getKey() + ":").append( + thing.getValue() + "\n");
+            sb.append(thing.getKey() + ":").append(thing.getValue() + "\n");
         }
         return sb.toString();
     }
