@@ -79,7 +79,7 @@ public class Inventory {
      * @spec.modifies: NA
      * @return: true if thing is present, ow false.
      */
-    public boolean contains(final Item theObject) {
+    public boolean containsItem(final Item theObject) {
         if (theObject == null) {
             throw new IllegalArgumentException("You cannot find null");
         }
