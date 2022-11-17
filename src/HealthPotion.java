@@ -28,8 +28,12 @@ public class HealthPotion extends Item {
         theDoomGuy.setHealth(theDoomGuy.getHealth() + HEAL_AMOUNT);
     }
 
+    /**
+     * String representation of item.
+     * @return Name of item.
+     */
     @Override
     public String toString() {
-        return null;
+        return getName();
     }
 }
