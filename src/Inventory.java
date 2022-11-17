@@ -1,7 +1,5 @@
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 
 /**
  * A hero can view the entire list of items.
@@ -11,10 +9,10 @@ import java.util.Map.Entry;
  * Name: Hyunggil Woo
  * Version: 1.4
  * Date: November 15, 2022
+ * @param <E>
  */
 public class Inventory<E> {
 
-    
     /** contain non-null objects*/
     private Map< E , Integer > myInventory;
 
@@ -114,7 +112,7 @@ public class Inventory<E> {
      *           if (number) this = 1, (number) this = 0, else nothing
      * @spec.modifies: this
      */
-    public void removeItem(E theObject) {
+    public void removeItem(final E theObject) {
         if (theObject == null) {
             throw new IllegalArgumentException("You cannot remove null");
         }
@@ -130,7 +128,7 @@ public class Inventory<E> {
      * @spec.modifies: NA
      * @return: true if thing is present, ow false.
      */
-    public boolean contains(E theObject) {
+    public boolean contains(final E theObject) {
         if (theObject == null) {
             throw new IllegalArgumentException("You cannot find null");
         }
@@ -146,7 +144,7 @@ public class Inventory<E> {
      * @return: number of items in inventory.
      */
     public int inventorySize() {
-        return myInventory.size();
+        return this.myInventory.size();
     }
 
     /**
