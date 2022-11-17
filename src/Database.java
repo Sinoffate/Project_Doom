@@ -20,8 +20,8 @@ public class Database {
         try {
             ds = new SQLiteDataSource();
             ds.setUrl("jdbc:sqlite:Project_Doom.db");
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (final Exception theEvent) {
+            theEvent.printStackTrace();
             System.exit(0);
         }
         System.out.println("Opened database successfully");
@@ -50,8 +50,8 @@ public class Database {
             int rv2 = statement.executeUpdate(query2);
             System.out.println("executeUpdate() returned " + rv);
             System.out.println("executeUpdate() returned " + rv2);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (final SQLException theEvent) {
+            theEvent.printStackTrace();
             System.exit(0);
         }
         System.out.println("Created inventory table successfully");
@@ -67,8 +67,8 @@ public class Database {
              Statement statement = connection.createStatement()) {
             int rv = statement.executeUpdate(query);
             System.out.println("executeUpdate() returned " + rv);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (final SQLException theEvent) {
+            theEvent.printStackTrace();
             System.exit(0);
         }
         System.out.println("Inserted data into inventory table successfully");
@@ -88,8 +88,8 @@ public class Database {
                 System.out.println("Name: " + rs.getString("NAME"));
                 System.out.println("Type: " + rs.getString("TYPE"));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (final SQLException theEvent) {
+            theEvent.printStackTrace();
             System.exit(0);
         }
         System.out.println("Selected all data from inventory table successfully");
