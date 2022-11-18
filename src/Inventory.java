@@ -10,7 +10,6 @@ import java.util.TreeMap;
  * Name: Hyunggil Woo
  * Version: 1.4
  * Date: November 15, 2022
- * @param <E>
  */
 public class Inventory {
 
@@ -21,7 +20,6 @@ public class Inventory {
      * List of items will be stored stored into a list of items
      * 
      * @requires: number of items in myInventory > 0
-     * @param theObjects a list of items stored in database
      * @constructor of Inventory
      */
     public Inventory() {

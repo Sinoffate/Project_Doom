@@ -16,7 +16,7 @@ public class DungeonView implements PropertyChangeListener {
     /** Character used for player in room display. */
     private static final char PLAYER_TILE = 'P';
     /** Character used for empty room in room display. */
-    private static final char EMPTY_TILE = 'P';
+    private static final char EMPTY_TILE = ' ';
 
     /** Size of dungeon to display. */
     private final int myDungeonSize;
@@ -58,7 +58,7 @@ public class DungeonView implements PropertyChangeListener {
                     System.out.print(EMPTY_TILE);
                 }
             }
-            System.out.print(WALL_TILE);
+            System.out.print(WALL_TILE + "\n");
         }
 
         System.out.println(CEILING_TILE.repeat(myDungeonSize * 2 + 1));
