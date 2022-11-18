@@ -44,7 +44,7 @@ public class Weapon extends Item {
      * @return amount of damage to deal.
      */
     public double rollDamage() {
-        return ((DiceRoll.nextFloat(DEVIANCE) + (1-(DEVIANCE/2))) * this.myDamage );
+        return (DiceRoll.nextFloat(DEVIANCE) + (1 - (DEVIANCE / 2))) * this.myDamage;
     }
 
     @Override
