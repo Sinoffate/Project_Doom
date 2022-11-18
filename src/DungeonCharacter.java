@@ -15,6 +15,9 @@ public abstract class DungeonCharacter {
      * @param theWeapon starting weapon of DC.
      */
     public DungeonCharacter(final int theHealth, final String theName, final Weapon theWeapon) {
+        if (theHealth <= 0 || theName == null || theName.equals("") || theWeapon == null) {
+            throw new IllegalArgumentException("DC.con bad arguments: HP:" + theHealth);
+        }
         myHealth = theHealth;
         myName = theName;
         myEquippedWeapon = theWeapon;
@@ -49,7 +52,7 @@ public abstract class DungeonCharacter {
             throw new IllegalArgumentException("DunCha.takeDamage, positive number passed: " + theDamageTaken);
         }
         myHealth -= Math.floor(theDamageTaken);
-        return "Damage taken: " + theDamageTaken;
+        return "Damage taken: " + (int)theDamageTaken;
     }
 
     /**
@@ -88,6 +91,13 @@ public abstract class DungeonCharacter {
         return myEquippedWeapon.getDamage();
     }
 
+    /**
+     * Returns Ammo for the current weapon.
+     * @return Ammo.
+     */
+    public int getAmmo() {
+        return myEquippedWeapon.getAmmo();
+    }
 
     /**
      * Get current health value.
