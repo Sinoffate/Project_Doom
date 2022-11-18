@@ -12,9 +12,13 @@ import java.awt.event.KeyListener;
  * @version 1.0
  */
 public class DungeonController implements ActionListener, KeyListener {
+    /** Dungeon Object. */
     private Dungeon myDungeon;
+    /** Dungeon View Object. */
     private DungeonView myView;
+    /** Hero Object. */
     private DoomGuy myDoomGuy;
+    /** Monster Object. */
     private Monster myMonster;
 
     /**
@@ -24,9 +28,9 @@ public class DungeonController implements ActionListener, KeyListener {
     public DungeonController() {
         myDungeon = new Dungeon(5);
         myDoomGuy = new DoomGuy(100, "DoomGuy",
-                                new Weapon(10, 0.8, 0.5, 10, "Pistol"));
+                new Weapon(10, 0.8, 0.5, 10, "Pistol"));
         myMonster = new Monster(100, "Baron of Hell",
-                                new Weapon(10, 0.8, 0.5, 10, "Whip"));
+                new Weapon(10, 0.8, 0.5, 10, "Whip"));
         myView = new DungeonView(myDungeon.getMapSize(), myDungeon.getPlayerPos());
         myDungeon.addPropertyChangeListener(Dungeon.HERO_POS, myView);
 
@@ -47,13 +51,17 @@ public class DungeonController implements ActionListener, KeyListener {
     public void keyPressed(final KeyEvent theEvt) {
         switch (theEvt.getKeyCode()) {
             case KeyEvent.VK_W ->
-                    myDungeon.setPlayerPos(new Point(myDungeon.getPlayerPos().x, myDungeon.getPlayerPos().y + 1));
+                    myDungeon.setPlayerPos(new Point(myDungeon.getPlayerPos().x,
+                            myDungeon.getPlayerPos().y + 1));
             case KeyEvent.VK_A ->
-                    myDungeon.setPlayerPos(new Point(myDungeon.getPlayerPos().x - 1, myDungeon.getPlayerPos().y));
+                    myDungeon.setPlayerPos(new Point(myDungeon.getPlayerPos().x - 1,
+                            myDungeon.getPlayerPos().y));
             case KeyEvent.VK_S ->
-                    myDungeon.setPlayerPos(new Point(myDungeon.getPlayerPos().x, myDungeon.getPlayerPos().y - 1));
+                    myDungeon.setPlayerPos(new Point(myDungeon.getPlayerPos().x,
+                            myDungeon.getPlayerPos().y - 1));
             case KeyEvent.VK_D ->
-                    myDungeon.setPlayerPos(new Point(myDungeon.getPlayerPos().x + 1, myDungeon.getPlayerPos().y));
+                    myDungeon.setPlayerPos(new Point(myDungeon.getPlayerPos().x + 1,
+                            myDungeon.getPlayerPos().y));
             default -> {
             }
         }

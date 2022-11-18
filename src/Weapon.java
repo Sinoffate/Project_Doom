@@ -28,7 +28,7 @@ public class Weapon extends Item {
     public Weapon(final double theDam, final double theFR, final double theAcc,
                   final int theAmm, final String theNam) {
         super(theNam);
-        if (theDam <= 0 || theFR <= 0 || theAcc < 0 || theAcc > 1 || theAmm < 1) {
+        if (theDam <= 0 || theFR <= 0 || theAcc <= 0 || theAcc > 1 || theAmm < 1) {
             throw new IllegalArgumentException("Weapon.con failed with following"
                                      + " values: " + theDam + theFR + theAcc + theAmm);
         }
@@ -38,8 +38,13 @@ public class Weapon extends Item {
         myAmmo = theAmm;
     }
 
+    /**
+     * Generates a random damage amount for an attack using this weapon.
+     * Uses base damage wrapped around a specified acceptable range for the random amount.
+     * @return amount of damage to deal.
+     */
     public double rollDamage() {
-        return ((DiceRoll.nextFloat(DEVIANCE) + (1-(DEVIANCE/2))) * this.myDamage );
+        return (DiceRoll.nextFloat(DEVIANCE) + (1 - (DEVIANCE / 2))) * this.myDamage;
     }
 
     @Override
@@ -52,6 +57,9 @@ public class Weapon extends Item {
     }
 
     public void setDamage(final double theDamage) {
+        if (theDamage <= 0) {
+            throw new IllegalArgumentException("Weapon.setDam given value: " + theDamage);
+        }
         this.myDamage = theDamage;
     }
 
@@ -60,6 +68,9 @@ public class Weapon extends Item {
     }
 
     public void setFireRate(final double theFireRate) {
+        if (theFireRate <= 0) {
+            throw new IllegalArgumentException("Weapon.setFR given value: " + theFireRate);
+        }
         this.myFireRate = theFireRate;
     }
 
@@ -68,6 +79,9 @@ public class Weapon extends Item {
     }
 
     public void setAccuracy(final double theAccuracy) {
+        if (theAccuracy <= 0 || theAccuracy > 1) {
+            throw new IllegalArgumentException("Weapon.setAcc given value: " + theAccuracy);
+        }
         this.myAccuracy = theAccuracy;
     }
 
@@ -76,6 +90,9 @@ public class Weapon extends Item {
     }
 
     public void setAmmo(final int theAmmo) {
+        if (theAmmo <= 0) {
+            throw new IllegalArgumentException("Weapon.setAmmo given value: " + theAmmo);
+        }
         this.myAmmo = theAmmo;
     }
 }

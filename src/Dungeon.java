@@ -79,17 +79,17 @@ public class Dungeon {
     /**
      * @return The Monster in the room
      */
-//    public Monster getMonster() {
-//        return Room.getMonster();
-//    }
+    public Monster getMonster() {
+        return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getMonster();
+    }
 
     /**
      * @return A list of items
      */
 
-//    public String getItems() {
-//        return Room.getInventory();
-//    }
+    public Inventory getItems() {
+        return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getInventory();
+    }
 
     public boolean hasMonster() {
         return false;
@@ -106,7 +106,7 @@ public class Dungeon {
      */
     public void setPlayerPos(final Point thePos) {
         if (thePos.getX() < 0 || thePos.getX() >= myMapSize
-            || thePos.getY() < 0 || thePos.getY() >= myMapSize) {
+                || thePos.getY() < 0 || thePos.getY() >= myMapSize) {
             return;
         }
         final Point oldPos = myHeroPosition;
