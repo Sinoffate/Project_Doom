@@ -16,6 +16,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/*
+temp, documentation links;
+https://docs.oracle.com/javase/tutorial/uiswing/layout/gridbag.html
+ */
+
 /**
  * GUI based view for Dungeons.
  * @author james deal
@@ -54,7 +59,6 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
         loadImages();
         setupComponents();
         placePlayer(thePlayer);
-        placePlayer(new Point(1,1));
     }
 
     /**
