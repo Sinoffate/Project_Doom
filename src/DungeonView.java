@@ -43,6 +43,61 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
         setupComponents();
     }
 
+    private void setupComponents() throws IOException {
+        setLayout(new BorderLayout());
+
+        JPanel mapPanel = new JPanel();
+        add(new JLabel("Doomguy stats: Idk prob dead"), BorderLayout.NORTH);
+        add(new JLabel("Bite me"), BorderLayout.SOUTH);
+        add(new JLabel("Menu Options: Die"), BorderLayout.EAST);
+
+
+        mapPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        add(mapPanel, BorderLayout.WEST);
+
+        HashMap<Point,JLabel> mapPoints = new HashMap<>();
+
+        BufferedImage roomImage = null;
+        BufferedImage playerImage = null;
+
+        try {
+            roomImage = ImageIO.read(new File("fellcleave75.png"));
+            playerImage = ImageIO.read(new File("emote75.png"));
+        } catch(IOException ioe) {
+            System.out.println("Unable to fetch image.");
+            ioe.printStackTrace();
+        }
+
+        ImageIcon roomIcon = new ImageIcon(roomImage);
+        ImageIcon playerIcon = new ImageIcon(playerImage);
+
+        for (int i = 0; i < 5; i++) {
+            JLabel temp;
+            for (int j = 0; j < 5; j++) {
+                temp = new JLabel(roomIcon);
+                mapPoints.put(new Point(i,j),temp);
+                c.gridx = i;
+                c.gridy = j;
+                mapPanel.add(temp,c);
+            }
+        }
+
+        JLabel player = new JLabel(playerIcon);
+        c.gridx = 0;
+        c.gridy = 0;
+        mapPanel.add(player,c);
+        mapPanel.add(mapPoints.get(new Point(0,0)),c);
+
+        mapPanel.setOpaque(true);
+        mapPanel.setBackground(Color.BLUE);
+        this.setOpaque(true);
+        this.setBackground(Color.BLACK);
+
+
+    }
+
     /* Example 3x3 with Player at 0,0
         -------
         |P| | |
