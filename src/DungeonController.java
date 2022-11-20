@@ -52,6 +52,10 @@ public class DungeonController extends JFrame implements KeyListener {
         return;
     }
 
+    /**
+     * Moves the hero in the direction of the key pressed (WASD).
+     * @param theEvt the key pressed.
+     */
     @Override
     public void keyPressed(final KeyEvent theEvt) {
         switch (theEvt.getKeyCode()) {
@@ -95,6 +99,11 @@ public class DungeonController extends JFrame implements KeyListener {
         javax.swing.SwingUtilities.invokeLater(this::createAndShowGUI);
     }
 
+    /**
+     * Create the GUI and show it. For thread safety,
+     * this method should be invoked from the
+     * event dispatch thread.
+     */
     public void createAndShowGUI ( ) {
         final JFrame frame = new JFrame("Project Doom");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -107,8 +116,6 @@ public class DungeonController extends JFrame implements KeyListener {
         frame.addKeyListener(this);
         frame.setFocusable(true);
         frame.setVisible(true);
-
-        
     }
 
     public static void main(final String[] theArgs) throws IOException {
