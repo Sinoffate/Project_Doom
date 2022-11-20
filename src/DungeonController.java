@@ -14,7 +14,7 @@ import java.io.Serial;
  * @author Jered Wiegel
  * @version 1.0
  */
-public class DungeonController extends JFrame implements ActionListener, KeyListener {
+public class DungeonController extends JFrame implements KeyListener {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -44,14 +44,6 @@ public class DungeonController extends JFrame implements ActionListener, KeyList
                 new Weapon(10, 0.8, 0.5, 10, "Whip"));
         myView = new DungeonView(myDungeon.getMapSize(), myDungeon.getPlayerPos());
         myDungeon.addPropertyChangeListener(Dungeon.HERO_POS, myView);
-
-    }
-
-    @Override
-    public void actionPerformed(final ActionEvent theEvt) {
-
-//        myDungeon.tick();
-
 
     }
 
