@@ -1,13 +1,20 @@
-import java.awt.Point;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serial;
+import java.util.HashMap;
 
 /**
  * Console based view for Dungeons.
  * @author james deal
  * @version 0.1
  */
-public class DungeonView implements PropertyChangeListener {
+public class DungeonView extends JPanel implements PropertyChangeListener {
 
     /** Character used for top/bottom of room display. */
     private static final String CEILING_TILE = "-";
@@ -21,14 +28,19 @@ public class DungeonView implements PropertyChangeListener {
     /** Size of dungeon to display. */
     private final int myDungeonSize;
 
+    @Serial
+    private static final long serialVersionUID = 4L;
+
     /**
      * Default constructor to ready the view.
      * @param theSize dimension of square dungeon.
      * @param thePlayer starting position of the player.
      */
-    public DungeonView(final int theSize, final Point thePlayer) {
+    public DungeonView(final int theSize, final Point thePlayer) throws IOException {
+        super();
         myDungeonSize = theSize;
-        drawMap(thePlayer);
+        //drawMap(thePlayer);
+        setupComponents();
     }
 
     /* Example 3x3 with Player at 0,0
@@ -73,6 +85,10 @@ public class DungeonView implements PropertyChangeListener {
     public void propertyChange(final PropertyChangeEvent theEvt) {
         if (Dungeon.HERO_POS.equals(theEvt.getPropertyName())) {
             drawMap((Point) theEvt.getNewValue());
+//            Point newSpot = (Point) theEvt.getNewValue();
+//            c.gridx = newSpot.getX();
+//            c.gridy = newSpot.getY();
+//            mapPanel.add(myPlayer,c);
         }
     }
 

@@ -74,7 +74,10 @@ public class DungeonController implements ActionListener, KeyListener {
 
     public static void main(final String[] theArgs) {
         DungeonController controller = new DungeonController();
+
+        controller.runGame();
     }
+
 }
 
 
