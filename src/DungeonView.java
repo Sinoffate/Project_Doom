@@ -126,10 +126,11 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
      * @param thePosition position to draw at.
      */
     private void placePlayer(final Point thePosition) {
-        myGBC.gridx = thePosition.x;
-        myGBC.gridy = thePosition.y;
+        myGBC.gridx = (int)thePosition.getX();
+        myGBC.gridy = (int)thePosition.getY();
         myMapPanel.add(myPlayerLabel, myGBC);
         myMapPanel.add(myMapLabels.get(thePosition), myGBC);
+        myMapPanel.updateUI();
     }
 
     /**
