@@ -65,13 +65,13 @@ public class DungeonController extends JFrame implements ActionListener, KeyList
         switch (theEvt.getKeyCode()) {
             case KeyEvent.VK_W ->
                     myDungeon.setPlayerPos(new Point(myDungeon.getPlayerPos().x,
-                            myDungeon.getPlayerPos().y + 1));
+                            myDungeon.getPlayerPos().y - 1));
             case KeyEvent.VK_A ->
                     myDungeon.setPlayerPos(new Point(myDungeon.getPlayerPos().x - 1,
                             myDungeon.getPlayerPos().y));
             case KeyEvent.VK_S ->
                     myDungeon.setPlayerPos(new Point(myDungeon.getPlayerPos().x,
-                            myDungeon.getPlayerPos().y - 1));
+                            myDungeon.getPlayerPos().y + 1));
             case KeyEvent.VK_D ->
                     myDungeon.setPlayerPos(new Point(myDungeon.getPlayerPos().x + 1,
                             myDungeon.getPlayerPos().y));
