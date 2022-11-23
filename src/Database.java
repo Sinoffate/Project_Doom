@@ -125,7 +125,7 @@ public class Database {
      * 
      * https://www.sqlitetutorial.net/sqlite-java/delete/
      */
-    public void remove(final String theItem) {
+    public void delete(final String theItem) {
 
         String query = "DELETE FROM inventory WHERE NAME = ?";
 

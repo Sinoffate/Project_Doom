@@ -7,8 +7,8 @@ import java.util.Map.Entry;
  * Inventory will contain list of items and the number of it
  * that can be accessed.
  * 
- * Name: Hyunggil Woo
- * Version: 1.3
+ * @author Hyunggil Woo
+ * @version 1.3
  * Date: November 14, 2022
  */
 public class Inventory {
