@@ -1,14 +1,13 @@
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * A hero can view the entire list of items.
  * Inventory will contain list of items and the number of it
  * that can be accessed.
  * 
- * Name: Hyunggil Woo
- * Version: 1.4
+ * @author Hyunggil Woo
+ * @version 1.4
  * Date: November 15, 2022
  */
 public class Inventory {
@@ -18,23 +17,22 @@ public class Inventory {
 
     /**
      * List of items will be stored stored into a list of items
+     * number of items in myInventory > 0
      * 
-     * @requires: number of items in myInventory > 0
-     * @constructor of Inventory
+     * @param theObjects a list of items stored in database
      */
     public Inventory() {
         this.myInventory = new HashMap<>();
     }
 
     /**
-    * Add thing to a list of items. If adding thing already exist, increment counter.
+    * Add thing to a list of items.
+    * Inventory  = List of item + item
+    * this = this + theObject. New Item will be added with number 1
+    * If same thing already exists, increment counter 
+    * Throws illegal argument exception if added item is null.
     *
-    * @requires theObject is non-null
-    * @param theObject thing to be added
-    * @throws: error if adding thing is null
-    * @effects: this = this + theObject. New Item will be added with number 1
-    *           If same thing already exists, increment counter 
-    * @spec.modifies: this
+    * @param theObject is non-null
     */
     public void addItem(final Item theObject) {
         if (theObject == null) {
@@ -52,14 +50,12 @@ public class Inventory {
     }
 
     /**
-     * Remove an thing from an inventory
-     * 
-     * @requires: theObject is non-null
-     * @param: theObject Item to be added in inventory
-     * @throws: if thing does not exist, throw illegalArgumentException
-     * @spec.effects: if (number) this > 1, (number) this - 1. 
-     *           if (number) this = 1, (number) this = 0, else nothing
-     * @spec.modifies: this
+     * Remove an thing from an inventory.
+     * Modifies the itself. 
+     * Effect: If count of item >= 1, count = count - 1, else count = 0
+     * if thing does not exist, throw illegalArgumentException
+     *
+     * @param theObject is non-null
      */
     public void removeItem(final Item theObject) {
         if (theObject == null) {
@@ -70,11 +66,9 @@ public class Inventory {
 
     /**
      * Checks if Item is present in Inventory.
+     * throws IllegalArgumentException if item is null. Nothing is modified.
      * 
-     * @param theObject
-     * @requires: theObject is non-null
-     * @throws: IllegalArgumentException if checking null thing.
-     * @spec.modifies: NA
+     * @param theObject is non-null
      * @return: true if thing is present, ow false.
      */
     public boolean containsItem(final Item theObject) {
@@ -84,13 +78,12 @@ public class Inventory {
         return myInventory.containsKey(theObject);
     }
 
-    //TODO: Make sure to return the copy of list instance, not the actual instance
     /**
      * Returns number of unique items in Inventory
+     * Size of inventory must be >= 0. It does not modify itself
+     * or other fields.
      * 
-     * @requires: size >= 0
-     * @spec.modifies: NA
-     * @return: number of items in inventory.
+     * @return number of items in inventory.
      */
     public int inventorySize() {
         return this.myInventory.size();
