@@ -1,8 +1,4 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -12,9 +8,7 @@ import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 /*
 temp, documentation links;
@@ -47,6 +41,15 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
     private Map<Point, JLabel> myMapLabels;
     /** GUI Map's Player Label. */
     private JLabel myPlayerLabel;
+
+    /** Current Menu Choices. */
+    private String[] myMenuOptions;
+    /** GUI Label to hold menu. */
+    private JLabel myMenuLabel;
+
+    /** GUI Label to hold text log. */
+    private JScrollPane myLogScrollPane;
+    private JTextArea myLogTextArea;
 
     /**
      * Default constructor to ready the view.
@@ -91,7 +94,21 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
         //temp so we understand where things go
         add(new JLabel("Doomguy stats: Idk prob dead"), BorderLayout.NORTH);
         add(new JLabel("Bite me"), BorderLayout.SOUTH);
-        add(new JLabel("Menu Options: Die"), BorderLayout.EAST);
+
+        //setup menu
+        myMenuLabel = new JLabel("Menu Options: Die");
+        myMenuLabel.setPreferredSize(new Dimension(400,100));
+        myMenuLabel.setFont(new Font("Serif", Font.PLAIN, 23));
+        add(myMenuLabel, BorderLayout.CENTER);
+
+        //setup text log
+        myLogTextArea = new JTextArea(10, 30);
+        myLogScrollPane = new JScrollPane(myLogTextArea);
+        myLogScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        myLogScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        myLogScrollPane.setBackground(Color.GRAY);
+        myLogTextArea.setBackground(Color.GRAY);
+        add(myLogScrollPane, BorderLayout.EAST);
 
         //setup dungeon map component
         myMapPanel = new JPanel();  //panel itself
@@ -134,14 +151,68 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
     }
 
     /**
+     * Draw current menu.
+     */
+    private void drawMenu(final int theHighlight) {
+        StringBuilder builder = new StringBuilder("<html>");
+
+        for (int i = 0; i < myMenuOptions.length; i++) {
+            //System.out.println(myMenuOptions[i]);
+            if (i == theHighlight) {
+                builder.append(">").append(myMenuOptions[i]).append("<br>");
+            } else {
+                builder.append("&nbsp;&nbsp;&nbsp;").append(myMenuOptions[i]).append("<br>");
+            }
+        }
+
+        myMenuLabel.setText(builder.toString());
+        System.out.println("View: drawMenu");
+        updateUI();
+    }
+
+    /**
+     * Set current menu
+     */
+    private void setNewMenu(final String[] theMenuOptions) {
+        myMenuOptions = theMenuOptions;
+        System.out.println("View: setMenu");
+        drawMenu(-1);
+    }
+
+    /**
+     * Draw current menu choice
+     */
+    private void setMenuChoice(final int theMenuChoice) {
+        //myMenuOptions[theMenuChoice] = "->" + myMenuOptions[theMenuChoice];
+        System.out.println("View: drawMenuChoice");
+        drawMenu(theMenuChoice);
+    }
+
+    private void updateTextLog(final String theNewLine) {
+        myLogTextArea.setCaretPosition(myLogTextArea.getDocument().getLength());
+        myLogTextArea.append(theNewLine);
+        myLogTextArea.append(System.lineSeparator());
+    }
+
+    /**
      * Listener for model state changes.
      * @param theEvt A PropertyChangeEvent object describing the event source
      *          and the property that has changed.
      */
     @Override
     public void propertyChange(final PropertyChangeEvent theEvt) {
+        //System.out.println("View: prop change");
         if (Dungeon.HERO_POS.equals(theEvt.getPropertyName())) {
             placePlayer((Point) theEvt.getNewValue());
+        }
+        if (DungeonController.MENU.equals(theEvt.getPropertyName())) {
+            setNewMenu((String[]) theEvt.getNewValue());
+        }
+        if (DungeonController.MENU_POS.equals(theEvt.getPropertyName())) {
+            setMenuChoice((int) theEvt.getNewValue());
+        }
+        if (Dungeon.TEXT_UPDATE.equals(theEvt.getPropertyName())) {
+            updateTextLog((String) theEvt.getNewValue());
         }
     }
 

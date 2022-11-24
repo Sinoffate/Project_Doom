@@ -23,6 +23,11 @@ public class DungeonController extends JFrame implements KeyListener {
     /** Screen Dimension. */
     private static final Dimension SCREEN_SIZE = KIT.getScreenSize();
 
+    /** List of normal menu items. */
+    private static final String[] MAIN_MENU = {"Inventory", "Save", "Load", "Quit"};
+    /** List of map menu items. */
+    private static final String[] MAP_MENU = {"WASD to move!", "Escape key for menu!", "Watch Kung Fury!"};
+
     /** Dungeon Object. */
     private Dungeon myDungeon;
     /** Dungeon View Object. */
@@ -43,8 +48,16 @@ public class DungeonController extends JFrame implements KeyListener {
         myMonster = new Monster(100, "Baron of Hell",
                 new Weapon(10, 0.8, 0.5, 10, "Whip"));
         myView = new DungeonView(myDungeon.getMapSize(), myDungeon.getPlayerPos());
+        //dungeon pcs
         myDungeon.addPropertyChangeListener(Dungeon.HERO_POS, myView);
+        myDungeon.addPropertyChangeListener(Dungeon.TEXT_UPDATE, myView);
+        //control pcs
+        this.myPcs = new PropertyChangeSupport(this);
+        this.addPropertyChangeListener(MENU, myView);
+        this.addPropertyChangeListener(MENU_POS, myView);
+        this.addPropertyChangeListener(Dungeon.TEXT_UPDATE, myView);
 
+        enactMapState();
     }
 
     @Override
@@ -124,9 +137,13 @@ public class DungeonController extends JFrame implements KeyListener {
         controller.runGame();
     }
 
+    /**
+     * @param theListener the listener to add
+     * @param thePropertyName the property to listen to
+     */
+    public void addPropertyChangeListener(final String thePropertyName,
+                                          final PropertyChangeListener theListener) {
+        myPcs.addPropertyChangeListener(thePropertyName, theListener);
+    }
+
 }
-
-
-
-
-
