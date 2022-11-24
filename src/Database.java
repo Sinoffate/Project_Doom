@@ -15,6 +15,7 @@ import org.sqlite.SQLiteDataSource;
  */
 public class Database {
 
+    //TODO: a
     private SQLiteDataSource myDs = null;
 
     /**
@@ -30,8 +31,10 @@ public class Database {
             System.exit(0);
         }
         System.out.println("Opened database successfully");
+        createTables(); 
     }
 
+    //TODO: Weapons.
     /**
      * This method creates the tables in the database.
      */
@@ -62,7 +65,6 @@ public class Database {
             theEvent.printStackTrace();
             System.exit(0);
         }
-
     }
 
     /**
