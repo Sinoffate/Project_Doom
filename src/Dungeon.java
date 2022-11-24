@@ -11,6 +11,7 @@ public class Dungeon {
     private Point myExitPos;
 
     static final String HERO_POS = "HeroPos";
+    static final String TEXT_UPDATE = "TextUpdate";
 
     private final PropertyChangeSupport myPcs;
 
@@ -99,12 +100,20 @@ public class Dungeon {
         return false;
     }
 
+    /**
+     * Move player in a given direction.
+     * @param theDirection direction to move.
+     */
+    public void movePlayer(final Point theDirection) {
+        setPlayerPos(new Point((int) getPlayerPos().getX() + (int) theDirection.getX(),
+                               (int) getPlayerPos().getY() + (int) theDirection.getY()));
+    }
 
     /**
      * Sets the Player's position to a new value within the maps bounds.
      * @param thePos the myHeroPosition to set
      */
-    public void setPlayerPos(final Point thePos) {
+    private void setPlayerPos(final Point thePos) {
         if (thePos.getX() < 0 || thePos.getX() >= myMapSize
                 || thePos.getY() < 0 || thePos.getY() >= myMapSize) {
             return;
@@ -112,6 +121,7 @@ public class Dungeon {
         final Point oldPos = myHeroPosition;
         myHeroPosition = thePos;
         myPcs.firePropertyChange(HERO_POS, oldPos, myHeroPosition);
+        myPcs.firePropertyChange(TEXT_UPDATE, null, "Hero Position: " + " x = " +  myHeroPosition.getX() + ", y = " + myHeroPosition.getY());
         System.out.println("Hero Position: " + " x = " +  myHeroPosition.getX() + ", y = " + myHeroPosition.getY());
     }
 
