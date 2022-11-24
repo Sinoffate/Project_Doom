@@ -113,7 +113,7 @@ public class Dungeon {
      * Sets the Player's position to a new value within the maps bounds.
      * @param thePos the myHeroPosition to set
      */
-    public void setPlayerPos(final Point thePos) {
+    private void setPlayerPos(final Point thePos) {
         if (thePos.getX() < 0 || thePos.getX() >= myMapSize
                 || thePos.getY() < 0 || thePos.getY() >= myMapSize) {
             return;

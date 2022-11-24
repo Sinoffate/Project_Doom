@@ -1,10 +1,10 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.Serial;
 
@@ -37,16 +37,28 @@ public class DungeonController extends JFrame implements KeyListener {
     /** Monster Object. */
     private Monster myMonster;
 
+    /** Current Game State. */
+    GameState myCurrentState;
+    /** Current Menu Position. */
+    private int myMenuPosition;
+    /** Current Menu. */
+    private String[] myCurrentMenu;
+
+    private final PropertyChangeSupport myPcs;
+    static final String MENU_POS = "MenuPos";
+    static final String MENU = "Menu";
+
     /**
      * Creates a new DungeonController object.
      *
      */
-    public DungeonController() throws IOException {
+    public DungeonController() {
         myDungeon = new Dungeon(5);
         myDoomGuy = new DoomGuy(100, "DoomGuy",
-                new Weapon(10, 0.8, 0.5, 10, "Pistol"));
+                                new Weapon(10, 0.8, 0.5, 10, "Pistol"));
         myMonster = new Monster(100, "Baron of Hell",
-                new Weapon(10, 0.8, 0.5, 10, "Whip"));
+                                new Weapon(10, 0.8, 0.5, 10, "Whip"));
+        //make view
         myView = new DungeonView(myDungeon.getMapSize(), myDungeon.getPlayerPos());
         //dungeon pcs
         myDungeon.addPropertyChangeListener(Dungeon.HERO_POS, myView);
@@ -66,24 +78,61 @@ public class DungeonController extends JFrame implements KeyListener {
     }
 
     /**
-     * Moves the hero in the direction of the key pressed (WASD).
+     * Defines the action that is triggered depending on current state of the game (WASD).
      * @param theEvt the key pressed.
      */
     @Override
     public void keyPressed(final KeyEvent theEvt) {
         switch (theEvt.getKeyCode()) {
-            case KeyEvent.VK_W ->
-                    myDungeon.setPlayerPos(new Point(myDungeon.getPlayerPos().x,
-                            myDungeon.getPlayerPos().y - 1));
-            case KeyEvent.VK_A ->
-                    myDungeon.setPlayerPos(new Point(myDungeon.getPlayerPos().x - 1,
-                            myDungeon.getPlayerPos().y));
-            case KeyEvent.VK_S ->
-                    myDungeon.setPlayerPos(new Point(myDungeon.getPlayerPos().x,
-                            myDungeon.getPlayerPos().y + 1));
-            case KeyEvent.VK_D ->
-                    myDungeon.setPlayerPos(new Point(myDungeon.getPlayerPos().x + 1,
-                            myDungeon.getPlayerPos().y));
+            case KeyEvent.VK_W -> {
+                switch (myCurrentState) {
+                    case MAP_STATE -> myDungeon.movePlayer(new Point(0,-1));
+                    case COMBAT_STATE -> myDoomGuy.attack(myMonster);
+                    case MENU_STATE -> menuMovement(-1);
+                }
+            }
+            case KeyEvent.VK_A -> {
+                switch (myCurrentState) {
+                    case MAP_STATE -> myDungeon.movePlayer(new Point(-1, 0));
+                    case COMBAT_STATE -> myDoomGuy.attack(myMonster);
+                    case MENU_STATE -> System.out.println("Menu");
+                }
+            }
+            case KeyEvent.VK_S -> {
+                switch (myCurrentState) {
+                    case MAP_STATE -> myDungeon.movePlayer(new Point(0, 1));
+                    case COMBAT_STATE -> myDoomGuy.attack(myMonster);
+                    case MENU_STATE -> menuMovement(1);
+                }
+            }
+            case KeyEvent.VK_D -> {
+                switch (myCurrentState) {
+                    case MAP_STATE -> myDungeon.movePlayer(new Point(1, 0));
+                    case COMBAT_STATE -> myDoomGuy.attack(myMonster);
+                    case MENU_STATE -> System.out.println("Menu");
+                }
+            }
+            case KeyEvent.VK_ESCAPE -> {
+                switch (myCurrentState) {
+                    case MAP_STATE ->  enactMenuState();
+                    case MENU_STATE -> enactMapState();
+
+                }
+            }
+            case KeyEvent.VK_E -> {
+                switch (myCurrentState) {
+                    //case MAP_STATE -> myDungeon.lootRoom();
+                    case MENU_STATE -> selectMenuOption(); //select menu option
+                    case COMBAT_STATE -> myDoomGuy.attack(myMonster);
+                }
+            }
+            case KeyEvent.VK_Q -> {
+                switch (myCurrentState) {
+                    //case MAP_STATE -> no current action planned
+                    case MENU_STATE -> backMenuOption(); //back a menu option
+                    case COMBAT_STATE -> myDoomGuy.attack(myMonster);
+                }
+            }
             default -> {
             }
         }
@@ -93,6 +142,63 @@ public class DungeonController extends JFrame implements KeyListener {
     public void keyReleased(final KeyEvent theEvt) {
         return;
     }
+
+    private void enactMapState() {
+        myCurrentState = GameState.MAP_STATE;
+
+        String[] old = myCurrentMenu;
+        myCurrentMenu = MAP_MENU;
+        myPcs.firePropertyChange(MENU, old, myCurrentMenu);
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null,  "Entered Map State");
+    }
+
+    /**
+     * Load into menu state, set default menu position.
+     */
+    public void enactMenuState() {
+        myCurrentState = GameState.MENU_STATE;
+        myMenuPosition = 0;
+
+        String[] old = myCurrentMenu;
+        myCurrentMenu = MAIN_MENU;
+
+        myPcs.firePropertyChange(MENU, old, MAIN_MENU);
+        myPcs.firePropertyChange(MENU_POS, old, myMenuPosition);
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null,  "Entered Menu State");
+    }
+
+    /**
+     * Move to new menu option.
+     */
+    public void menuMovement(final int theMovement) {
+        if ((myMenuPosition == 0 && theMovement == -1) || (myMenuPosition == MAIN_MENU.length-1 && theMovement == 1)) {
+            return;
+        }
+        final int oldPos = myMenuPosition;
+        myMenuPosition += theMovement;
+
+        System.out.println("Attempting menu movement: " + theMovement);
+        myPcs.firePropertyChange(MENU_POS, oldPos, myMenuPosition);
+    }
+
+    /**
+     * Select menu option.
+     */
+    public void selectMenuOption() {
+        System.out.println("Got here: " + MAIN_MENU[myMenuPosition]);
+    }
+
+    /**
+     * Back menu option.
+     */
+    public void backMenuOption() {
+        System.out.println("Want to leave here: " + MAIN_MENU[myMenuPosition]);
+    }
+
+
+//    public void combatHandler() {
+//
+//    }
 
     private void runGame() {
         /* Use an appropriate Look and Feel */
@@ -117,7 +223,7 @@ public class DungeonController extends JFrame implements KeyListener {
      * this method should be invoked from the
      * event dispatch thread.
      */
-    public void createAndShowGUI ( ) {
+    public void createAndShowGUI() {
         final JFrame frame = new JFrame("Project Doom");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(myView);
