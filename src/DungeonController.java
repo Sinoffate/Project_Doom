@@ -155,7 +155,7 @@ public class DungeonController extends JFrame implements KeyListener {
     /**
      * Load into menu state, set default menu position.
      */
-    public void enactMenuState() {
+    private void enactMenuState() {
         myCurrentState = GameState.MENU_STATE;
         myMenuPosition = 0;
 
@@ -170,7 +170,7 @@ public class DungeonController extends JFrame implements KeyListener {
     /**
      * Move to new menu option.
      */
-    public void menuMovement(final int theMovement) {
+    private void menuMovement(final int theMovement) {
         if ((myMenuPosition == 0 && theMovement == -1) || (myMenuPosition == MAIN_MENU.length-1 && theMovement == 1)) {
             return;
         }
@@ -184,14 +184,14 @@ public class DungeonController extends JFrame implements KeyListener {
     /**
      * Select menu option.
      */
-    public void selectMenuOption() {
+    private void selectMenuOption() {
         System.out.println("Got here: " + MAIN_MENU[myMenuPosition]);
     }
 
     /**
      * Back menu option.
      */
-    public void backMenuOption() {
+    private void backMenuOption() {
         System.out.println("Want to leave here: " + MAIN_MENU[myMenuPosition]);
     }
 
@@ -223,7 +223,7 @@ public class DungeonController extends JFrame implements KeyListener {
      * this method should be invoked from the
      * event dispatch thread.
      */
-    public void createAndShowGUI() {
+    private void createAndShowGUI() {
         final JFrame frame = new JFrame("Project Doom");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(myView);
