@@ -19,7 +19,7 @@ public class Inventory {
      * List of items will be stored stored into a list of items
      * number of items in myInventory > 0
      * 
-     * @param theObjects a list of items stored in database
+     *
      */
     public Inventory() {
         this.myInventory = new HashMap<>();
@@ -100,5 +100,9 @@ public class Inventory {
             sb.append(thing.getKey()).append(":").append(thing.getValue()).append("\n");
         }
         return sb.toString();
+    }
+
+    public int size() {
+        return myInventory.size();
     }
 }

@@ -27,6 +27,7 @@ public class Dungeon {
         this.myExitPos = new Point(theMapSize - 1, theMapSize - 1);
         this.myPcs = new PropertyChangeSupport(this);
         myRooms = generateDungeon();
+        addMonsters();
     }
 
     private Room[][] generateDungeon() {
@@ -37,6 +38,17 @@ public class Dungeon {
             }
         }
         return dungeon;
+    }
+
+    private void addMonsters() {
+        for (int i = 0; i < myMapSize; i++) {
+            for (int j = 0; j < myMapSize; j++) {
+                if (DiceRoll.nextInt(1) < 0.5 && myRooms[i][j].getMonster() == null) {
+                    myRooms[i][j].setMonster(new Monster(100, "Baron of Hell",
+                            new Weapon(10, 0.8, 0.5, 10, "Whip")));
+                }
+            }
+        }
     }
 
     public Room getRoom(final int theRow, final int theCol) {
@@ -92,12 +104,16 @@ public class Dungeon {
         return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getInventory();
     }
 
+    private void setItems(final Inventory theItems) {
+        myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].setInventory(theItems);
+    }
+
     public boolean hasMonster() {
-        return false;
+        return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getMonster() != null;
     }
 
     public boolean hasItems() {
-        return false;
+        return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getInventory().size() > 0;
     }
 
     /**
