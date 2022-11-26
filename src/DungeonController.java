@@ -124,14 +124,16 @@ public class DungeonController extends JFrame implements KeyListener {
                 switch (myCurrentState) {
                     //case MAP_STATE -> myDungeon.lootRoom();
                     case MENU_STATE -> selectMenuOption(); //select menu option
-                    case COMBAT_STATE -> myDoomGuy.attack(myMonster);
+                    case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
+                                                                            (int) myDungeon.getPlayerPos().getY()).getMonster());
                 }
             }
             case KeyEvent.VK_Q -> {
                 switch (myCurrentState) {
                     //case MAP_STATE -> no current action planned
                     case MENU_STATE -> backMenuOption(); //back a menu option
-                    case COMBAT_STATE -> myDoomGuy.attack(myMonster);
+                    case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
+                                                                            (int) myDungeon.getPlayerPos().getY()).getMonster());
                 }
             }
             default -> {
