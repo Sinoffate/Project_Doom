@@ -35,7 +35,6 @@ public class DungeonController extends JFrame implements KeyListener {
     /** Hero Object. */
     private DoomGuy myDoomGuy;
     /** Monster Object. */
-    private Monster myMonster;
 
     /** Current Game State. */
     GameState myCurrentState;
@@ -56,8 +55,6 @@ public class DungeonController extends JFrame implements KeyListener {
         myDungeon = new Dungeon(5);
         myDoomGuy = new DoomGuy(100, "DoomGuy",
                                 new Weapon(10, 0.8, 0.5, 10, "Pistol"));
-        myMonster = new Monster(100, "Baron of Hell",
-                                new Weapon(10, 0.8, 0.5, 10, "Whip"));
         //make view
         myView = new DungeonView(myDungeon.getMapSize(), myDungeon.getPlayerPos());
         //dungeon pcs
@@ -87,28 +84,32 @@ public class DungeonController extends JFrame implements KeyListener {
             case KeyEvent.VK_W -> {
                 switch (myCurrentState) {
                     case MAP_STATE -> myDungeon.movePlayer(new Point(0,-1));
-                    case COMBAT_STATE -> myDoomGuy.attack(myMonster);
+                    case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
+                                                                            (int) myDungeon.getPlayerPos().getY()).getMonster());
                     case MENU_STATE -> menuMovement(-1);
                 }
             }
             case KeyEvent.VK_A -> {
                 switch (myCurrentState) {
                     case MAP_STATE -> myDungeon.movePlayer(new Point(-1, 0));
-                    case COMBAT_STATE -> myDoomGuy.attack(myMonster);
+                    case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
+                                                                            (int) myDungeon.getPlayerPos().getY()).getMonster());
                     case MENU_STATE -> System.out.println("Menu");
                 }
             }
             case KeyEvent.VK_S -> {
                 switch (myCurrentState) {
                     case MAP_STATE -> myDungeon.movePlayer(new Point(0, 1));
-                    case COMBAT_STATE -> myDoomGuy.attack(myMonster);
+                    case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
+                                                                            (int) myDungeon.getPlayerPos().getY()).getMonster());
                     case MENU_STATE -> menuMovement(1);
                 }
             }
             case KeyEvent.VK_D -> {
                 switch (myCurrentState) {
                     case MAP_STATE -> myDungeon.movePlayer(new Point(1, 0));
-                    case COMBAT_STATE -> myDoomGuy.attack(myMonster);
+                    case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
+                                                                            (int) myDungeon.getPlayerPos().getY()).getMonster());
                     case MENU_STATE -> System.out.println("Menu");
                 }
             }
