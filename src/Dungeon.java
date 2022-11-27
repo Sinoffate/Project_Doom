@@ -12,6 +12,7 @@ public class Dungeon {
 
     static final String HERO_POS = "HeroPos";
     static final String TEXT_UPDATE = "TextUpdate";
+    static final String ROOM_VIS = "RoomVisibility";
 
     private final PropertyChangeSupport myPcs;
 
@@ -27,6 +28,7 @@ public class Dungeon {
         this.myExitPos = new Point(theMapSize - 1, theMapSize - 1);
         this.myPcs = new PropertyChangeSupport(this);
         myRooms = generateDungeon();
+        addMonsters();
     }
 
     private Room[][] generateDungeon() {
@@ -37,6 +39,18 @@ public class Dungeon {
             }
         }
         return dungeon;
+    }
+
+    private void addMonsters() {
+        for (int i = 0; i < myMapSize; i++) {
+            for (int j = 0; j < myMapSize; j++) {
+                if (DiceRoll.nextFloat(1) < 0.5 && myRooms[i][j].getMonster() == null &&
+                    !(i == myEnterPos.x && j == myEnterPos.y)) {
+                    myRooms[i][j].setMonster(new Monster(100, "Baron of Hell",
+                            new Weapon(10, 0.8, 0.5, 10, "Whip")));
+                }
+            }
+        }
     }
 
     public Room getRoom(final int theRow, final int theCol) {
@@ -92,12 +106,38 @@ public class Dungeon {
         return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getInventory();
     }
 
+    private void setItems(final Inventory theItems) {
+        myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].setInventory(theItems);
+    }
+
     public boolean hasMonster() {
-        return false;
+        return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getMonster() != null;
     }
 
     public boolean hasItems() {
-        return false;
+        return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getInventory().size() > 0;
+    }
+
+    /**
+     * Set specified room as visible.
+     * @param theRoomLocation location to set visible.
+     */
+    public void setRoomVisible(final Point theRoomLocation) {
+        myRooms[(int)theRoomLocation.getX()][(int)theRoomLocation.getY()].setDiscovered(true);
+        myPcs.firePropertyChange(ROOM_VIS,null,theRoomLocation);
+    }
+
+    public void useVisionPotion() {
+        VisionPotion vp = new VisionPotion();
+
+        for (int row = (int) (myHeroPosition.getX() - vp.getRadius()); row <= myHeroPosition.getX() + vp.getRadius(); row++) {
+            for (int col = (int) (myHeroPosition.getY() - vp.getRadius()); col <= myHeroPosition.getY() + vp.getRadius(); col++) {
+                if (row >= 0 && row < myMapSize && col >= 0 && col < myMapSize) {
+                    setRoomVisible(new Point(row,col));
+                }
+            }
+        }
+
     }
 
     /**
@@ -107,6 +147,7 @@ public class Dungeon {
     public void movePlayer(final Point theDirection) {
         setPlayerPos(new Point((int) getPlayerPos().getX() + (int) theDirection.getX(),
                                (int) getPlayerPos().getY() + (int) theDirection.getY()));
+        setRoomVisible(getPlayerPos());
     }
 
     /**

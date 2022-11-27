@@ -16,10 +16,9 @@ public class Inventory {
     private Map< Item , Integer > myInventory;
 
     /**
-     * List of items will be stored stored into a list of items
+     * List of items will be stored into a list of items
      * number of items in myInventory > 0
-     * 
-     * @param theObjects a list of items stored in database
+     *
      */
     public Inventory() {
         this.myInventory = new HashMap<>();
@@ -39,18 +38,20 @@ public class Inventory {
             throw new IllegalArgumentException("Item is null");
         }
 
-        // add new word in a Item list
-        if (!myInventory.containsKey(theObject)) {
-            myInventory.put(theObject, 1);
-        } else {
-            // increment count of thing that already exist
-            int oldValue = myInventory.get(theObject);
-            myInventory.put(theObject, oldValue + 1);
-        }
+        myInventory.merge(theObject, 1, Integer::sum);
+
+//        // add new word in a Item list
+//        if (!myInventory.containsKey(theObject)) {
+//            myInventory.put(theObject, 1);
+//        } else {
+//            // increment count of thing that already exist
+//            int oldValue = myInventory.get(theObject);
+//            myInventory.put(theObject, oldValue + 1);
+//        }
     }
 
     /**
-     * Remove an thing from an inventory.
+     * Remove a thing from an inventory.
      * Modifies the itself. 
      * Effect: If count of item >= 1, count = count - 1, else count = 0
      * if thing does not exist, throw illegalArgumentException
@@ -61,7 +62,12 @@ public class Inventory {
         if (theObject == null) {
             throw new IllegalArgumentException("You cannot remove null");
         }
-        myInventory.remove(theObject);
+
+        myInventory.merge(theObject, -1, Integer::sum);
+
+        if (myInventory.get(theObject) <= 0) {
+            myInventory.remove(theObject);
+        }
     }
 
     /**
@@ -69,7 +75,7 @@ public class Inventory {
      * throws IllegalArgumentException if item is null. Nothing is modified.
      * 
      * @param theObject is non-null
-     * @return: true if thing is present, ow false.
+     * @return true if thing is present, ow false.
      */
     public boolean containsItem(final Item theObject) {
         if (theObject == null) {
@@ -92,7 +98,7 @@ public class Inventory {
     /**
      * Prints a String version of the entire list of items.
      * 
-     * @return: String version of a general inventory.
+     * @return String version of a general inventory.
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -100,5 +106,9 @@ public class Inventory {
             sb.append(thing.getKey()).append(":").append(thing.getValue()).append("\n");
         }
         return sb.toString();
+    }
+
+    public int size() {
+        return myInventory.size();
     }
 }
