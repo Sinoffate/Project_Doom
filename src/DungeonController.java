@@ -3,7 +3,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.TextEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
@@ -30,7 +29,7 @@ public class DungeonController extends JFrame implements KeyListener {
     private static final String[] MAIN_MENU = {"Inventory", "Save", "Load", "Quit"};
     /** List of map menu items. */
     private static final String[] MAP_MENU = {"WASD to move!", "Hold Shift for Guns", "Hold Alt for Potions",
-            "Escape key for menu!", "Watch Kung Fury!"};
+                                                 "Escape key for menu!", "Watch Kung Fury!"};
     /** List of Weapon Radial menu items. */
     private static final String[] WEAPON_MENU = {"&lt;: Pistol", "^: BFG", "v: Rawket Lawnchair", "&gt;: Shotgun"};
     /** List of Potion Radial menu items. */
@@ -45,7 +44,7 @@ public class DungeonController extends JFrame implements KeyListener {
     /** Monster Object. */
 
     /** Current Game State. */
-    GameState myCurrentState;
+    private GameState myCurrentState;
     /** Current Menu Position. */
     private int myMenuPosition;
     /** Current Menu. */
@@ -59,7 +58,7 @@ public class DungeonController extends JFrame implements KeyListener {
     static final String MENU = "Menu";
 
     /** Tracks which DunCha attacked last. */
-    boolean myDGAttacked;
+    private boolean myDGAttacked;
 
     /**
      * Creates a new DungeonController object.
@@ -74,6 +73,7 @@ public class DungeonController extends JFrame implements KeyListener {
         myDoomGuy.addToInventory(new VisionPotion());
         myDoomGuy.addToInventory(new HealthPotion());
         myDoomGuy.addToInventory(new HealthPotion());
+        myDoomGuy.addToInventory(new Weapon(1, 1, 1, 1, "BFG"));
         //make view
         myView = new DungeonView(myDungeon.getMapSize(), myDungeon.getPlayerPos());
 
@@ -98,71 +98,77 @@ public class DungeonController extends JFrame implements KeyListener {
      */
     @Override
     public void keyPressed(final KeyEvent theEvt) {
+
         //Change weapon "&lt;: Pistol", "^: BFG", "v: Rawket Lawnchair", "&gt;: Shotgun"
-        if (theEvt.isShiftDown()) {
-            if (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE) {
-                myPcs.firePropertyChange(MENU, myCurrentMenu, WEAPON_MENU);
-            }
+        if (theEvt.isShiftDown() && (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE)) {
+            myPcs.firePropertyChange(MENU, myCurrentMenu, WEAPON_MENU);
             switch (theEvt.getKeyCode()) {
                 case KeyEvent.VK_UP -> {
-                    if (myDoomGuy.inventoryContains(new Weapon(1,1,1,1,"BFG"))) {
-                        myDoomGuy.equipWeapon(new Weapon(1,1,1,1,"BFG"));
-                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"BFG EQUIPPED");
+                    if (myDoomGuy.inventoryContains(new Weapon(1000, 100, 1, 1, "BFG"))) {
+                        myDoomGuy.equipWeapon(new Weapon(1000, 100, 1, 1, "BFG"));
+                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "BFG EQUIPPED");
                     } else {
-                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"No BFG in Inventory :(");
+                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No BFG in Inventory :(");
                     }
+                    monsterAttack();
                 }
                 case KeyEvent.VK_DOWN -> {
-                    if (myDoomGuy.inventoryContains(new Weapon(1,1,1,1,"Rawket Lawnchair"))) {
-                        myDoomGuy.equipWeapon(new Weapon(1,1,1,1,"Rawket Lawnchair"));
-                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"Rawket Lawnchair EQUIPPED");
+                    if (myDoomGuy.inventoryContains(new Weapon(1, 1, 1, 1, "Rawket Lawnchair"))) {
+                        myDoomGuy.equipWeapon(new Weapon(1, 1, 1, 1, "Rawket Lawnchair"));
+                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Rawket Lawnchair EQUIPPED");
                     } else {
-                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"No Rawket Lawnchair in Inventory :(");
+                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Rawket Lawnchair in Inventory :(");
                     }
+                    monsterAttack();
                 }
                 case KeyEvent.VK_LEFT -> {
-                    if (myDoomGuy.inventoryContains(new Weapon(1,1,1,1,"Pistol"))) {
-                        myDoomGuy.equipWeapon(new Weapon(1,1,1,1,"Pistol"));
-                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"Pistol EQUIPPED");
+                    if (myDoomGuy.inventoryContains(new Weapon(10, 0.8, 0.5, 10, "Pistol"))) {
+                        myDoomGuy.equipWeapon(new Weapon(10, 0.8, 0.5, 10, "Pistol"));
+                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Pistol EQUIPPED");
                     } else {
-                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"No Pistol in Inventory :(");
+                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Pistol in Inventory :(");
                     }
+                    monsterAttack();
                 }
                 case KeyEvent.VK_RIGHT -> {
-                    if (myDoomGuy.inventoryContains(new Weapon(1,1,1,1,"Shotgun"))) {
-                        myDoomGuy.equipWeapon(new Weapon(1,1,1,1,"Shotgun"));
-                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"Shotgun EQUIPPED");
+                    if (myDoomGuy.inventoryContains(new Weapon(1, 1, 1, 1, "Shotgun"))) {
+                        myDoomGuy.equipWeapon(new Weapon(1, 1, 1, 1, "Shotgun"));
+                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Shotgun EQUIPPED");
                     } else {
-                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"No Shotgun in Inventory :(");
+                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Shotgun in Inventory :(");
                     }
+                    monsterAttack();
                 }
-
+                default -> {
+                }
             }
             return;
         }
 
         //Use potion
-        if (theEvt.isAltDown()) {
-            if (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE) {
-                myPcs.firePropertyChange(MENU, myCurrentMenu, POTION_MENU);
-            }
+        if (theEvt.isAltDown() && (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE)) {
+            myPcs.firePropertyChange(MENU, myCurrentMenu, POTION_MENU);
             switch (theEvt.getKeyCode()) {
                 case KeyEvent.VK_UP -> {
                     if (myDoomGuy.inventoryContains(new HealthPotion())) {
                         myDoomGuy.useItem(new HealthPotion());
-                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"DG HP: " + myDoomGuy.getHealth());
+                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "DG HP: " + myDoomGuy.getHealth());
                     } else {
-                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"Go buy some drugs.");
+                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Go buy some drugs.");
                     }
+                    monsterAttack();
                 }
                 case KeyEvent.VK_DOWN -> {
                     if (myDoomGuy.inventoryContains(new VisionPotion())) {
                         myDungeon.useVisionPotion();
                         myDoomGuy.removeFromInventory(new VisionPotion());
-                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"Vision Potion Used!");
+                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Vision Potion Used!");
                     } else {
-                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"No Vision Potion in Inventory!");
+                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Vision Potion in Inventory!");
                     }
+                    monsterAttack();
+                }
+                default -> {
                 }
             }
             return;
@@ -171,7 +177,7 @@ public class DungeonController extends JFrame implements KeyListener {
         switch (theEvt.getKeyCode()) {
             case KeyEvent.VK_W -> {
                 switch (myCurrentState) {
-                    case MAP_STATE -> myDungeon.movePlayer(new Point(0,-1));
+                    case MAP_STATE -> myDungeon.movePlayer(new Point(0, -1));
                     //case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
                                                                             //(int) myDungeon.getPlayerPos().getY()).getMonster());
                     case MENU_STATE -> menuMovement(-1);
@@ -222,21 +228,16 @@ public class DungeonController extends JFrame implements KeyListener {
                     case COMBAT_STATE -> combatAttack();
                 }
             }
-//            case KeyEvent.VK_SHIFT -> {
-//                if (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE) {
-//                    myPcs.firePropertyChange(MENU, myCurrentMenu, WEAPON_MENU);
-//                }
-//            }
-//            case KeyEvent.VK_ALT -> {
-//                if (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE) {
-//                    myPcs.firePropertyChange(MENU, myCurrentMenu, POTION_MENU);
-//                }
-//            }
             default -> {
             }
         }
     }
 
+    /**
+     * Fenceposting for alt-menu usage.
+     * Checking for combat.
+     * @param theEvt the event to be processed
+     */
     @Override
     public void keyReleased(final KeyEvent theEvt) {
         if (myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
@@ -261,17 +262,19 @@ public class DungeonController extends JFrame implements KeyListener {
         return;
     }
 
+    /**
+     * Logic for entering combat state. Also calculates turn order.
+     */
     private void enactCombatState() {
         myCurrentState = GameState.COMBAT_STATE;
-        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Entered Combat State");
+        //myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Entered Combat State");
         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You have encountered a monster!");
-        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Press QEWASD to attack!");
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Press Q to attack!");
 
         final Room currentRoom = myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
                 (int) myDungeon.getPlayerPos().getY());
         double speedCalc = myDoomGuy.getFireRate() - currentRoom.getMonster().getFireRate();
-        myDGAttacked = speedCalc >= 0;
-        //combatLoop();
+        myDGAttacked = speedCalc < 0;
     }
 
     /**
@@ -305,7 +308,7 @@ public class DungeonController extends JFrame implements KeyListener {
      * Move to new menu option.
      */
     private void menuMovement(final int theMovement) {
-        if ((myMenuPosition == 0 && theMovement == -1) || (myMenuPosition == MAIN_MENU.length-1 && theMovement == 1)) {
+        if ((myMenuPosition == 0 && theMovement == -1) || (myMenuPosition == MAIN_MENU.length - 1 && theMovement == 1)) {
             return;
         }
         final int oldPos = myMenuPosition;
@@ -329,19 +332,17 @@ public class DungeonController extends JFrame implements KeyListener {
         System.out.println("Want to leave here: " + MAIN_MENU[myMenuPosition]);
     }
 
-
-//    public void combatHandler() {
-//
-//    }
-
+    /**
+     * Initial start of game process.
+     */
     private void runGame() {
         /* Use an appropriate Look and Feel */
         try {
 //            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 //            UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
             UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-        } catch (final UnsupportedLookAndFeelException | IllegalAccessException |
-                       InstantiationException | ClassNotFoundException ex) {
+        } catch (final UnsupportedLookAndFeelException | IllegalAccessException
+                       | InstantiationException | ClassNotFoundException ex) {
             ex.printStackTrace();
         }
         /* Turn off metal's use of bold fonts */
@@ -353,6 +354,10 @@ public class DungeonController extends JFrame implements KeyListener {
 
     }
 
+    /**
+     * Method that performs one complete combat turn.
+     * Should be used when player chooses to attack in combat.
+     */
     private void combatAttack() {
         combatRound();
         if (myCurrentState.equals(GameState.COMBAT_STATE)) {
@@ -360,19 +365,32 @@ public class DungeonController extends JFrame implements KeyListener {
         }
     }
 
+    /**
+     * Allow monster to counter-attack if player performs non-combative action in combat.
+     */
+    private void monsterAttack() {
+        if (myCurrentState == GameState.COMBAT_STATE) {
+            myDGAttacked = true;
+            combatRound();
+        }
+    }
+
+    /**
+     * A single round of combat.
+     */
     private void combatRound() {
         final Room currentRoom = myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
                 (int) myDungeon.getPlayerPos().getY());
         String attackRes;
 
         if (!myDGAttacked) {
-            attackRes = myDoomGuy.attack(currentRoom.getMonster());
+            attackRes = "Doomguy Attacks! " + myDoomGuy.attack(currentRoom.getMonster());
         } else {
-            attackRes = currentRoom.getMonster().attack(myDoomGuy);
+            attackRes = "Monster Attacks! " + currentRoom.getMonster().attack(myDoomGuy);
         }
-        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,attackRes);
-        String health = "DG HP: " + myDoomGuy.getHealth() + " Enemy Health: " + currentRoom.getMonster().getHealth();
-        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,health);
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, attackRes);
+        final String health = "DG HP: " + myDoomGuy.getHealth() + " Enemy Health: " + currentRoom.getMonster().getHealth();
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, health);
 
         if (!myDoomGuy.isAlive()) {
             myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You Died");
@@ -385,47 +403,6 @@ public class DungeonController extends JFrame implements KeyListener {
         }
 
         myDGAttacked ^= true;
-    }
-
-    /**
-     * Run combat loop until player or monster dies. Waits for player to press do an action before continuing.
-     */
-    private void combatLoop() {
-        final Room currentRoom = myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
-                                                   (int) myDungeon.getPlayerPos().getY());
-        final Monster currentMonster = currentRoom.getMonster();
-        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Entered Combat State");
-        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You have encountered a monster!");
-        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Press QEWASD to attack!");
-
-        double speedCalc = myDoomGuy.getFireRate() - currentMonster.getFireRate();
-        Queue<DungeonCharacter> turnOrder = new LinkedList<>();
-        if (speedCalc >= 0) {
-            turnOrder.add(myDoomGuy);
-            turnOrder.add(currentMonster);
-        } else {
-            turnOrder.add(currentMonster);
-            turnOrder.add(myDoomGuy);
-        }
-
-        while (myDoomGuy.isAlive() && currentMonster.isAlive()) {
-            DungeonCharacter cur = turnOrder.poll();
-            assert cur != null;
-            String str = cur.attack(turnOrder.peek());
-            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,str);
-            String health = "DG HP: " + myDoomGuy.getHealth() + " Enemy Health: " + currentMonster.getHealth();
-            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,health);
-            turnOrder.add(cur);
-        }
-
-        if (!myDoomGuy.isAlive()) {
-            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You Died");
-        } else if (!currentMonster.isAlive()) {
-            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You killed the " + currentMonster.getName());
-            currentRoom.setMonster(null);
-        }
-        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Exited Combat State");
-        enactMapState();
     }
 
     /**
