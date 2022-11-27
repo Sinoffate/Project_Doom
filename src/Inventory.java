@@ -38,14 +38,16 @@ public class Inventory {
             throw new IllegalArgumentException("Item is null");
         }
 
-        // add new word in a Item list
-        if (!myInventory.containsKey(theObject)) {
-            myInventory.put(theObject, 1);
-        } else {
-            // increment count of thing that already exist
-            int oldValue = myInventory.get(theObject);
-            myInventory.put(theObject, oldValue + 1);
-        }
+        myInventory.merge(theObject, 1, Integer::sum);
+
+//        // add new word in a Item list
+//        if (!myInventory.containsKey(theObject)) {
+//            myInventory.put(theObject, 1);
+//        } else {
+//            // increment count of thing that already exist
+//            int oldValue = myInventory.get(theObject);
+//            myInventory.put(theObject, oldValue + 1);
+//        }
     }
 
     /**
@@ -60,7 +62,12 @@ public class Inventory {
         if (theObject == null) {
             throw new IllegalArgumentException("You cannot remove null");
         }
-        myInventory.remove(theObject);
+
+        myInventory.merge(theObject, -1, Integer::sum);
+
+        if (myInventory.get(theObject) <= 0) {
+            myInventory.remove(theObject);
+        }
     }
 
     /**

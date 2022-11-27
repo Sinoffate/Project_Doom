@@ -12,6 +12,7 @@ public class Dungeon {
 
     static final String HERO_POS = "HeroPos";
     static final String TEXT_UPDATE = "TextUpdate";
+    static final String ROOM_VIS = "RoomVisibility";
 
     private final PropertyChangeSupport myPcs;
 
@@ -118,12 +119,35 @@ public class Dungeon {
     }
 
     /**
+     * Set specified room as visible.
+     * @param theRoomLocation location to set visible.
+     */
+    public void setRoomVisible(final Point theRoomLocation) {
+        myRooms[(int)theRoomLocation.getX()][(int)theRoomLocation.getY()].setDiscovered(true);
+        myPcs.firePropertyChange(ROOM_VIS,null,theRoomLocation);
+    }
+
+    public void useVisionPotion() {
+        VisionPotion vp = new VisionPotion();
+
+        for (int row = (int) (myHeroPosition.getX() - vp.getRadius()); row <= myHeroPosition.getX() + vp.getRadius(); row++) {
+            for (int col = (int) (myHeroPosition.getY() - vp.getRadius()); col <= myHeroPosition.getY() + vp.getRadius(); col++) {
+                if (row >= 0 && row < myMapSize && col >= 0 && col < myMapSize) {
+                    setRoomVisible(new Point(row,col));
+                }
+            }
+        }
+
+    }
+
+    /**
      * Move player in a given direction.
      * @param theDirection direction to move.
      */
     public void movePlayer(final Point theDirection) {
         setPlayerPos(new Point((int) getPlayerPos().getX() + (int) theDirection.getX(),
                                (int) getPlayerPos().getY() + (int) theDirection.getY()));
+        setRoomVisible(getPlayerPos());
     }
 
     /**

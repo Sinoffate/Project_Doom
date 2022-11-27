@@ -25,8 +25,10 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
     @Serial
     private static final long serialVersionUID = 4L;
 
-    /** Image used for top/bottom of room display. */
-    private static ImageIcon ROOM_TILE;
+    /** Image used for FoW room display. */
+    private static ImageIcon FOG_ROOM_TILE;
+    /** Image used for Explored room display. */
+    private static ImageIcon VISIBLE_ROOM_TILE;
     /** Image used for player in room display. */
     private static ImageIcon PLAYER_TILE;
 
@@ -68,21 +70,25 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
      * Load file images in to use in GUI.
      */
     private void loadImages() {
-        BufferedImage roomImage = null;
+        BufferedImage fogRoomImage = null;
         BufferedImage playerImage = null;
+        BufferedImage visibleRoomImage = null;
 
         try {
-            roomImage = ImageIO.read(new File("fellcleave75.png"));
+            fogRoomImage = ImageIO.read(new File("fellcleave75.png"));
             playerImage = ImageIO.read(new File("emote75.png"));
+            visibleRoomImage = ImageIO.read(new File("AYAYA75.png"));
         } catch (final IOException ioe) {
             System.out.println("Unable to fetch image.");
             ioe.printStackTrace();
         }
 
-        assert roomImage != null;
-        ROOM_TILE = new ImageIcon(roomImage);
+        assert fogRoomImage != null;
+        FOG_ROOM_TILE = new ImageIcon(fogRoomImage);
         assert playerImage != null;
         PLAYER_TILE = new ImageIcon(playerImage);
+        assert visibleRoomImage != null;
+        VISIBLE_ROOM_TILE = new ImageIcon(visibleRoomImage);
     }
 
     /**
@@ -124,7 +130,7 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
         JLabel temp;
         for (int i = 0; i < myDungeonSize; i++) {
             for (int j = 0; j < myDungeonSize; j++) {
-                temp = new JLabel(ROOM_TILE);
+                temp = new JLabel(FOG_ROOM_TILE);
                 myMapLabels.put(new Point(i, j), temp);
                 myGBC.gridx = i;
                 myGBC.gridy = j;
@@ -166,7 +172,7 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
         }
 
         myMenuLabel.setText(builder.toString());
-        System.out.println("View: drawMenu");
+        //System.out.println("View: drawMenu");
         updateUI();
     }
 
@@ -175,7 +181,7 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
      */
     private void setNewMenu(final String[] theMenuOptions) {
         myMenuOptions = theMenuOptions;
-        System.out.println("View: setMenu");
+        //System.out.println("View: setMenu");
         drawMenu(-1);
     }
 
@@ -184,14 +190,32 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
      */
     private void setMenuChoice(final int theMenuChoice) {
         //myMenuOptions[theMenuChoice] = "->" + myMenuOptions[theMenuChoice];
-        System.out.println("View: drawMenuChoice");
+        //System.out.println("View: drawMenuChoice");
         drawMenu(theMenuChoice);
     }
 
+    /**
+     * Place line of text in log.
+     * @param theNewLine text to display.
+     */
     private void updateTextLog(final String theNewLine) {
         myLogTextArea.setCaretPosition(myLogTextArea.getDocument().getLength());
         myLogTextArea.append(theNewLine);
         myLogTextArea.append(System.lineSeparator());
+    }
+
+    private void setRoomVisible(final Point thePosition) {
+
+        JLabel lab = myMapLabels.get(thePosition);
+        lab.setIcon(VISIBLE_ROOM_TILE);
+
+        //myMapLabels.put(thePosition, new JLabel(VISIBLE_ROOM_TILE));
+
+//        myGBC.gridx = (int)thePosition.getX();
+//        myGBC.gridy = (int)thePosition.getY();
+//        myMapPanel.add(myPlayerLabel, myGBC);
+//        myMapPanel.add(myMapLabels.get(thePosition), myGBC);
+        //myMapPanel.updateUI();
     }
 
     /**
@@ -213,6 +237,9 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
         }
         if (Dungeon.TEXT_UPDATE.equals(theEvt.getPropertyName())) {
             updateTextLog((String) theEvt.getNewValue());
+        }
+        if (Dungeon.ROOM_VIS.equals(theEvt.getPropertyName())) {
+            setRoomVisible((Point) theEvt.getNewValue());
         }
     }
 
