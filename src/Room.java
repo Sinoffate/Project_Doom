@@ -42,8 +42,6 @@ public class Room {
      * @param theMonster cannot be null
      */
     public void setMonster(final Monster theMonster) {
-        assert theMonster != null;
-
         this.myMonster = theMonster;
     }
 

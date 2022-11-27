@@ -16,9 +16,8 @@ public class Inventory {
     private Map< Item , Integer > myInventory;
 
     /**
-     * List of items will be stored stored into a list of items
+     * List of items will be stored into a list of items
      * number of items in myInventory > 0
-     * 
      *
      */
     public Inventory() {
@@ -50,7 +49,7 @@ public class Inventory {
     }
 
     /**
-     * Remove an thing from an inventory.
+     * Remove a thing from an inventory.
      * Modifies the itself. 
      * Effect: If count of item >= 1, count = count - 1, else count = 0
      * if thing does not exist, throw illegalArgumentException
@@ -69,7 +68,7 @@ public class Inventory {
      * throws IllegalArgumentException if item is null. Nothing is modified.
      * 
      * @param theObject is non-null
-     * @return: true if thing is present, ow false.
+     * @return true if thing is present, ow false.
      */
     public boolean containsItem(final Item theObject) {
         if (theObject == null) {
@@ -92,7 +91,7 @@ public class Inventory {
     /**
      * Prints a String version of the entire list of items.
      * 
-     * @return: String version of a general inventory.
+     * @return String version of a general inventory.
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();

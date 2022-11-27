@@ -124,6 +124,11 @@ public abstract class DungeonCharacter {
     }
 
     /**
+     * Determine if character is alive.
+     */
+    public boolean isAlive() {  return myHealth > 0;   }
+
+    /**
      * Get currently equipped weapon.
      * @return active weapon.
      */
@@ -135,4 +140,6 @@ public abstract class DungeonCharacter {
     public String toString() {
         return myName;
     }
+
+
 }

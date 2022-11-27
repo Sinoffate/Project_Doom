@@ -66,12 +66,8 @@ public class DungeonController extends JFrame implements KeyListener {
         this.addPropertyChangeListener(MENU_POS, myView);
         this.addPropertyChangeListener(Dungeon.TEXT_UPDATE, myView);
 
+        //Fenceposting creation
         enactMapState();
-    }
-
-    @Override
-    public void keyTyped(final KeyEvent theEvt) {
-        return;
     }
 
     /**
@@ -84,32 +80,32 @@ public class DungeonController extends JFrame implements KeyListener {
             case KeyEvent.VK_W -> {
                 switch (myCurrentState) {
                     case MAP_STATE -> myDungeon.movePlayer(new Point(0,-1));
-                    case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
-                                                                            (int) myDungeon.getPlayerPos().getY()).getMonster());
+                    //case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
+                                                                            //(int) myDungeon.getPlayerPos().getY()).getMonster());
                     case MENU_STATE -> menuMovement(-1);
                 }
             }
             case KeyEvent.VK_A -> {
                 switch (myCurrentState) {
                     case MAP_STATE -> myDungeon.movePlayer(new Point(-1, 0));
-                    case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
-                                                                            (int) myDungeon.getPlayerPos().getY()).getMonster());
+                    //case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
+                                                                            //(int) myDungeon.getPlayerPos().getY()).getMonster());
                     case MENU_STATE -> System.out.println("Menu");
                 }
             }
             case KeyEvent.VK_S -> {
                 switch (myCurrentState) {
                     case MAP_STATE -> myDungeon.movePlayer(new Point(0, 1));
-                    case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
-                                                                            (int) myDungeon.getPlayerPos().getY()).getMonster());
+                   // case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
+                                                                            //(int) myDungeon.getPlayerPos().getY()).getMonster());
                     case MENU_STATE -> menuMovement(1);
                 }
             }
             case KeyEvent.VK_D -> {
                 switch (myCurrentState) {
                     case MAP_STATE -> myDungeon.movePlayer(new Point(1, 0));
-                    case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
-                                                                            (int) myDungeon.getPlayerPos().getY()).getMonster());
+                   // case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
+                                                                           // (int) myDungeon.getPlayerPos().getY()).getMonster());
                     case MENU_STATE -> System.out.println("Menu");
                 }
             }
@@ -117,15 +113,14 @@ public class DungeonController extends JFrame implements KeyListener {
                 switch (myCurrentState) {
                     case MAP_STATE ->  enactMenuState();
                     case MENU_STATE -> enactMapState();
-
                 }
             }
             case KeyEvent.VK_E -> {
                 switch (myCurrentState) {
                     //case MAP_STATE -> myDungeon.lootRoom();
                     case MENU_STATE -> selectMenuOption(); //select menu option
-                    case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
-                                                                            (int) myDungeon.getPlayerPos().getY()).getMonster());
+                    //case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
+                                                                            //(int) myDungeon.getPlayerPos().getY()).getMonster());
                 }
             }
             case KeyEvent.VK_Q -> {
@@ -146,6 +141,27 @@ public class DungeonController extends JFrame implements KeyListener {
         return;
     }
 
+    @Override
+    public void keyTyped(final KeyEvent theEvt) {
+        return;
+    }
+
+    private void enactCombatState() {
+        myCurrentState = GameState.COMBAT_STATE;
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Entered Combat State");
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You have encountered a monster!");
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Press QEWASD to attack!");
+
+        final Room currentRoom = myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
+                (int) myDungeon.getPlayerPos().getY());
+        double speedCalc = myDoomGuy.getFireRate() - currentRoom.getMonster().getFireRate();
+        myDGAttacked = speedCalc >= 0;
+        //combatLoop();
+    }
+
+    /**
+     * Load into map state.
+     */
     private void enactMapState() {
         myCurrentState = GameState.MAP_STATE;
 
@@ -222,6 +238,81 @@ public class DungeonController extends JFrame implements KeyListener {
 
     }
 
+    private void combatAttack() {
+        combatRound();
+        if (myCurrentState.equals(GameState.COMBAT_STATE)) {
+            combatRound();
+        }
+    }
+
+    private void combatRound() {
+        final Room currentRoom = myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
+                (int) myDungeon.getPlayerPos().getY());
+        String attackRes;
+
+        if (!myDGAttacked) {
+            attackRes = myDoomGuy.attack(currentRoom.getMonster());
+        } else {
+            attackRes = currentRoom.getMonster().attack(myDoomGuy);
+        }
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,attackRes);
+        String health = "DG HP: " + myDoomGuy.getHealth() + " Enemy Health: " + currentRoom.getMonster().getHealth();
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,health);
+
+        if (!myDoomGuy.isAlive()) {
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You Died");
+        }
+        if (!currentRoom.getMonster().isAlive()) {
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You killed the " + currentRoom.getMonster().getName());
+            currentRoom.setMonster(null);
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Exited Combat State");
+            enactMapState();
+        }
+
+        myDGAttacked ^= true;
+    }
+
+    /**
+     * Run combat loop until player or monster dies. Waits for player to press do an action before continuing.
+     */
+    private void combatLoop() {
+        final Room currentRoom = myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
+                                                   (int) myDungeon.getPlayerPos().getY());
+        final Monster currentMonster = currentRoom.getMonster();
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Entered Combat State");
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You have encountered a monster!");
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Press QEWASD to attack!");
+
+        double speedCalc = myDoomGuy.getFireRate() - currentMonster.getFireRate();
+        Queue<DungeonCharacter> turnOrder = new LinkedList<>();
+        if (speedCalc >= 0) {
+            turnOrder.add(myDoomGuy);
+            turnOrder.add(currentMonster);
+        } else {
+            turnOrder.add(currentMonster);
+            turnOrder.add(myDoomGuy);
+        }
+
+        while (myDoomGuy.isAlive() && currentMonster.isAlive()) {
+            DungeonCharacter cur = turnOrder.poll();
+            assert cur != null;
+            String str = cur.attack(turnOrder.peek());
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,str);
+            String health = "DG HP: " + myDoomGuy.getHealth() + " Enemy Health: " + currentMonster.getHealth();
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,health);
+            turnOrder.add(cur);
+        }
+
+        if (!myDoomGuy.isAlive()) {
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You Died");
+        } else if (!currentMonster.isAlive()) {
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You killed the " + currentMonster.getName());
+            currentRoom.setMonster(null);
+        }
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Exited Combat State");
+        enactMapState();
+    }
+
     /**
      * Create the GUI and show it. For thread safety,
      * this method should be invoked from the
@@ -235,7 +326,7 @@ public class DungeonController extends JFrame implements KeyListener {
 
         frame.setSize(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2);
         frame.setLocation(SCREEN_SIZE.width / 2 - frame.getWidth() / 2,
-                SCREEN_SIZE.height / 2 - frame.getHeight() / 2);
+                        SCREEN_SIZE.height / 2 - frame.getHeight() / 2);
         frame.addKeyListener(this);
         frame.setFocusable(true);
         frame.setVisible(true);
@@ -251,8 +342,7 @@ public class DungeonController extends JFrame implements KeyListener {
      * @param theListener the listener to add
      * @param thePropertyName the property to listen to
      */
-    public void addPropertyChangeListener(final String thePropertyName,
-                                          final PropertyChangeListener theListener) {
+    public void addPropertyChangeListener(final String thePropertyName, final PropertyChangeListener theListener) {
         myPcs.addPropertyChangeListener(thePropertyName, theListener);
     }
 

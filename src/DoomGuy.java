@@ -50,6 +50,18 @@ public class DoomGuy extends DungeonCharacter {
         }
     }
 
+    public void useItem(final Item theItem) {
+        if (theItem == null) {
+            throw new NullPointerException("DG.useItem : null item passed");
+        }
+        if (theItem instanceof HealthPotion) {
+            if (myInventory.containsItem(theItem)) {
+                ((HealthPotion) theItem).useHealthPotion(this);
+                myInventory.removeItem(theItem);
+            }
+        }
+    }
+
     /**
      * Check if DGuy inventory contains specified item.
      * @param theItem item to find.

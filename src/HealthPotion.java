@@ -11,17 +11,17 @@ public class HealthPotion extends Item {
 
     /**
      * Default constructor.
-     * @param theName name of item.
+     *
      */
-    public HealthPotion(final String theName) {
-        super(theName);
+    public HealthPotion() {
+        super("Health Potion");
     }
 
     /**
      * Restore health to specified character.
      * @param theDoomGuy character to restore health to.
      */
-    public void use(final DungeonCharacter theDoomGuy) {
+    public void useHealthPotion(final DungeonCharacter theDoomGuy) {
         if (theDoomGuy == null) {
             throw new NullPointerException("HP.use : null user passed");
         }
