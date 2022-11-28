@@ -1,5 +1,5 @@
 # Project_Doom
-This project was created by James R. Deal, Jered Wiegel, and Hyunggil Woo for TCSS 360 Software Development And Quality Assurance Techniques. The goal of the project was to enable collaborative developement in a controlled setting while implementing concepts learned within the class.
+This project was created by James R. Deal, Jered Wiegel, and Hyunggil Woo for TCSS 360 Software Development And Quality Assurance Techniques. The goal of the project was to enable collaborative development in a controlled setting while implementing concepts learned within the class.
 
 ## Tools we used in this project
 - Pivotal Tracker: Agile Style Management
