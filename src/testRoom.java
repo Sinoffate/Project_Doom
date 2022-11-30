@@ -41,6 +41,8 @@ public class testRoom {
 
         @Test
         void testSetDiscovered() {
-             assertEquals(true, room.setDiscovered(true));
+             assertEquals(false, room.getDiscovered());
+             room.setDiscovered(true);
+                assertEquals(true, room.getDiscovered());
         }
 }
