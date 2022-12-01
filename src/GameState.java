@@ -1,5 +1,7 @@
 /**
  * Defines the state of the game.
+ * @author james deal, jered wiegel
+ * @version 0.1
  */
 public enum GameState {
         /** Game State. */
@@ -9,5 +11,9 @@ public enum GameState {
         /** Game State. */
         COMBAT_STATE,
         /** Game State. */
-        WIN_STATE
+        WIN_STATE,
+        /** Game State. */
+        LOSE_STATE,
+        /** Game State. */
+        TITLE_STATE
 }

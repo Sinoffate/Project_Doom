@@ -89,5 +89,4 @@ public class DoomGuy extends DungeonCharacter {
     public Inventory getInventory() {
         return myInventory;
     }
-
 }

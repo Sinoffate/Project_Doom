@@ -39,15 +39,6 @@ public class Inventory {
         }
 
         myInventory.merge(theObject, 1, Integer::sum);
-
-//        // add new word in a Item list
-//        if (!myInventory.containsKey(theObject)) {
-//            myInventory.put(theObject, 1);
-//        } else {
-//            // increment count of thing that already exist
-//            int oldValue = myInventory.get(theObject);
-//            myInventory.put(theObject, oldValue + 1);
-//        }
     }
 
     /**
@@ -103,7 +94,7 @@ public class Inventory {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<Item, Integer> thing : myInventory.entrySet()) {
-            sb.append(thing.getKey()).append(":").append(thing.getValue()).append("\n");
+            sb.append(thing.getKey()).append(" : ").append(thing.getValue()).append("\n");
         }
         return sb.toString();
     }
