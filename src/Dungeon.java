@@ -145,7 +145,7 @@ public class Dungeon {
      * @return A list of items
      */
 
-    public Inventory getItems() {
+    public Inventory getRoomInventory() {
         return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getInventory();
     }
 

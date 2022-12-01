@@ -327,11 +327,11 @@ public class DungeonController extends JFrame implements KeyListener {
             return;
         }
 
-        for (Item i: myDungeon.getItems().getItems()) {
-            while (myDungeon.getItems().containsItem(i)) {
+        for (Item i: myDungeon.getRoomInventory().getItems()) {
+            while (myDungeon.getRoomInventory().containsItem(i)) {
                 myDoomGuy.addToInventory(i);
                 myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null,  "Looted: " + i.getName());
-                myDungeon.getItems().removeItem(i);
+                myDungeon.getRoomInventory().removeItem(i);
             }
         }
 
