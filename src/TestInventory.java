@@ -105,7 +105,7 @@ import org.junit.Test;
  * @param <E>
  */
 
-public class testInventory {
+public class TestInventory {
 
 
     Inventory itemInventory; 
