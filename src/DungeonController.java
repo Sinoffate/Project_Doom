@@ -1,5 +1,3 @@
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -7,9 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.Serial;
-import java.util.LinkedList;
-import java.util.Queue;
-
+import javax.swing.*;
 
 /**
  * Controller for the Project_Doom game.
@@ -41,7 +37,6 @@ public class DungeonController extends JFrame implements KeyListener {
     private DungeonView myView;
     /** Hero Object. */
     private DoomGuy myDoomGuy;
-    /** Monster Object. */
 
     /** Current Game State. */
     private GameState myCurrentState;
@@ -81,11 +76,13 @@ public class DungeonController extends JFrame implements KeyListener {
         myDungeon.addPropertyChangeListener(Dungeon.HERO_POS, myView);
         myDungeon.addPropertyChangeListener(Dungeon.TEXT_UPDATE, myView);
         myDungeon.addPropertyChangeListener(Dungeon.ROOM_VIS, myView);
+        myDungeon.addPropertyChangeListener(Dungeon.ROOM_CONTENT, myView);
         //control pcs
         this.myPcs = new PropertyChangeSupport(this);
         this.addPropertyChangeListener(MENU, myView);
         this.addPropertyChangeListener(MENU_POS, myView);
         this.addPropertyChangeListener(Dungeon.TEXT_UPDATE, myView);
+        this.addPropertyChangeListener(Dungeon.ROOM_CONTENT, myView);
 
         //Fenceposting creation
         enactMapState();
@@ -215,7 +212,7 @@ public class DungeonController extends JFrame implements KeyListener {
             }
             case KeyEvent.VK_E -> {
                 switch (myCurrentState) {
-                    //case MAP_STATE -> myDungeon.lootRoom();
+                    case MAP_STATE -> lootRoom();
                     case MENU_STATE -> selectMenuOption(); //select menu option
                     //case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
                                                                             //(int) myDungeon.getPlayerPos().getY()).getMonster());
@@ -240,16 +237,33 @@ public class DungeonController extends JFrame implements KeyListener {
      */
     @Override
     public void keyReleased(final KeyEvent theEvt) {
+        //Found Combat
         if (myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
                 (int) myDungeon.getPlayerPos().getY()).getMonster() != null && myCurrentState != GameState.COMBAT_STATE) {
             enactCombatState();
         }
 
+        //Checking Exit Capability
+        if (myDungeon.getPlayerPos().equals(myDungeon.getExitFlag()) && myCurrentState != GameState.COMBAT_STATE) {
+            if (myDoomGuy.pillarCount() == 4) {
+                myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
+                myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "A WINRAR IS YOU");
+                myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
+            } else {
+                myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
+                myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You only have: " + myDoomGuy.pillarCount() + " pillars you rube");
+                myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
+            }
+        }
+
+        //Show Weapons
         if (theEvt.getKeyCode() == KeyEvent.VK_SHIFT) {
             if (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE) {
                 myPcs.firePropertyChange(MENU, WEAPON_MENU, myCurrentMenu);
             }
         }
+
+        //Show Drugs
         if (theEvt.getKeyCode() == KeyEvent.VK_ALT) {
             if (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE) {
                 myPcs.firePropertyChange(MENU, POTION_MENU, myCurrentMenu);
@@ -267,7 +281,7 @@ public class DungeonController extends JFrame implements KeyListener {
      */
     private void enactCombatState() {
         myCurrentState = GameState.COMBAT_STATE;
-        //myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Entered Combat State");
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You have encountered a monster!");
         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Press Q to attack!");
 
@@ -304,6 +318,27 @@ public class DungeonController extends JFrame implements KeyListener {
         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null,  "Entered Menu State");
     }
 
+    private void lootRoom() {
+        final Room currentRoom = myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
+                (int) myDungeon.getPlayerPos().getY());
+
+        if (!myDungeon.hasItems()) {
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null,  "No Items To Loot");
+            return;
+        }
+
+        for (Item i: myDungeon.getRoomInventory().getItems()) {
+            while (myDungeon.getRoomInventory().containsItem(i)) {
+                myDoomGuy.addToInventory(i);
+                myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null,  "Looted: " + i.getName());
+                myDungeon.getRoomInventory().removeItem(i);
+            }
+        }
+
+        myPcs.firePropertyChange(Dungeon.ROOM_CONTENT, new Point((int) myDungeon.getPlayerPos().getX(),
+                (int) myDungeon.getPlayerPos().getY()), currentRoom.getMonster() != null ? "M" : "");
+    }
+
     /**
      * Move to new menu option.
      */
@@ -323,6 +358,24 @@ public class DungeonController extends JFrame implements KeyListener {
      */
     private void selectMenuOption() {
         System.out.println("Got here: " + MAIN_MENU[myMenuPosition]);
+
+        //player inventory
+        if (myMenuPosition == 0) {
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Inventory Contains:");
+            if (myDoomGuy.getInventory().isEmpty()) {
+                myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Nothing you poor fool!");
+            }
+            final String[] dgInvenToPrint = myDoomGuy.getInventory().toString().split("\n");
+            for (String s: dgInvenToPrint) {
+                myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, s);
+            }
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
+        }
+
+        if (myMenuPosition == 3) {
+            System.exit(0);
+        }
     }
 
     /**
@@ -398,7 +451,9 @@ public class DungeonController extends JFrame implements KeyListener {
         if (!currentRoom.getMonster().isAlive()) {
             myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You killed the " + currentRoom.getMonster().getName());
             currentRoom.setMonster(null);
-            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Exited Combat State");
+            myPcs.firePropertyChange(Dungeon.ROOM_CONTENT, new Point((int) myDungeon.getPlayerPos().getX(),
+                    (int) myDungeon.getPlayerPos().getY()), currentRoom.getInventory().inventorySize() != 0 ? "I" : "");
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
             enactMapState();
         }
 
