@@ -1,5 +1,7 @@
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A hero can view the entire list of items.
@@ -86,6 +88,10 @@ public class Inventory {
         return this.myInventory.size();
     }
 
+    public Set<Item> getItems() {
+        return myInventory.keySet();
+    }
+
     /**
      * Prints a String version of the entire list of items.
      * 
@@ -99,7 +105,7 @@ public class Inventory {
         return sb.toString();
     }
 
-    public int size() {
-        return myInventory.size();
+    public boolean isEmpty() {
+        return myInventory.isEmpty();
     }
 }

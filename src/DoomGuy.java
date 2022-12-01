@@ -4,6 +4,8 @@ public class DoomGuy extends DungeonCharacter {
     private final int myMaxHealth;
     /** Reference to DGuy inventory. */
     private final Inventory myInventory;
+    /** Count of Pillars. */
+    private int myPillarCount;
 
     /**
      * Default constructor. Applies a starting weapon's stats as DGuy's base stats in DCha.
@@ -16,6 +18,7 @@ public class DoomGuy extends DungeonCharacter {
         myMaxHealth = theHealth;
         myInventory = new Inventory();
         myInventory.addItem(theStartingWeapon);
+        myPillarCount = 0;
     }
 
     /**
@@ -27,6 +30,13 @@ public class DoomGuy extends DungeonCharacter {
             throw new NullPointerException("DG.addToInventory : null item passed");
         }
         myInventory.addItem(theItem);
+        if (theItem instanceof Pillar) {
+            myPillarCount++;
+        }
+    }
+
+    public int pillarCount() {
+        return myPillarCount;
     }
 
     /**
