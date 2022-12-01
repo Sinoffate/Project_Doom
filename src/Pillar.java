@@ -4,7 +4,6 @@
  * @version 0.1
  */
 public class Pillar extends Item {
-
     /**
      * Pillar creation.
      * @param theName name of pillar.

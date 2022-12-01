@@ -1,18 +1,21 @@
 import java.awt.Point;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Dungeon {
+    static final String HERO_POS = "HeroPos";
+    static final String TEXT_UPDATE = "TextUpdate";
+    static final String ROOM_VIS = "RoomVisibility";
+    static final String ROOM_CONTENT = "RoomContent";
     private int myMapSize;
 
     private Room[][] myRooms;
     private Point myHeroPosition;
     private Point myEnterPos;
     private Point myExitPos;
-
-    static final String HERO_POS = "HeroPos";
-    static final String TEXT_UPDATE = "TextUpdate";
-    static final String ROOM_VIS = "RoomVisibility";
 
     private final PropertyChangeSupport myPcs;
 
@@ -29,6 +32,7 @@ public class Dungeon {
         this.myPcs = new PropertyChangeSupport(this);
         myRooms = generateDungeon();
         addMonsters();
+        addItems();
     }
 
     private Room[][] generateDungeon() {
@@ -51,6 +55,45 @@ public class Dungeon {
                 }
             }
         }
+    }
+
+    private void addItems() {
+        final Queue<Item> itemList = chooseItemsHelper();
+        final HashSet<Point> invalidLoc = new HashSet<>();
+        Point thisRoll;
+
+        for (int i = 0; i < 7; i++) {
+            thisRoll = new Point(DiceRoll.nextInt(myMapSize - 1), DiceRoll.nextInt(myMapSize - 1));
+            while (invalidLoc.contains(thisRoll)) {
+                thisRoll = new Point(DiceRoll.nextInt(myMapSize - 1), DiceRoll.nextInt(myMapSize - 1));
+            }
+            myRooms[(int) thisRoll.getX()][(int) thisRoll.getY()].getInventory().addItem(itemList.poll());
+            invalidLoc.add(thisRoll);
+        }
+
+        while (!itemList.isEmpty()) {
+            thisRoll = new Point(DiceRoll.nextInt(myMapSize - 1), DiceRoll.nextInt(myMapSize - 1));
+            while (invalidLoc.contains(thisRoll)) {
+                thisRoll = new Point(DiceRoll.nextInt(myMapSize - 1), DiceRoll.nextInt(myMapSize - 1));
+            }
+            myRooms[(int) thisRoll.getX()][(int) thisRoll.getY()].getInventory().addItem(itemList.poll());
+        }
+    }
+
+    private Queue<Item> chooseItemsHelper() {
+        final Queue<Item> itemsToAdd = new LinkedList<>();
+        itemsToAdd.add(new Pillar("Bob"));
+        itemsToAdd.add(new Pillar("George"));
+        itemsToAdd.add(new Pillar("Sir Von Whiskers the III Twice Removed"));
+        itemsToAdd.add(new Pillar("Not Null But Close Enough"));
+        itemsToAdd.add(new Weapon(1000, 69, 1, 420, "BFG"));
+        itemsToAdd.add(new Weapon(40, 0.5, 0.7, 20, "Shotgun"));
+        itemsToAdd.add(new Weapon(80, 0.2, 0.9, 3, "Rawket Lawnchair"));
+        final int drugsToAdd = (int) ((myMapSize * myMapSize - itemsToAdd.size()) * 0.3);
+        for (int i = 0; i < drugsToAdd; i++) {
+            itemsToAdd.add(DiceRoll.nextInt(3) > 0 ? new HealthPotion() : new VisionPotion());
+        }
+        return itemsToAdd;
     }
 
     public Room getRoom(final int theRow, final int theCol) {
@@ -102,7 +145,7 @@ public class Dungeon {
      * @return A list of items
      */
 
-    public Inventory getItems() {
+    public Inventory getRoomInventory() {
         return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getInventory();
     }
 
@@ -115,7 +158,7 @@ public class Dungeon {
     }
 
     public boolean hasItems() {
-        return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getInventory().size() > 0;
+        return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getInventory().inventorySize() > 0;
     }
 
     /**
@@ -123,8 +166,17 @@ public class Dungeon {
      * @param theRoomLocation location to set visible.
      */
     public void setRoomVisible(final Point theRoomLocation) {
-        myRooms[(int)theRoomLocation.getX()][(int)theRoomLocation.getY()].setDiscovered(true);
-        myPcs.firePropertyChange(ROOM_VIS,null,theRoomLocation);
+        myRooms[(int) theRoomLocation.getX()][(int) theRoomLocation.getY()].setDiscovered(true);
+        String roomContent = "";
+        if (myRooms[(int) theRoomLocation.getX()][(int) theRoomLocation.getY()].getMonster() != null) {
+            roomContent += "M";
+        }
+        if (myRooms[(int) theRoomLocation.getX()][(int) theRoomLocation.getY()].getInventory().inventorySize() != 0) {
+            roomContent += "I";
+        }
+        //code smell, unsure how to fix. need to give view room location + content
+        myPcs.firePropertyChange(ROOM_CONTENT, theRoomLocation, roomContent);
+        myPcs.firePropertyChange(ROOM_VIS, null, theRoomLocation);
     }
 
     public void useVisionPotion() {
@@ -133,7 +185,7 @@ public class Dungeon {
         for (int row = (int) (myHeroPosition.getX() - vp.getRadius()); row <= myHeroPosition.getX() + vp.getRadius(); row++) {
             for (int col = (int) (myHeroPosition.getY() - vp.getRadius()); col <= myHeroPosition.getY() + vp.getRadius(); col++) {
                 if (row >= 0 && row < myMapSize && col >= 0 && col < myMapSize) {
-                    setRoomVisible(new Point(row,col));
+                    setRoomVisible(new Point(row, col));
                 }
             }
         }
