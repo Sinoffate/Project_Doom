@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /**
  * Pillar item class.
  * @author james deal, jered wiegel
