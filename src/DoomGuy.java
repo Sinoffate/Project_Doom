@@ -56,7 +56,7 @@ public class DoomGuy extends DungeonCharacter {
      */
     public void equipWeapon(final Weapon theWeapon) {
         if (myInventory.containsItem(theWeapon)) {
-            myEquippedWeapon = theWeapon;
+            setEquippedWeapon(theWeapon);
         }
     }
 
