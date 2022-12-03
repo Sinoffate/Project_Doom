@@ -34,11 +34,10 @@ public class Database {
         createTables(); 
     }
 
-    //TODO: Weapons.
     /**
      * This method creates the tables in the database.
      */
-    public void createTables() {
+    private void createTables() {
         
         //TODO: Does the number of items automatically increment?
         String query = "CREATE TABLE IF NOT EXISTS inventory ( " +
