@@ -30,6 +30,8 @@ public class DungeonController extends JFrame implements KeyListener {
     private static final String[] WEAPON_MENU = {"&lt;: Pistol", "^: BFG", "v: Rawket Lawnchair", "&gt;: Shotgun"};
     /** List of Potion Radial menu items. */
     private static final String[] POTION_MENU = {"^: Health Potion", "v: Vision Potion"};
+    /** List of Title menu items. */
+    private static final String[] TITLE_MENU = {"New Game","Quit"};
 
     /** Dungeon Object. */
     private Dungeon myDungeon;
@@ -63,12 +65,15 @@ public class DungeonController extends JFrame implements KeyListener {
         myDungeon = new Dungeon(5);
         myDoomGuy = new DoomGuy(100, "DoomGuy",
                                 new Weapon(10, 0.8, 0.5, 10, "Pistol"));
+
+        //test items
         myDoomGuy.addToInventory(new VisionPotion());
         myDoomGuy.addToInventory(new VisionPotion());
         myDoomGuy.addToInventory(new VisionPotion());
         myDoomGuy.addToInventory(new HealthPotion());
         myDoomGuy.addToInventory(new HealthPotion());
         myDoomGuy.addToInventory(new Weapon(1, 1, 1, 1, "BFG"));
+
         //make view
         myView = new DungeonView(myDungeon.getMapSize(), myDungeon.getPlayerPos());
 
@@ -178,6 +183,7 @@ public class DungeonController extends JFrame implements KeyListener {
                     //case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
                                                                             //(int) myDungeon.getPlayerPos().getY()).getMonster());
                     case MENU_STATE -> menuMovement(-1);
+                    case TITLE_STATE -> menuMovement(-1);
                 }
             }
             case KeyEvent.VK_A -> {
@@ -194,6 +200,7 @@ public class DungeonController extends JFrame implements KeyListener {
                    // case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
                                                                             //(int) myDungeon.getPlayerPos().getY()).getMonster());
                     case MENU_STATE -> menuMovement(1);
+                    case TITLE_STATE -> menuMovement(1);
                 }
             }
             case KeyEvent.VK_D -> {
@@ -216,6 +223,7 @@ public class DungeonController extends JFrame implements KeyListener {
                     case MENU_STATE -> selectMenuOption(); //select menu option
                     //case COMBAT_STATE -> myDoomGuy.attack(myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
                                                                             //(int) myDungeon.getPlayerPos().getY()).getMonster());
+                    case TITLE_STATE -> selectTitleOption();
                 }
             }
             case KeyEvent.VK_Q -> {
@@ -239,7 +247,9 @@ public class DungeonController extends JFrame implements KeyListener {
     public void keyReleased(final KeyEvent theEvt) {
         //Found Combat
         if (myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
-                (int) myDungeon.getPlayerPos().getY()).getMonster() != null && myCurrentState != GameState.COMBAT_STATE) {
+                (int) myDungeon.getPlayerPos().getY()).getMonster() != null
+                && myCurrentState != GameState.COMBAT_STATE
+                && myCurrentState != GameState.TITLE_STATE) {
             enactCombatState();
         }
 
@@ -318,6 +328,18 @@ public class DungeonController extends JFrame implements KeyListener {
         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null,  "Entered Menu State");
     }
 
+    private void enactTitleState() {
+        myCurrentState = GameState.TITLE_STATE;
+        myMenuPosition = 0;
+
+        String[] old = myCurrentMenu;
+        myCurrentMenu = TITLE_MENU;
+
+        myPcs.firePropertyChange(MENU, old, TITLE_MENU);
+        myPcs.firePropertyChange(MENU_POS, old, myMenuPosition);
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null,  "Entered Title State");
+    }
+
     private void lootRoom() {
         final Room currentRoom = myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
                 (int) myDungeon.getPlayerPos().getY());
@@ -343,7 +365,7 @@ public class DungeonController extends JFrame implements KeyListener {
      * Move to new menu option.
      */
     private void menuMovement(final int theMovement) {
-        if ((myMenuPosition == 0 && theMovement == -1) || (myMenuPosition == MAIN_MENU.length - 1 && theMovement == 1)) {
+        if ((myMenuPosition == 0 && theMovement == -1) || (myMenuPosition == myCurrentMenu.length - 1 && theMovement == 1)) {
             return;
         }
         final int oldPos = myMenuPosition;
@@ -354,7 +376,7 @@ public class DungeonController extends JFrame implements KeyListener {
     }
 
     /**
-     * Select menu option.
+     * Select main menu option.
      */
     private void selectMenuOption() {
         System.out.println("Got here: " + MAIN_MENU[myMenuPosition]);
@@ -374,6 +396,53 @@ public class DungeonController extends JFrame implements KeyListener {
         }
 
         if (myMenuPosition == 3) {
+            System.exit(0);
+        }
+    }
+
+    /**
+     * Select title menu option.
+     */
+    private void selectTitleOption() {
+        System.out.println("Got here: " + TITLE_MENU[myMenuPosition]);
+
+        //new game
+        if (myMenuPosition == 0) {
+            //TODO: this probalby not the answer
+            myDungeon = new Dungeon(5);
+            myDoomGuy = new DoomGuy(100, "DoomGuy",
+                    new Weapon(10, 0.8, 0.5, 10, "Pistol"));
+
+            //test items
+            myDoomGuy.addToInventory(new VisionPotion());
+            myDoomGuy.addToInventory(new VisionPotion());
+            myDoomGuy.addToInventory(new VisionPotion());
+            myDoomGuy.addToInventory(new HealthPotion());
+            myDoomGuy.addToInventory(new HealthPotion());
+            myDoomGuy.addToInventory(new Weapon(1, 1, 1, 1, "BFG"));
+
+            //make view
+            //myView = new DungeonView(myDungeon.getMapSize(), myDungeon.getPlayerPos());
+//
+//            //dungeon pcs
+//            myDungeon.addPropertyChangeListener(Dungeon.HERO_POS, myView);
+//            myDungeon.addPropertyChangeListener(Dungeon.TEXT_UPDATE, myView);
+//            myDungeon.addPropertyChangeListener(Dungeon.ROOM_VIS, myView);
+//            myDungeon.addPropertyChangeListener(Dungeon.ROOM_CONTENT, myView);
+//            //control pcs
+//            //this.myPcs = new PropertyChangeSupport(this);
+//            this.addPropertyChangeListener(MENU, myView);
+//            this.addPropertyChangeListener(MENU_POS, myView);
+//            this.addPropertyChangeListener(Dungeon.TEXT_UPDATE, myView);
+//            this.addPropertyChangeListener(Dungeon.ROOM_CONTENT, myView);
+
+            //Fenceposting creation
+            enactMapState();
+            myDungeon.setRoomVisible(myDungeon.getPlayerPos());
+        }
+
+        //quit
+        if (myMenuPosition == 1) {
             System.exit(0);
         }
     }
@@ -446,7 +515,8 @@ public class DungeonController extends JFrame implements KeyListener {
         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, health);
 
         if (!myDoomGuy.isAlive()) {
-            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You Died");
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "YOU DIED");
+            enactTitleState();
         }
         if (!currentRoom.getMonster().isAlive()) {
             myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You killed the " + currentRoom.getMonster().getName());
