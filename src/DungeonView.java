@@ -18,7 +18,7 @@ https://docs.oracle.com/javase/tutorial/uiswing/layout/gridbag.html
 /**
  * GUI based view for Dungeons.
  * @author james deal
- * @version 0.2
+ * @version 0.3.33 this is (not) the end
  */
 public class DungeonView extends JPanel implements PropertyChangeListener {
 
@@ -32,6 +32,15 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
     /** Image used for player in room display. */
     private static ImageIcon PLAYER_TILE;
 
+    /** Image used for room display when has monster and item. */
+    private static ImageIcon ROOM_CONTENT_BOTH;
+    /** Image used for room display when has item. */
+    private static ImageIcon ROOM_CONTENT_ITEM;
+    /** Image used for room display when has monster. */
+    private static ImageIcon ROOM_CONTENT_MONSTER;
+    /** Image used for room display when has jack. */
+    private static ImageIcon ROOM_CONTENT_NOTHING;
+
     /** Size of dungeon to display. */
     private final int myDungeonSize;
 
@@ -41,6 +50,8 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
     private GridBagConstraints myGBC;
     /** GUI collection of Map's Room Labels. */
     private Map<Point, JLabel> myMapLabels;
+    /** GUI collection of Map's Content Labels. */
+    private Map<Point, JLabel> myOverlayLabels;
     /** GUI Map's Player Label. */
     private JLabel myPlayerLabel;
 
@@ -51,6 +62,7 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
 
     /** GUI Label to hold text log. */
     private JScrollPane myLogScrollPane;
+    /** GUI Element to fire updates to. */
     private JTextArea myLogTextArea;
 
     /**
@@ -73,11 +85,19 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
         BufferedImage fogRoomImage = null;
         BufferedImage playerImage = null;
         BufferedImage visibleRoomImage = null;
+        BufferedImage jackImage = null;
+        BufferedImage itemImage = null;
+        BufferedImage monsterImage = null;
+        BufferedImage itemMonsterImage = null;
 
         try {
             fogRoomImage = ImageIO.read(new File("fellcleave75.png"));
             playerImage = ImageIO.read(new File("emote75.png"));
             visibleRoomImage = ImageIO.read(new File("AYAYA75.png"));
+            jackImage = ImageIO.read(new File("jack.png"));
+            itemImage = ImageIO.read(new File("i.png"));
+            monsterImage = ImageIO.read(new File("m.png"));
+            itemMonsterImage = ImageIO.read(new File("mi.png"));
         } catch (final IOException ioe) {
             System.out.println("Unable to fetch image.");
             ioe.printStackTrace();
@@ -89,6 +109,15 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
         PLAYER_TILE = new ImageIcon(playerImage);
         assert visibleRoomImage != null;
         VISIBLE_ROOM_TILE = new ImageIcon(visibleRoomImage);
+
+        assert jackImage != null;
+        ROOM_CONTENT_NOTHING = new ImageIcon(jackImage);
+        assert itemImage != null;
+        ROOM_CONTENT_ITEM = new ImageIcon(itemImage);
+        assert monsterImage != null;
+        ROOM_CONTENT_MONSTER = new ImageIcon(monsterImage);
+        assert itemMonsterImage != null;
+        ROOM_CONTENT_BOTH = new ImageIcon(itemMonsterImage);
     }
 
     /**
@@ -109,6 +138,7 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
 
         //setup text log
         myLogTextArea = new JTextArea(10, 30);
+        myLogTextArea.setFont(new Font("Serif", Font.PLAIN, 16));
         myLogScrollPane = new JScrollPane(myLogTextArea);
         myLogScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         myLogScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
@@ -122,19 +152,24 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
         myGBC = new GridBagConstraints();   //ability to use grid effectively
         add(myMapPanel, BorderLayout.WEST); //put grid in the panel
         myMapLabels = new HashMap<>();   //ability to reference grid-objects
+        myOverlayLabels = new HashMap<>(); //ability to reference room-content objects
 
         //Setup player label.
         myPlayerLabel = new JLabel(PLAYER_TILE);
 
         //fill grid with rooms
-        JLabel temp;
+        JLabel mapLabelToSet;
+        JLabel contentLabelToSet;
         for (int i = 0; i < myDungeonSize; i++) {
             for (int j = 0; j < myDungeonSize; j++) {
-                temp = new JLabel(FOG_ROOM_TILE);
-                myMapLabels.put(new Point(i, j), temp);
+                mapLabelToSet = new JLabel(FOG_ROOM_TILE);
+                contentLabelToSet = new JLabel(ROOM_CONTENT_NOTHING);
+                myMapLabels.put(new Point(i, j), mapLabelToSet);
+                myOverlayLabels.put(new Point(i, j), contentLabelToSet);
                 myGBC.gridx = i;
                 myGBC.gridy = j;
-                myMapPanel.add(temp, myGBC);
+                myMapPanel.add(contentLabelToSet, myGBC);
+                myMapPanel.add(mapLabelToSet, myGBC);
             }
         }
 
@@ -149,8 +184,9 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
      * @param thePosition position to draw at.
      */
     private void placePlayer(final Point thePosition) {
-        myGBC.gridx = (int)thePosition.getX();
-        myGBC.gridy = (int)thePosition.getY();
+        myGBC.gridx = (int) thePosition.getX();
+        myGBC.gridy = (int) thePosition.getY();
+        myMapPanel.add(myOverlayLabels.get(thePosition), myGBC);
         myMapPanel.add(myPlayerLabel, myGBC);
         myMapPanel.add(myMapLabels.get(thePosition), myGBC);
         myMapPanel.updateUI();
@@ -160,10 +196,9 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
      * Draw current menu.
      */
     private void drawMenu(final int theHighlight) {
-        StringBuilder builder = new StringBuilder("<html>");
+        final StringBuilder builder = new StringBuilder("<html>");
 
         for (int i = 0; i < myMenuOptions.length; i++) {
-            //System.out.println(myMenuOptions[i]);
             if (i == theHighlight) {
                 builder.append(">").append(myMenuOptions[i]).append("<br>");
             } else {
@@ -172,25 +207,21 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
         }
 
         myMenuLabel.setText(builder.toString());
-        //System.out.println("View: drawMenu");
         updateUI();
     }
 
     /**
-     * Set current menu
+     * Set current menu.
      */
     private void setNewMenu(final String[] theMenuOptions) {
         myMenuOptions = theMenuOptions;
-        //System.out.println("View: setMenu");
         drawMenu(-1);
     }
 
     /**
-     * Draw current menu choice
+     * Draw current menu choice.
      */
     private void setMenuChoice(final int theMenuChoice) {
-        //myMenuOptions[theMenuChoice] = "->" + myMenuOptions[theMenuChoice];
-        //System.out.println("View: drawMenuChoice");
         drawMenu(theMenuChoice);
     }
 
@@ -205,17 +236,18 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
     }
 
     private void setRoomVisible(final Point thePosition) {
-
-        JLabel lab = myMapLabels.get(thePosition);
+        final JLabel lab = myMapLabels.get(thePosition);
         lab.setIcon(VISIBLE_ROOM_TILE);
+    }
 
-        //myMapLabels.put(thePosition, new JLabel(VISIBLE_ROOM_TILE));
-
-//        myGBC.gridx = (int)thePosition.getX();
-//        myGBC.gridy = (int)thePosition.getY();
-//        myMapPanel.add(myPlayerLabel, myGBC);
-//        myMapPanel.add(myMapLabels.get(thePosition), myGBC);
-        //myMapPanel.updateUI();
+    private void setRoomContent(final Point thePosition, final String theContent) {
+        final JLabel lab = myOverlayLabels.get(thePosition);
+        switch (theContent) {
+            case "MI" -> lab.setIcon(ROOM_CONTENT_BOTH);
+            case "M" -> lab.setIcon(ROOM_CONTENT_MONSTER);
+            case "I" -> lab.setIcon(ROOM_CONTENT_ITEM);
+            case "" -> lab.setIcon(ROOM_CONTENT_NOTHING);
+        }
     }
 
     /**
@@ -240,6 +272,9 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
         }
         if (Dungeon.ROOM_VIS.equals(theEvt.getPropertyName())) {
             setRoomVisible((Point) theEvt.getNewValue());
+        }
+        if (Dungeon.ROOM_CONTENT.equals(theEvt.getPropertyName())) {
+            setRoomContent((Point) theEvt.getOldValue(), (String) theEvt.getNewValue());
         }
     }
 
