@@ -127,8 +127,8 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
         setLayout(new BorderLayout());
 
         //temp so we understand where things go
-        add(new JLabel("Doomguy stats: Idk prob dead"), BorderLayout.NORTH);
-        add(new JLabel("Bite me"), BorderLayout.SOUTH);
+        //add(new JLabel("Doomguy stats: Idk prob dead"), BorderLayout.NORTH);
+        //add(new JLabel("Bite me"), BorderLayout.SOUTH);
 
         //setup menu
         myMenuLabel = new JLabel("Menu Options: Die");

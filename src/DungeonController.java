@@ -3,6 +3,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serial;
 import javax.swing.*;
@@ -70,11 +71,11 @@ public class DungeonController extends JFrame implements KeyListener {
 
         //test items
         myDoomGuy.addToInventory(new VisionPotion());
-        myDoomGuy.addToInventory(new VisionPotion());
-        myDoomGuy.addToInventory(new VisionPotion());
+        //myDoomGuy.addToInventory(new VisionPotion());
+        //myDoomGuy.addToInventory(new VisionPotion());
+        //myDoomGuy.addToInventory(new HealthPotion());
         myDoomGuy.addToInventory(new HealthPotion());
-        myDoomGuy.addToInventory(new HealthPotion());
-        myDoomGuy.addToInventory(new Weapon(1000, 100, 1, 1, "BFG"));
+        //myDoomGuy.addToInventory(new Weapon(1000, 100, 1, 1, "BFG"));
 
         //make view
         myView = new DungeonView(myDungeon.getMapSize(), myDungeon.getPlayerPos());
@@ -193,7 +194,7 @@ public class DungeonController extends JFrame implements KeyListener {
             case KeyEvent.VK_A -> {
                 switch (myCurrentState) {
                     case MAP_STATE -> myDungeon.movePlayer(new Point(-1, 0));
-                    case MENU_STATE -> System.out.println("Menu");
+                    //case MENU_STATE -> System.out.println("Menu");
                 }
             }
             case KeyEvent.VK_S -> {
@@ -205,7 +206,7 @@ public class DungeonController extends JFrame implements KeyListener {
             case KeyEvent.VK_D -> {
                 switch (myCurrentState) {
                     case MAP_STATE -> myDungeon.movePlayer(new Point(1, 0));
-                    case MENU_STATE -> System.out.println("Menu");
+                    //case MENU_STATE -> System.out.println("Menu");
                 }
             }
             case KeyEvent.VK_ESCAPE -> {
@@ -365,7 +366,7 @@ public class DungeonController extends JFrame implements KeyListener {
         final int oldPos = myMenuPosition;
         myMenuPosition += theMovement;
 
-        System.out.println("Attempting menu movement: " + theMovement);
+        //System.out.println("Attempting menu movement: " + theMovement);
         myPcs.firePropertyChange(MENU_POS, oldPos, myMenuPosition);
     }
 
@@ -516,7 +517,8 @@ public class DungeonController extends JFrame implements KeyListener {
         frame.setContentPane(myView);
         frame.pack();
 
-        frame.setSize(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2);
+//        frame.setSize(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2);
+        frame.setSize(1000,500);
         frame.setLocation(SCREEN_SIZE.width / 2 - frame.getWidth() / 2,
                         SCREEN_SIZE.height / 2 - frame.getHeight() / 2);
         frame.addKeyListener(this);

@@ -214,8 +214,8 @@ public class Dungeon {
         final Point oldPos = myHeroPosition;
         myHeroPosition = thePos;
         myPcs.firePropertyChange(HERO_POS, oldPos, myHeroPosition);
-        myPcs.firePropertyChange(TEXT_UPDATE, null, "Hero Position: " + " x = " +  myHeroPosition.getX() + ", y = " + myHeroPosition.getY());
-        System.out.println("Hero Position: " + " x = " +  myHeroPosition.getX() + ", y = " + myHeroPosition.getY());
+        //myPcs.firePropertyChange(TEXT_UPDATE, null, "Hero Position: " + " x = " +  myHeroPosition.getX() + ", y = " + myHeroPosition.getY());
+        //System.out.println("Hero Position: " + " x = " +  myHeroPosition.getX() + ", y = " + myHeroPosition.getY());
     }
 
     /**
