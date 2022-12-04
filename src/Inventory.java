@@ -92,6 +92,17 @@ public class Inventory {
         return myInventory.keySet();
     }
 
+    public Item getItem(final Item theItem) {
+        if (containsItem(theItem)) {
+            for (Item i: myInventory.keySet()) {
+                if (i.equals(theItem)) {
+                    return i;
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * Prints a String version of the entire list of items.
      * 
