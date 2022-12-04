@@ -66,7 +66,7 @@ public class DungeonController extends JFrame implements KeyListener {
     public DungeonController() {
         myDungeon = new Dungeon(5);
         myDoomGuy = new DoomGuy(100, "DoomGuy",
-                                new Weapon(10, 0.8, 0.5, 10, "Pistol"));
+                                new Weapon(10, 0.8, 0.5, 100, "Pistol"));
 
         //test items
         myDoomGuy.addToInventory(new VisionPotion());
@@ -74,7 +74,7 @@ public class DungeonController extends JFrame implements KeyListener {
         myDoomGuy.addToInventory(new VisionPotion());
         myDoomGuy.addToInventory(new HealthPotion());
         myDoomGuy.addToInventory(new HealthPotion());
-        myDoomGuy.addToInventory(new Weapon(1, 1, 1, 1, "BFG"));
+        myDoomGuy.addToInventory(new Weapon(1000, 100, 1, 1, "BFG"));
 
         //make view
         myView = new DungeonView(myDungeon.getMapSize(), myDungeon.getPlayerPos());
@@ -110,7 +110,8 @@ public class DungeonController extends JFrame implements KeyListener {
             switch (theEvt.getKeyCode()) {
                 case KeyEvent.VK_UP -> {
                     if (myDoomGuy.inventoryContains(new Weapon(1000, 100, 1, 1, "BFG"))) {
-                        myDoomGuy.equipWeapon(new Weapon(1000, 100, 1, 1, "BFG"));
+                        myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon(1000, 100, 1, 1, "BFG")));
+                        //myDoomGuy.equipWeapon(new Weapon(1000, 100, 1, 1, "BFG"));
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "BFG EQUIPPED");
                     } else {
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No BFG in Inventory :(");
@@ -119,7 +120,8 @@ public class DungeonController extends JFrame implements KeyListener {
                 }
                 case KeyEvent.VK_DOWN -> {
                     if (myDoomGuy.inventoryContains(new Weapon(1, 1, 1, 1, "Rawket Lawnchair"))) {
-                        myDoomGuy.equipWeapon(new Weapon(1, 1, 1, 1, "Rawket Lawnchair"));
+                        myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon(1000, 100, 1, 1, "Rawket Lawnchair")));
+                        //myDoomGuy.equipWeapon(new Weapon(1, 1, 1, 1, "Rawket Lawnchair"));
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Rawket Lawnchair EQUIPPED");
                     } else {
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Rawket Lawnchair in Inventory :(");
@@ -128,7 +130,8 @@ public class DungeonController extends JFrame implements KeyListener {
                 }
                 case KeyEvent.VK_LEFT -> {
                     if (myDoomGuy.inventoryContains(new Weapon(10, 0.8, 0.5, 10, "Pistol"))) {
-                        myDoomGuy.equipWeapon(new Weapon(10, 0.8, 0.5, 10, "Pistol"));
+                        myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon(1000, 100, 1, 1, "Pistol")));
+                        //myDoomGuy.equipWeapon(new Weapon(10, 0.8, 0.5, 10, "Pistol"));
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Pistol EQUIPPED");
                     } else {
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Pistol in Inventory :(");
@@ -137,7 +140,8 @@ public class DungeonController extends JFrame implements KeyListener {
                 }
                 case KeyEvent.VK_RIGHT -> {
                     if (myDoomGuy.inventoryContains(new Weapon(1, 1, 1, 1, "Shotgun"))) {
-                        myDoomGuy.equipWeapon(new Weapon(1, 1, 1, 1, "Shotgun"));
+                        myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon(1000, 100, 1, 1, "Shotgun")));
+                        //myDoomGuy.equipWeapon(new Weapon(1, 1, 1, 1, "Shotgun"));
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Shotgun EQUIPPED");
                     } else {
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Shotgun in Inventory :(");

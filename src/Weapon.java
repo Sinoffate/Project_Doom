@@ -90,7 +90,7 @@ public class Weapon extends Item {
     }
 
     public void setAmmo(final int theAmmo) {
-        if (theAmmo <= 0) {
+        if (theAmmo < 0) {
             throw new IllegalArgumentException("Weapon.setAmmo given value: " + theAmmo);
         }
         this.myAmmo = theAmmo;

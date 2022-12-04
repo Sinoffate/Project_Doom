@@ -33,6 +33,11 @@ public abstract class DungeonCharacter {
             throw new NullPointerException("DunCha.attack, opponent was null");
         }
 
+        if (myEquippedWeapon.getAmmo() < 1) {
+            return myEquippedWeapon.getName() + " has no ammo left!";
+        }
+        myEquippedWeapon.setAmmo(myEquippedWeapon.getAmmo()-1);
+
         //Roll accuracy
         if (DiceRoll.nextFloat() > myEquippedWeapon.getAccuracy()) {
             return "Attack Missed";

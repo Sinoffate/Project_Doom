@@ -51,7 +51,7 @@ public class Dungeon {
                 if (DiceRoll.nextFloat(1) < 0.5 && myRooms[i][j].getMonster() == null &&
                     !(i == myEnterPos.x && j == myEnterPos.y)) {
                     myRooms[i][j].setMonster(new Monster(100, "Baron of Hell",
-                            new Weapon(10, 0.8, 0.5, 10, "Whip")));
+                            new Weapon(10, 0.8, 0.5, 100, "Whip")));
                 }
             }
         }
