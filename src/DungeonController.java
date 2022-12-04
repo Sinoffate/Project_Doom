@@ -9,7 +9,7 @@ import javax.swing.*;
 
 /**
  * Controller for the Project_Doom game.
- * @author Jered Wiegel
+ * @author Jered Wiegel and James Deal
  * @version 1.0
  */
 public class DungeonController extends JFrame implements KeyListener {
