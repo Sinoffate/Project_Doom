@@ -132,7 +132,7 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
 
         //setup menu
         myMenuLabel = new JLabel("Menu Options: Die");
-        myMenuLabel.setPreferredSize(new Dimension(400,100));
+        myMenuLabel.setPreferredSize(new Dimension(400, 100));
         myMenuLabel.setFont(new Font("Serif", Font.PLAIN, 23));
         add(myMenuLabel, BorderLayout.CENTER);
 
@@ -235,11 +235,20 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
         myLogTextArea.append(System.lineSeparator());
     }
 
+    /**
+     * Set current room as visible.
+     * @param thePosition position of room.
+     */
     private void setRoomVisible(final Point thePosition) {
         final JLabel lab = myMapLabels.get(thePosition);
         lab.setIcon(VISIBLE_ROOM_TILE);
     }
 
+    /**
+     * Set overlay contents of room.
+     * @param thePosition room position.
+     * @param theContent overlay contents.
+     */
     private void setRoomContent(final Point thePosition, final String theContent) {
         final JLabel lab = myOverlayLabels.get(thePosition);
         switch (theContent) {
@@ -248,6 +257,24 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
             case "I" -> lab.setIcon(ROOM_CONTENT_ITEM);
             case "" -> lab.setIcon(ROOM_CONTENT_NOTHING);
         }
+    }
+
+    /**
+     * Called when player selects new game.
+     * @param thePlayerPos starting position of player.
+     */
+    public void resetMap(final Point thePlayerPos) {
+        for (int row = 0; row < myDungeonSize; row++) {
+            for (int col = 0; col < myDungeonSize; col++) {
+                JLabel lb = myMapLabels.get(new Point(row, col));
+                lb.setIcon(FOG_ROOM_TILE);
+                lb = myOverlayLabels.get(new Point(row, col));
+                lb.setIcon(ROOM_CONTENT_NOTHING);
+            }
+        }
+
+        placePlayer(thePlayerPos);
+        updateUI();
     }
 
     /**
@@ -275,6 +302,9 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
         }
         if (Dungeon.ROOM_CONTENT.equals(theEvt.getPropertyName())) {
             setRoomContent((Point) theEvt.getOldValue(), (String) theEvt.getNewValue());
+        }
+        if (DungeonController.RESET_MAP.equals(theEvt.getPropertyName()))  {
+            resetMap((Point) theEvt.getNewValue());
         }
     }
 

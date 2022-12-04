@@ -11,9 +11,5 @@ public enum GameState {
         /** Game State. */
         COMBAT_STATE,
         /** Game State. */
-        WIN_STATE,
-        /** Game State. */
-        LOSE_STATE,
-        /** Game State. */
         TITLE_STATE
 }
