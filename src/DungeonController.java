@@ -401,15 +401,15 @@ public class DungeonController extends JFrame implements KeyListener {
         if (myMenuPosition == 0) {
             myDungeon = new Dungeon(5);
             myDoomGuy = new DoomGuy(100, "DoomGuy",
-                    new Weapon(10, 0.8, 0.5, 10, "Pistol"));
+                    new Weapon(10, 0.8, 0.5, 100, "Pistol"));
 
             //test items
             myDoomGuy.addToInventory(new VisionPotion());
-            myDoomGuy.addToInventory(new VisionPotion());
-            myDoomGuy.addToInventory(new VisionPotion());
+            //myDoomGuy.addToInventory(new VisionPotion());
+            //myDoomGuy.addToInventory(new VisionPotion());
+            //myDoomGuy.addToInventory(new HealthPotion());
             myDoomGuy.addToInventory(new HealthPotion());
-            myDoomGuy.addToInventory(new HealthPotion());
-            myDoomGuy.addToInventory(new Weapon(1, 1, 1, 1, "BFG"));
+            //myDoomGuy.addToInventory(new Weapon(1, 1, 1, 1, "BFG"));
 
             //dungeon pcs
             myDungeon.addPropertyChangeListener(Dungeon.HERO_POS, myView);
