@@ -9,13 +9,14 @@ import org.sqlite.SQLiteDataSource;
 /**
  * This class sets up SQLite database. Database should be accessed by the Inventory and Hero.
  * Inventory should be accessed by the entire inventory and Hero.
+ * Database is already created and it will be accessed by the database class.
  * 
  * @author Jered Wiegel, Hyunggil Woo
- * @version 1.1
+ * @version 1.2
  */
 public class Database {
 
-    //TODO: a
+
     private SQLiteDataSource myDs = null;
 
     /**
@@ -31,52 +32,22 @@ public class Database {
             System.exit(0);
         }
         System.out.println("Opened database successfully");
-        createTables(); 
-    }
-
-    //TODO: Weapons.
-    /**
-     * This method creates the tables in the database.
-     */
-    public void createTables() {
-        
-        //TODO: Does the number of items automatically increment?
-        String query = "CREATE TABLE IF NOT EXISTS inventory ( " +
-                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "NAME TEXT NOT NULL, " +
-                "TYPE TEXT NOT NULL )";
-
-        // query to create a table for a player
-        String query2 = "CREATE TABLE IF NOT EXISTS player ( " +
-                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "NAME TEXT NOT NULL, " +
-                "HEALTH INTEGER NOT NULL, " +
-                "INVENTORY_ID INTEGER NOT NULL, " +
-                "FOREIGN KEY (INVENTORY_ID) REFERENCES inventory(ID) )";
-
-
-        try (Connection connection = myDs.getConnection();
-             Statement statement = connection.createStatement()) {
-
-            statement.executeUpdate(query);
-            statement.executeUpdate(query2);
-
-        } catch (final SQLException theEvent) {
-            theEvent.printStackTrace();
-            System.exit(0);
-        }
     }
 
     /**
      * This method inserts data into the tables.
      * This method may incremet the count of items if they are the same item
-     *
+     * name and type cannot be null.
+     * 
      * @param theName name of an item to add
      * @param theType Type of an item to add
      * 
      * Source from: https://www.sqlitetutorial.net/sqlite-java/insert/
      */
     public void insert(final String theName, final String theType) {
+        if (theName == null || theType == null) {
+            throw new IllegalArgumentException("Name cannot be null");
+        }
 
         String query = "INSERT INTO inventory (NAME, TYPE) VALUES (?, ?)";
 
@@ -94,72 +65,19 @@ public class Database {
     }
 
     /**
-     * Updates values in the corresponding database.
-     * 
-     * @param theName
-     * @param theType
-     */
-    public void update(final String theName, final String theType) {
-
-        //TODO: Check if the below query statement is correct
-
-        String query = "UPDATE inventory SET NAME = ? , " +
-                        "VALUE = ?";
-
-        try (Connection connection = myDs.getConnection();
-             PreparedStatement prepStatement = connection.prepareStatement(query)) {
-
-            // sets the corresponding values
-            prepStatement.setString(1, theName);
-            prepStatement.setString(2, theType);
-
-            prepStatement.executeUpdate();
-
-        } catch (final SQLException theEvent) {
-            theEvent.printStackTrace();
-            System.exit(0);
-        }
-    }
-
-    /**
-     * Removes an item from the inventory
-     * @param theItem
-     * 
-     * https://www.sqlitetutorial.net/sqlite-java/delete/
-     */
-    public void delete(final String theItem) {
-
-        String query = "DELETE FROM inventory WHERE NAME = ?";
-
-        try (Connection connection = myDs.getConnection();
-                PreparedStatement prepStatement = connection.prepareStatement(query)) {
-
-                prepStatement.setString(1, theItem);
-
-                prepStatement.executeUpdate();
-                
-        } catch (final SQLException theEvent) {
-            theEvent.printStackTrace();
-            System.exit(0);
-        }
-    }
-
-    /**
-     * Resets all items in the inventory
-     */
-    public void reset() {
-
-    }
-
-    /**
      * Selects all items stored in the table. I am not sure if data from both table gets selected.
+     * name of the table cannot be null.
      * 
+     * @param theTable name of the Table
      * Source: https://www.sqlitetutorial.net/sqlite-java/select/
      */
-    public void selectAll() {
+    public void selectAll(final String theTable) {
+        if (theTable == null) {
+            throw new IllegalArgumentException("Table name cannot be null");
+        }
 
         // Need to check if the below query statement is correct.
-        String query = "SELECT * FROM inventory";
+        String query = "SELECT * FROM " + theTable;
 
         try (Connection connection = myDs.getConnection();
              Statement statement = connection.createStatement();
@@ -175,6 +93,5 @@ public class Database {
             System.exit(0);
         }
     }
-
 
 }
