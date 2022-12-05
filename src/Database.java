@@ -9,18 +9,17 @@ import org.sqlite.SQLiteDataSource;
 /**
  * This class sets up SQLite database. Database should be accessed by the Inventory and Hero.
  * Inventory should be accessed by the entire inventory and Hero.
- * Database is already created and it will be accessed by the database class.
+ * Items table and Weapons table are already created and they will be accessed by this database class.
  * 
  * @author Jered Wiegel, Hyunggil Woo
  * @version 1.2
  */
 public class Database {
 
-
     private SQLiteDataSource myDs = null;
 
     /**
-     * Constructor for Database.
+     * This accesses a databases that are already created in the source file.
      * Database will contain non-null references.
      */
     public Database() {
@@ -35,7 +34,7 @@ public class Database {
     }
 
     /**
-     * This method inserts data into the tables.
+     * Insert data into the tables.
      * This method may incremet the count of items if they are the same item
      * name and type cannot be null.
      * 
@@ -45,6 +44,7 @@ public class Database {
      * Source from: https://www.sqlitetutorial.net/sqlite-java/insert/
      */
     public void insert(final String theName, final String theType) {
+
         if (theName == null || theType == null) {
             throw new IllegalArgumentException("Name cannot be null");
         }
@@ -72,11 +72,11 @@ public class Database {
      * Source: https://www.sqlitetutorial.net/sqlite-java/select/
      */
     public void selectAll(final String theTable) {
-        if (theTable == null) {
-            throw new IllegalArgumentException("Table name cannot be null");
+        if (theTable == null || theTable != "Items" || theTable != "Weapons")) {
+            throw new IllegalArgumentException("Table name cannot be null or invalid table name");
         }
 
-        // Need to check if the below query statement is correct.
+        // TODO: Need to check if the below query statement is correct.
         String query = "SELECT * FROM " + theTable;
 
         try (Connection connection = myDs.getConnection();
@@ -84,9 +84,18 @@ public class Database {
              ResultSet rs = statement.executeQuery(query);) {
             
             while (rs.next()) {
-                System.out.println("ID: " + rs.getInt("ID") + "\t" +
-                                    "Name: " + rs.getString("NAME") + "\t" +
-                                    "Type: " + rs.getString("TYPE"));
+                System.out.println( 
+                                    "Type: " + rs.getString("TYPE") + "\t" +
+                                    "Name: " + rs.getString("NAME") + "\t") ;
+                
+                if (theTable == "Weapons") {
+                    System.out.println( "Damage: " + rs.getDouble("Damage") + "\t" +
+                                        "FireRate: " + rs.getDouble("FireRate") + "\t" +
+                                        "Accuracy: " + rs.getDouble("Accuracy") + "\t" +
+                                        "Ammo: " + rs.getInt("Ammo") + "\t"
+                    );
+                }
+
             }
         } catch (final SQLException theEvent) {
             theEvent.printStackTrace();
