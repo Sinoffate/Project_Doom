@@ -110,7 +110,7 @@ public class DungeonController extends JFrame implements KeyListener {
         if (theEvt.isShiftDown() && (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE)) {
             myPcs.firePropertyChange(MENU, myCurrentMenu, WEAPON_MENU);
             switch (theEvt.getKeyCode()) {
-                case KeyEvent.VK_UP -> {
+                case KeyEvent.VK_W -> {
                     if (myDoomGuy.inventoryContains(new Weapon(1000, 100, 1, 1, "BFG"))) {
                         myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon(1000, 100, 1, 1, "BFG")));
                         //myDoomGuy.equipWeapon(new Weapon(1000, 100, 1, 1, "BFG"));
@@ -120,7 +120,7 @@ public class DungeonController extends JFrame implements KeyListener {
                     }
                     monsterAttack();
                 }
-                case KeyEvent.VK_DOWN -> {
+                case KeyEvent.VK_S -> {
                     if (myDoomGuy.inventoryContains(new Weapon(1, 1, 1, 1, "Rawket Lawnchair"))) {
                         myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon(1000, 100, 1, 1, "Rawket Lawnchair")));
                         //myDoomGuy.equipWeapon(new Weapon(1, 1, 1, 1, "Rawket Lawnchair"));
@@ -130,7 +130,7 @@ public class DungeonController extends JFrame implements KeyListener {
                     }
                     monsterAttack();
                 }
-                case KeyEvent.VK_LEFT -> {
+                case KeyEvent.VK_A -> {
                     if (myDoomGuy.inventoryContains(new Weapon(10, 0.8, 0.5, 10, "Pistol"))) {
                         myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon(1000, 100, 1, 1, "Pistol")));
                         //myDoomGuy.equipWeapon(new Weapon(10, 0.8, 0.5, 10, "Pistol"));
@@ -140,7 +140,7 @@ public class DungeonController extends JFrame implements KeyListener {
                     }
                     monsterAttack();
                 }
-                case KeyEvent.VK_RIGHT -> {
+                case KeyEvent.VK_D -> {
                     if (myDoomGuy.inventoryContains(new Weapon(1, 1, 1, 1, "Shotgun"))) {
                         myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon(1000, 100, 1, 1, "Shotgun")));
                         //myDoomGuy.equipWeapon(new Weapon(1, 1, 1, 1, "Shotgun"));
@@ -160,7 +160,7 @@ public class DungeonController extends JFrame implements KeyListener {
         if (theEvt.isAltDown() && (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE)) {
             myPcs.firePropertyChange(MENU, myCurrentMenu, POTION_MENU);
             switch (theEvt.getKeyCode()) {
-                case KeyEvent.VK_UP -> {
+                case KeyEvent.VK_W -> {
                     if (myDoomGuy.inventoryContains(new HealthPotion())) {
                         myDoomGuy.useItem(new HealthPotion());
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "DG HP: " + myDoomGuy.getHealth());
@@ -169,7 +169,7 @@ public class DungeonController extends JFrame implements KeyListener {
                     }
                     monsterAttack();
                 }
-                case KeyEvent.VK_DOWN -> {
+                case KeyEvent.VK_S -> {
                     if (myDoomGuy.inventoryContains(new VisionPotion())) {
                         myDungeon.useVisionPotion();
                         myDoomGuy.removeFromInventory(new VisionPotion());
