@@ -31,40 +31,6 @@ public class Database {
             System.exit(0);
         }
         System.out.println("Opened database successfully");
-        createTables(); 
-    }
-
-    //TODO: Weapons.
-    /**
-     * This method creates the tables in the database.
-     */
-    public void createTables() {
-        
-        //TODO: Does the number of items automatically increment?
-        String query = "CREATE TABLE IF NOT EXISTS inventory ( " +
-                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "NAME TEXT NOT NULL, " +
-                "TYPE TEXT NOT NULL )";
-
-        // query to create a table for a player
-        String query2 = "CREATE TABLE IF NOT EXISTS player ( " +
-                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "NAME TEXT NOT NULL, " +
-                "HEALTH INTEGER NOT NULL, " +
-                "INVENTORY_ID INTEGER NOT NULL, " +
-                "FOREIGN KEY (INVENTORY_ID) REFERENCES inventory(ID) )";
-
-
-        try (Connection connection = myDs.getConnection();
-             Statement statement = connection.createStatement()) {
-
-            statement.executeUpdate(query);
-            statement.executeUpdate(query2);
-
-        } catch (final SQLException theEvent) {
-            theEvent.printStackTrace();
-            System.exit(0);
-        }
     }
 
     /**
