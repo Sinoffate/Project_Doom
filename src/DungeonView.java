@@ -263,7 +263,7 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
      * Called when player selects new game.
      * @param thePlayerPos starting position of player.
      */
-    public void resetMap(final Point thePlayerPos) {
+    private void resetMap(final Point thePlayerPos) {
         for (int row = 0; row < myDungeonSize; row++) {
             for (int col = 0; col < myDungeonSize; col++) {
                 JLabel lb = myMapLabels.get(new Point(row, col));
