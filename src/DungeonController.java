@@ -5,6 +5,8 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.Serial;
+import java.net.URI;
+import java.net.URISyntaxException;
 import javax.swing.*;
 
 /**
@@ -31,7 +33,7 @@ public class DungeonController extends JFrame implements KeyListener {
     /** List of Potion Radial menu items. */
     private static final String[] POTION_MENU = {"^: Health Potion", "v: Vision Potion"};
     /** List of Title menu items. */
-    private static final String[] TITLE_MENU = {"New Game", "Quit"};
+    private static final String[] TITLE_MENU = {"New Game", "Quit", "Watch Kung Fury!"};
 
     /** Dungeon Object. */
     private Dungeon myDungeon;
@@ -426,6 +428,25 @@ public class DungeonController extends JFrame implements KeyListener {
         //quit
         if (myMenuPosition == 1) {
             System.exit(0);
+        }
+
+        //watch kung fury
+        if (myMenuPosition == 2) {
+            if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)){
+                Desktop desktop = Desktop.getDesktop();
+                try{
+                    desktop.browse(new URI("https://www.youtube.com/watch?v=bS5P_LAqiVg"));
+                }catch(IOException | URISyntaxException ioe){
+                    ioe.printStackTrace();
+                }
+            }else{
+                Runtime runtime = Runtime.getRuntime();
+                try{
+                    runtime.exec("xdg-open " + "https://www.youtube.com/watch?v=bS5P_LAqiVg");
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
         }
     }
 
