@@ -71,7 +71,6 @@ public class Database {
      * @param theTable name of the Table
      * Source: https://www.sqlitetutorial.net/sqlite-java/select/
      */
-    @SuppressWarnings("checkstyle:OperatorWrap")
     public void selectAll(final String theTable) {
         if (theTable == null || theTable != "Items" || theTable != "Weapons") {
             throw new IllegalArgumentException("Table name cannot be null or invalid table name");
@@ -93,7 +92,8 @@ public class Database {
                     System.out.println( "Damage: " + rs.getDouble("Damage") + "\t" +
                                         "FireRate: " + rs.getDouble("FireRate") + "\t" +
                                         "Accuracy: " + rs.getDouble("Accuracy") + "\t" +
-                                        "Ammo: " + rs.getInt("Ammo") + "\t"
+                                        "Ammo: " + rs.getInt("Ammo") + "\t" +
+                                        "Name: " + rs.getString("Name") + "\t"
                     );
                 }
 
