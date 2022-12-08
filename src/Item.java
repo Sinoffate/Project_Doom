@@ -33,6 +33,11 @@ public abstract class Item {
         return false;
     }
 
+    @Override
+    public int hashCode() {
+        return this.myName.hashCode();
+    }
+
     /**
      * Name of item.
      * @return name.

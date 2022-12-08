@@ -1,7 +1,7 @@
 public abstract class DungeonCharacter {
 
     /** Weapon currently equipped. */
-    protected Weapon myEquippedWeapon;
+    private Weapon myEquippedWeapon;
 
     /** Current health. */
     private int myHealth;
@@ -14,7 +14,7 @@ public abstract class DungeonCharacter {
      * @param theName name of DC.
      * @param theWeapon starting weapon of DC.
      */
-    public DungeonCharacter(final int theHealth, final String theName, final Weapon theWeapon) {
+    DungeonCharacter(final int theHealth, final String theName, final Weapon theWeapon) {
         if (theHealth <= 0 || theName == null || "".equals(theName) || theWeapon == null) {
             throw new IllegalArgumentException("DC.con bad arguments: HP:" + theHealth);
         }
@@ -32,6 +32,11 @@ public abstract class DungeonCharacter {
         if (theOpponent == null) {
             throw new NullPointerException("DunCha.attack, opponent was null");
         }
+
+        if (myEquippedWeapon.getAmmo() < 1) {
+            return myEquippedWeapon.getName() + " has no ammo left!";
+        }
+        myEquippedWeapon.setAmmo(myEquippedWeapon.getAmmo()-1);
 
         //Roll accuracy
         if (DiceRoll.nextFloat() > myEquippedWeapon.getAccuracy()) {
@@ -124,6 +129,11 @@ public abstract class DungeonCharacter {
     }
 
     /**
+     * Determine if character is alive.
+     */
+    public boolean isAlive() {  return myHealth > 0;   }
+
+    /**
      * Get currently equipped weapon.
      * @return active weapon.
      */
@@ -131,8 +141,14 @@ public abstract class DungeonCharacter {
         return myEquippedWeapon;
     }
 
+    public void setEquippedWeapon(Weapon theWeapon) {
+        this.myEquippedWeapon = theWeapon;
+    }
+
     @Override
     public String toString() {
         return myName;
     }
+
+
 }
