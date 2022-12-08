@@ -50,8 +50,11 @@ public class Dungeon {
             for (int j = 0; j < myMapSize; j++) {
                 if (DiceRoll.nextFloat(1) < 0.5 && myRooms[i][j].getMonster() == null &&
                     !(i == myEnterPos.x && j == myEnterPos.y)) {
-                    myRooms[i][j].setMonster(new Monster(100, "Baron of Hell",
-                            new Weapon("Whip")));
+                    if (DiceRoll.nextInt(2) != 0) {
+                        myRooms[i][j].setMonster(new BaronOfHell());
+                    } else {
+                        myRooms[i][j].setMonster(new Imp());
+                    }
                 }
             }
         }

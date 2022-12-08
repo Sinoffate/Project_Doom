@@ -44,7 +44,7 @@ public abstract class DungeonCharacter {
         }
 
         //Roll Damage
-        return theOpponent.takeDamage(myEquippedWeapon.rollDamage());
+        return theOpponent.takeDamage(myEquippedWeapon.rollDamage(), theOpponent);
     }
 
     /**
@@ -52,7 +52,7 @@ public abstract class DungeonCharacter {
      * @param theDamageTaken Damage amount to round down and apply to character.
      * @return String containing resulting information for use in View.
      */
-    public String takeDamage(final double theDamageTaken) {
+    public String takeDamage(final double theDamageTaken, final DungeonCharacter theOpponent) {
         if (theDamageTaken < 0) {
             throw new IllegalArgumentException("DunCha.takeDamage, positive number passed: " + theDamageTaken);
         }

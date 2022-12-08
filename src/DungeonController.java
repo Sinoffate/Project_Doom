@@ -494,7 +494,7 @@ public class DungeonController extends JFrame implements KeyListener {
         if (!myDGAttacked) {
             attackRes = "Doomguy Attacks! " + myDoomGuy.attack(currentRoom.getMonster());
         } else {
-            attackRes = "Monster Attacks! " + currentRoom.getMonster().attack(myDoomGuy);
+            attackRes = currentRoom.getMonster().toString() + " Attacks! " + currentRoom.getMonster().attack(myDoomGuy);
         }
         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, attackRes);
         final String health = "DG HP: " + myDoomGuy.getHealth() + " Enemy Health: " + currentRoom.getMonster().getHealth();
