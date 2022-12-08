@@ -55,6 +55,7 @@ public class Dungeon {
                 }
             }
         }
+        myRooms[myExitPos.x][myExitPos.y].setMonster(new AnimeWaifu());
     }
 
     private void addItems() {
