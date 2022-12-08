@@ -44,7 +44,7 @@ public abstract class DungeonCharacter {
         }
 
         //Roll Damage
-        return theOpponent.takeDamage(myEquippedWeapon.rollDamage(), theOpponent);
+        return theOpponent.takeDamage(myEquippedWeapon.rollDamage(), this);
     }
 
     /**

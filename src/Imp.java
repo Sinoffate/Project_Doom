@@ -15,7 +15,7 @@ public class Imp extends Monster {
             throw new IllegalArgumentException("DunCha.takeDamage, positive number passed: " + theDamageTaken);
         }
         this.setHealth((int) (this.getHealth() - Math.floor(theDamageTaken)));
-        theOpponent.setHealth(theOpponent.getHealth() - FRAILTY);
+        this.setHealth(this.getHealth() - FRAILTY);
 
         return "Imp takes " + (int) theDamageTaken + " and falls downs some stairs for " + FRAILTY + "!";
     }
