@@ -26,12 +26,12 @@ public class DungeonController extends JFrame implements KeyListener {
     /** List of normal menu items. */
     private static final String[] MAIN_MENU = {"Inventory", "Save", "Load", "Quit"};
     /** List of map menu items. */
-    private static final String[] MAP_MENU = {"WASD to move!", "Hold Shift for Guns", "Hold Alt for Potions",
-                                                 "Escape key for menu!", "Watch Kung Fury!"};
+    private static final String[] MAP_MENU = {"WASD to move", "E to Loot Room", "Hold Shift for Guns", "Hold Alt for Potions",
+                                                 "Escape key for menu", "Watch Kung Fury!"};
     /** List of Weapon Radial menu items. */
-    private static final String[] WEAPON_MENU = {"&lt;: Pistol", "^: BFG", "v: Rawket Lawnchair", "&gt;: Shotgun"};
+    private static final String[] WEAPON_MENU = {"W: BFG", "A: Pistol", "S: Rawket Lawnchair", "D: Shotgun"};
     /** List of Potion Radial menu items. */
-    private static final String[] POTION_MENU = {"^: Health Potion", "v: Vision Potion"};
+    private static final String[] POTION_MENU = {"W: Health Potion", "S: Vision Potion"};
     /** List of Title menu items. */
     private static final String[] TITLE_MENU = {"New Game", "Quit", "Watch Kung Fury!"};
 
@@ -492,7 +492,7 @@ public class DungeonController extends JFrame implements KeyListener {
         String attackRes;
 
         if (!myDGAttacked) {
-            attackRes = "Doomguy Attacks! " + myDoomGuy.attack(currentRoom.getMonster());
+            attackRes = myDoomGuy.attack(currentRoom.getMonster());
         } else {
             attackRes = currentRoom.getMonster().toString() + " Attacks! " + currentRoom.getMonster().attack(myDoomGuy);
         }
