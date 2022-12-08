@@ -3,13 +3,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import org.sqlite.SQLiteDataSource;
 
 /**
- * This class sets up SQLite database. Database should be accessed by the Inventory and Hero.
- * Inventory should be accessed by the entire inventory and Hero.
- * Items table and Weapons table are already created and they will be accessed by this database class.
+ * This class sets up SQLite database.
+ * Items table and Weapons table are already created, and they will be
+ * accessed by this database class.
  * 
  * @author Jered Wiegel, Hyunggil Woo
  * @version 1.2
@@ -22,7 +21,7 @@ public class Database {
      * This accesses a databases that are already created in the source file.
      * Database will contain non-null references.
      */
-    public Database() {
+    private Database() {
         try {
             myDs = new SQLiteDataSource();
             myDs.setUrl("jdbc:sqlite:Project_Doom.db");
@@ -71,37 +70,42 @@ public class Database {
      * @param theTable name of the Table
      * Source: https://www.sqlitetutorial.net/sqlite-java/select/
      */
-    public void selectAll(final String theTable) {
-        if (theTable == null || theTable != "Items" || theTable != "Weapons") {
-            throw new IllegalArgumentException("Table name cannot be null or invalid table name");
+    public String selectOne(final String theTable, final String theEntry) {
+        if (theTable == null) {
+            throw new IllegalArgumentException("Null table name");
+        }
+        if (!"Items".equals(theTable) && !"Weapons".equals(theTable)) {
+            throw new IllegalArgumentException("Bad table name: " + theTable);
         }
 
-        // TODO: Need to check if the below query statement is correct.
-        String query = "SELECT * FROM " + theTable;
+        final String query = "SELECT * FROM " + theTable + " WHERE Name = '" + theEntry + "'";
+        final StringBuilder sb = new StringBuilder();
 
         try (Connection connection = myDs.getConnection();
              Statement statement = connection.createStatement();
-             ResultSet rs = statement.executeQuery(query);) {
-            
-            while (rs.next()) {
-                System.out.println( 
-                                    "Type: " + rs.getString("TYPE") + "\t" +
-                                    "Name: " + rs.getString("NAME") + "\t") ;
-                
-                if (theTable == "Weapons") {
-                    System.out.println( "Damage: " + rs.getDouble("Damage") + "\t" +
-                                        "FireRate: " + rs.getDouble("FireRate") + "\t" +
-                                        "Accuracy: " + rs.getDouble("Accuracy") + "\t" +
-                                        "Ammo: " + rs.getInt("Ammo") + "\t" +
-                                        "Name: " + rs.getString("Name") + "\t"
-                    );
-                }
+             ResultSet rs = statement.executeQuery(query)) {
+
+            if ("Items".equals(theTable)) {
+                final String res = rs.getString("Value");
+                sb.append(res);
+            }
+            if ("Weapons".equals(theTable)) {
+                String res = rs.getString("Damage");
+                sb.append(res).append(",");
+                res = rs.getString("FireRate");
+                sb.append(res).append(",");
+                res = rs.getString("Accuracy");
+                sb.append(res).append(",");
+                res = rs.getString("Ammo");
+                sb.append(res);
 
             }
-        } catch (final SQLException theEvent) {
-            theEvent.printStackTrace();
+
+        } catch (final SQLException event) {
+            event.printStackTrace();
             System.exit(0);
         }
-    }
 
+        return sb.toString();
+    }
 }

@@ -51,7 +51,7 @@ public class Dungeon {
                 if (DiceRoll.nextFloat(1) < 0.5 && myRooms[i][j].getMonster() == null &&
                     !(i == myEnterPos.x && j == myEnterPos.y)) {
                     myRooms[i][j].setMonster(new Monster(100, "Baron of Hell",
-                            new Weapon(10, 0.8, 0.5, 100, "Whip")));
+                            new Weapon("Whip")));
                 }
             }
         }
@@ -82,13 +82,13 @@ public class Dungeon {
 
     private Queue<Item> chooseItemsHelper() {
         final Queue<Item> itemsToAdd = new LinkedList<>();
-        itemsToAdd.add(new Pillar("Bob"));
-        itemsToAdd.add(new Pillar("George"));
-        itemsToAdd.add(new Pillar("Sir Von Whiskers the III Twice Removed"));
-        itemsToAdd.add(new Pillar("Not Null But Close Enough"));
-        itemsToAdd.add(new Weapon(1000, 69, 1, 420, "BFG"));
-        itemsToAdd.add(new Weapon(40, 0.5, 0.7, 20, "Shotgun"));
-        itemsToAdd.add(new Weapon(80, 0.2, 0.9, 3, "Rawket Lawnchair"));
+        itemsToAdd.add(new Pillar("Polymorphic Bob"));
+        itemsToAdd.add(new Pillar("Encapsulated George"));
+        itemsToAdd.add(new Pillar("Sir Von Whiskers the III Twice Inherited"));
+        itemsToAdd.add(new Pillar("Abstracted Not Null But Close Enough"));
+        itemsToAdd.add(new Weapon("BFG"));
+        itemsToAdd.add(new Weapon("Shotgun"));
+        itemsToAdd.add(new Weapon("Rawket Lawnchair"));
         final int drugsToAdd = (int) ((myMapSize * myMapSize - itemsToAdd.size()) * 0.3);
         for (int i = 0; i < drugsToAdd; i++) {
             itemsToAdd.add(DiceRoll.nextInt(3) > 0 ? new HealthPotion() : new VisionPotion());

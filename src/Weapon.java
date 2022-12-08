@@ -25,7 +25,7 @@ public class Weapon extends Item {
      * @param theAmm ammo.
      * @param theNam name.
      */
-    public Weapon(final double theDam, final double theFR, final double theAcc,
+    private Weapon(final double theDam, final double theFR, final double theAcc,
                   final int theAmm, final String theNam) {
         super(theNam);
         if (theDam <= 0 || theFR <= 0 || theAcc <= 0 || theAcc > 1 || theAmm < 1) {
