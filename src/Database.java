@@ -13,9 +13,12 @@ import org.sqlite.SQLiteDataSource;
  * @author Jered Wiegel, Hyunggil Woo
  * @version 1.2
  */
-public class Database {
+public final class Database {
 
-    private SQLiteDataSource myDs = null;
+    /** Returns an instance of this object. Singleton. */
+    private static final Database INSTANCE = new Database();
+    /** The database we have. */
+    private SQLiteDataSource myDs;
 
     /**
      * This accesses a databases that are already created in the source file.
@@ -25,22 +28,26 @@ public class Database {
         try {
             myDs = new SQLiteDataSource();
             myDs.setUrl("jdbc:sqlite:Project_Doom.db");
-        } catch (final Exception theEvent) {
-            theEvent.printStackTrace();
+        } catch (final Exception event) {
+            event.printStackTrace();
             System.exit(0);
         }
         System.out.println("Opened database successfully");
+    }
+
+    public static Database getInstance() {
+        return INSTANCE;
     }
 
     /**
      * Insert data into the tables.
      * This method may incremet the count of items if they are the same item
      * name and type cannot be null.
-     * 
+     *
      * @param theName name of an item to add
      * @param theType Type of an item to add
-     * 
-     * Source from: https://www.sqlitetutorial.net/sqlite-java/insert/
+     *
+     * Source from: <a href="https://www.sqlitetutorial.net/sqlite-java/insert/">Hello</a>
      */
     public void insert(final String theName, final String theType) {
 
@@ -48,7 +55,7 @@ public class Database {
             throw new IllegalArgumentException("Name cannot be null");
         }
 
-        String query = "INSERT INTO inventory (NAME, TYPE) VALUES (?, ?)";
+        final String query = "INSERT INTO inventory (NAME, TYPE) VALUES (?, ?)";
 
         try (Connection connection = myDs.getConnection();
              PreparedStatement prepStatement = connection.prepareStatement(query)) {
@@ -57,18 +64,17 @@ public class Database {
             prepStatement.setString(2, theType);
             prepStatement.executeUpdate();
 
-        } catch (final SQLException theEvent) {
-            theEvent.printStackTrace();
+        } catch (final SQLException event) {
+            event.printStackTrace();
             System.exit(0);
         }
     }
 
     /**
-     * Selects all items stored in the table. I am not sure if data from both table gets selected.
-     * name of the table cannot be null.
-     * 
-     * @param theTable name of the Table
-     * Source: https://www.sqlitetutorial.net/sqlite-java/select/
+     * Selects specific item from specific table and returns associated values.
+     * @param theTable name of the Table.
+     * @param theEntry name of the item.
+     * Source: <a href="https://www.sqlitetutorial.net/sqlite-java/select/">Hello</a>
      */
     public String selectOne(final String theTable, final String theEntry) {
         if (theTable == null) {

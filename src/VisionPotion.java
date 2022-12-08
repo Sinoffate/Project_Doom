@@ -6,17 +6,20 @@
 public class VisionPotion extends Item {
 
     /** Vision Potion's vision range. */
-    private static final int RADIUS = 1;
+    private final int myRadius;
 
     /**
      * VisionPotion constructor.
      */
     public VisionPotion() {
         super("Vision Potion");
+        final Database db = Database.getInstance();
+        final String potVal = db.selectOne("Items", "VisionPotion");
+        myRadius = Integer.parseInt(potVal);
     }
 
     public int getRadius() {
-        return RADIUS;
+        return myRadius;
     }
 
     @Override

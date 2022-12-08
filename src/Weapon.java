@@ -39,6 +39,23 @@ public class Weapon extends Item {
     }
 
     /**
+     * Database Constructor for Weapons
+     * @param theWeaponName name of weapon to create.
+     */
+    public Weapon(final String theWeaponName) {
+        super(theWeaponName);
+        final Database db = Database.getInstance();
+        final String[] weaponAttri = db.selectOne("Weapons", theWeaponName).split(",");
+        if (weaponAttri.length != 4) {
+            throw new RuntimeException("Bad DB return, length: " + weaponAttri.length);
+        }
+        myDamage = Double.parseDouble(weaponAttri[0]);
+        myFireRate = Double.parseDouble(weaponAttri[1]);
+        myAccuracy = Double.parseDouble(weaponAttri[2]);
+        myAmmo = Integer.parseInt(weaponAttri[3]);
+    }
+
+    /**
      * Generates a random damage amount for an attack using this weapon.
      * Uses base damage wrapped around a specified acceptable range for the random amount.
      * @return amount of damage to deal.
