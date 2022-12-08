@@ -19,10 +19,14 @@ This project was created by James R. Deal, Jered Wiegel, and Hyunggil Woo for TC
 - app.diagrams.net
   - Used to develop the UML diagram for the initial implementation
   - Updated to reflect changes within the project
-- JUNIT
+- JUnit 5
   - Implemented to test independent functionality of classes to validate correct/expected output
+- SQLite
+  - Databases used for Item stat lines.
+- DB Browser
+  - Creating and adjusting SQLite database files.
 
 ## Used Design Patterns
-- Singleton: DiceRoll
+- Singleton: DiceRoll, Database
 - Mock: Inventory (initial iteration)
 - MVC: DungeonView, DungeonController
