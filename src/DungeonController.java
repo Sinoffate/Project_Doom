@@ -67,16 +67,11 @@ public class DungeonController extends JFrame implements KeyListener {
      */
     public DungeonController() {
         myDungeon = new Dungeon(5);
-        myDoomGuy = new DoomGuy(100, "DoomGuy",
-                                new Weapon(10, 0.8, 0.5, 100, "Pistol"));
+        myDoomGuy = new DoomGuy(100, "DoomGuy", new Weapon("Pistol"));
 
-        //test items
+        //initial items
         myDoomGuy.addToInventory(new VisionPotion());
-        //myDoomGuy.addToInventory(new VisionPotion());
-        //myDoomGuy.addToInventory(new VisionPotion());
-        //myDoomGuy.addToInventory(new HealthPotion());
         myDoomGuy.addToInventory(new HealthPotion());
-        //myDoomGuy.addToInventory(new Weapon(1000, 100, 1, 1, "BFG"));
 
         //make view
         myView = new DungeonView(myDungeon.getMapSize(), myDungeon.getPlayerPos());
@@ -110,9 +105,9 @@ public class DungeonController extends JFrame implements KeyListener {
         if (theEvt.isShiftDown() && (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE)) {
             myPcs.firePropertyChange(MENU, myCurrentMenu, WEAPON_MENU);
             switch (theEvt.getKeyCode()) {
-                case KeyEvent.VK_UP -> {
-                    if (myDoomGuy.inventoryContains(new Weapon(1000, 100, 1, 1, "BFG"))) {
-                        myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon(1000, 100, 1, 1, "BFG")));
+                case KeyEvent.VK_W -> {
+                    if (myDoomGuy.inventoryContains(new Weapon("BFG"))) {
+                        myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon("BFG")));
                         //myDoomGuy.equipWeapon(new Weapon(1000, 100, 1, 1, "BFG"));
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "BFG EQUIPPED");
                     } else {
@@ -120,9 +115,9 @@ public class DungeonController extends JFrame implements KeyListener {
                     }
                     monsterAttack();
                 }
-                case KeyEvent.VK_DOWN -> {
-                    if (myDoomGuy.inventoryContains(new Weapon(1, 1, 1, 1, "Rawket Lawnchair"))) {
-                        myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon(1000, 100, 1, 1, "Rawket Lawnchair")));
+                case KeyEvent.VK_S -> {
+                    if (myDoomGuy.inventoryContains(new Weapon( "Rawket Lawnchair"))) {
+                        myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon( "Rawket Lawnchair")));
                         //myDoomGuy.equipWeapon(new Weapon(1, 1, 1, 1, "Rawket Lawnchair"));
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Rawket Lawnchair EQUIPPED");
                     } else {
@@ -130,9 +125,9 @@ public class DungeonController extends JFrame implements KeyListener {
                     }
                     monsterAttack();
                 }
-                case KeyEvent.VK_LEFT -> {
-                    if (myDoomGuy.inventoryContains(new Weapon(10, 0.8, 0.5, 10, "Pistol"))) {
-                        myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon(1000, 100, 1, 1, "Pistol")));
+                case KeyEvent.VK_A -> {
+                    if (myDoomGuy.inventoryContains(new Weapon( "Pistol"))) {
+                        myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon("Pistol")));
                         //myDoomGuy.equipWeapon(new Weapon(10, 0.8, 0.5, 10, "Pistol"));
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Pistol EQUIPPED");
                     } else {
@@ -140,9 +135,9 @@ public class DungeonController extends JFrame implements KeyListener {
                     }
                     monsterAttack();
                 }
-                case KeyEvent.VK_RIGHT -> {
-                    if (myDoomGuy.inventoryContains(new Weapon(1, 1, 1, 1, "Shotgun"))) {
-                        myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon(1000, 100, 1, 1, "Shotgun")));
+                case KeyEvent.VK_D -> {
+                    if (myDoomGuy.inventoryContains(new Weapon("Shotgun"))) {
+                        myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon( "Shotgun")));
                         //myDoomGuy.equipWeapon(new Weapon(1, 1, 1, 1, "Shotgun"));
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Shotgun EQUIPPED");
                     } else {
@@ -160,7 +155,7 @@ public class DungeonController extends JFrame implements KeyListener {
         if (theEvt.isAltDown() && (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE)) {
             myPcs.firePropertyChange(MENU, myCurrentMenu, POTION_MENU);
             switch (theEvt.getKeyCode()) {
-                case KeyEvent.VK_UP -> {
+                case KeyEvent.VK_W -> {
                     if (myDoomGuy.inventoryContains(new HealthPotion())) {
                         myDoomGuy.useItem(new HealthPotion());
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "DG HP: " + myDoomGuy.getHealth());
@@ -169,7 +164,7 @@ public class DungeonController extends JFrame implements KeyListener {
                     }
                     monsterAttack();
                 }
-                case KeyEvent.VK_DOWN -> {
+                case KeyEvent.VK_S -> {
                     if (myDoomGuy.inventoryContains(new VisionPotion())) {
                         myDungeon.useVisionPotion();
                         myDoomGuy.removeFromInventory(new VisionPotion());
@@ -402,16 +397,11 @@ public class DungeonController extends JFrame implements KeyListener {
         //new game
         if (myMenuPosition == 0) {
             myDungeon = new Dungeon(5);
-            myDoomGuy = new DoomGuy(100, "DoomGuy",
-                    new Weapon(10, 0.8, 0.5, 100, "Pistol"));
+            myDoomGuy = new DoomGuy(100, "DoomGuy", new Weapon("Pistol"));
 
-            //test items
+            //initial items
             myDoomGuy.addToInventory(new VisionPotion());
-            //myDoomGuy.addToInventory(new VisionPotion());
-            //myDoomGuy.addToInventory(new VisionPotion());
-            //myDoomGuy.addToInventory(new HealthPotion());
             myDoomGuy.addToInventory(new HealthPotion());
-            //myDoomGuy.addToInventory(new Weapon(1, 1, 1, 1, "BFG"));
 
             //dungeon pcs
             myDungeon.addPropertyChangeListener(Dungeon.HERO_POS, myView);
@@ -420,7 +410,7 @@ public class DungeonController extends JFrame implements KeyListener {
             myDungeon.addPropertyChangeListener(Dungeon.ROOM_CONTENT, myView);
 
             //Fenceposting creation
-            myPcs.firePropertyChange(RESET_MAP,null,myDungeon.getPlayerPos());
+            myPcs.firePropertyChange(RESET_MAP, null, myDungeon.getPlayerPos());
             enactMapState();
             myDungeon.setRoomVisible(myDungeon.getPlayerPos());
         }
@@ -432,18 +422,18 @@ public class DungeonController extends JFrame implements KeyListener {
 
         //watch kung fury
         if (myMenuPosition == 2) {
-            if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)){
-                Desktop desktop = Desktop.getDesktop();
-                try{
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                final Desktop desktop = Desktop.getDesktop();
+                try {
                     desktop.browse(new URI("https://www.youtube.com/watch?v=bS5P_LAqiVg"));
-                }catch(IOException | URISyntaxException ioe){
+                } catch (final IOException | URISyntaxException ioe) {
                     ioe.printStackTrace();
                 }
-            }else{
-                Runtime runtime = Runtime.getRuntime();
-                try{
+            } else {
+                final Runtime runtime = Runtime.getRuntime();
+                try {
                     runtime.exec("xdg-open " + "https://www.youtube.com/watch?v=bS5P_LAqiVg");
-                } catch (IOException ioe) {
+                } catch (final IOException ioe) {
                     ioe.printStackTrace();
                 }
             }
@@ -504,7 +494,7 @@ public class DungeonController extends JFrame implements KeyListener {
         if (!myDGAttacked) {
             attackRes = "Doomguy Attacks! " + myDoomGuy.attack(currentRoom.getMonster());
         } else {
-            attackRes = "Monster Attacks! " + currentRoom.getMonster().attack(myDoomGuy);
+            attackRes = currentRoom.getMonster().toString() + " Attacks! " + currentRoom.getMonster().attack(myDoomGuy);
         }
         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, attackRes);
         final String health = "DG HP: " + myDoomGuy.getHealth() + " Enemy Health: " + currentRoom.getMonster().getHealth();

@@ -6,15 +6,16 @@
 public class HealthPotion extends Item {
 
     /** Amount of health to restore. */
-    private static final int HEAL_AMOUNT = 50;
-
+    private final int myHealAmount;
 
     /**
      * Default constructor.
-     *
      */
     public HealthPotion() {
         super("Health Potion");
+        final Database db = Database.getInstance();
+        final String potVal = db.selectOne("Items", "HealthPotion");
+        myHealAmount = Integer.parseInt(potVal);
     }
 
     /**
@@ -25,7 +26,7 @@ public class HealthPotion extends Item {
         if (theDoomGuy == null) {
             throw new NullPointerException("HP.use : null user passed");
         }
-        theDoomGuy.setHealth(theDoomGuy.getHealth() + HEAL_AMOUNT);
+        theDoomGuy.setHealth(theDoomGuy.getHealth() + myHealAmount);
     }
 
     /**

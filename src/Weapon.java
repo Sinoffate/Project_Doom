@@ -25,7 +25,7 @@ public class Weapon extends Item {
      * @param theAmm ammo.
      * @param theNam name.
      */
-    public Weapon(final double theDam, final double theFR, final double theAcc,
+    private Weapon(final double theDam, final double theFR, final double theAcc,
                   final int theAmm, final String theNam) {
         super(theNam);
         if (theDam <= 0 || theFR <= 0 || theAcc <= 0 || theAcc > 1 || theAmm < 1) {
@@ -36,6 +36,23 @@ public class Weapon extends Item {
         myFireRate = theFR;
         myAccuracy = theAcc;
         myAmmo = theAmm;
+    }
+
+    /**
+     * Database Constructor for Weapons
+     * @param theWeaponName name of weapon to create.
+     */
+    public Weapon(final String theWeaponName) {
+        super(theWeaponName);
+        final Database db = Database.getInstance();
+        final String[] weaponAttri = db.selectOne("Weapons", theWeaponName).split(",");
+        if (weaponAttri.length != 4) {
+            throw new RuntimeException("Bad DB return, length: " + weaponAttri.length);
+        }
+        myDamage = Double.parseDouble(weaponAttri[0]);
+        myFireRate = Double.parseDouble(weaponAttri[1]);
+        myAccuracy = Double.parseDouble(weaponAttri[2]);
+        myAmmo = Integer.parseInt(weaponAttri[3]);
     }
 
     /**

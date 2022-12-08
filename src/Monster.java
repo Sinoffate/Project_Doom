@@ -1,4 +1,4 @@
-public class Monster extends DungeonCharacter {
+abstract public class Monster extends DungeonCharacter {
 
     /**
      * Default constructor for DC abstract objects.
