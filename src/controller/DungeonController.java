@@ -1,7 +1,6 @@
 package controller;
-import model.*;
 import view.DungeonView;
-
+import model.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -28,20 +27,20 @@ public class DungeonController extends JFrame implements KeyListener {
     private static final Dimension SCREEN_SIZE = KIT.getScreenSize();
 
     /** List of normal menu items. */
-    private static final String[] MAIN_MENU = {"model.Inventory", "Save", "Load", "Quit"};
+    private static final String[] MAIN_MENU = {"Inventory", "Save", "Load", "Quit"};
     /** List of map menu items. */
-    private static final String[] MAP_MENU = {"WASD to move!", "Hold Shift for Guns", "Hold Alt for Potions",
-                                                 "Escape key for menu!", "Watch Kung Fury!"};
-    /** List of model.Weapon Radial menu items. */
-    private static final String[] WEAPON_MENU = {"&lt;: Pistol", "^: BFG", "v: Rawket Lawnchair", "&gt;: Shotgun"};
+    private static final String[] MAP_MENU = {"WASD to move", "E to Loot Room", "Hold Shift for Guns", "Hold Alt for Potions",
+                                                 "Escape key for menu", "Watch Kung Fury!"};
+    /** List of Weapon Radial menu items. */
+    private static final String[] WEAPON_MENU = {"W: BFG", "A: Pistol", "S: Rawket Lawnchair", "D: Shotgun"};
     /** List of Potion Radial menu items. */
-    private static final String[] POTION_MENU = {"^: Health Potion", "v: Vision Potion"};
+    private static final String[] POTION_MENU = {"W: Health Potion", "S: Vision Potion"};
     /** List of Title menu items. */
     private static final String[] TITLE_MENU = {"New Game", "Quit", "Watch Kung Fury!"};
 
-    /** model.Dungeon Object. */
+    /** Dungeon Object. */
     private Dungeon myDungeon;
-    /** model.Dungeon View Object. */
+    /** Dungeon View Object. */
     private final DungeonView myView;
     /** Hero Object. */
     private DoomGuy myDoomGuy;
@@ -66,12 +65,11 @@ public class DungeonController extends JFrame implements KeyListener {
     private boolean myDGAttacked;
 
     /**
-     * Creates a new controller.DungeonController object.
-     *
+     * Creates a new DungeonController object.
      */
     public DungeonController() {
         myDungeon = new Dungeon(5);
-        myDoomGuy = new DoomGuy(100, "model.DoomGuy", new Weapon("Pistol"));
+        myDoomGuy = new DoomGuy(100, "DoomGuy", new Weapon("Pistol"));
 
         //initial items
         myDoomGuy.addToInventory(new VisionPotion());
@@ -112,40 +110,40 @@ public class DungeonController extends JFrame implements KeyListener {
                 case KeyEvent.VK_W -> {
                     if (myDoomGuy.inventoryContains(new Weapon("BFG"))) {
                         myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon("BFG")));
-                        //myDoomGuy.equipWeapon(new model.Weapon(1000, 100, 1, 1, "BFG"));
+                        //myDoomGuy.equipWeapon(new Weapon(1000, 100, 1, 1, "BFG"));
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "BFG EQUIPPED");
                     } else {
-                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No BFG in model.Inventory :(");
+                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No BFG in Inventory :(");
                     }
                     monsterAttack();
                 }
                 case KeyEvent.VK_S -> {
-                    if (myDoomGuy.inventoryContains(new Weapon( "Rawket Lawnchair"))) {
-                        myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon( "Rawket Lawnchair")));
-                        //myDoomGuy.equipWeapon(new model.Weapon(1, 1, 1, 1, "Rawket Lawnchair"));
+                    if (myDoomGuy.inventoryContains(new Weapon("Rawket Lawnchair"))) {
+                        myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon("Rawket Lawnchair")));
+                        //myDoomGuy.equipWeapon(new Weapon(1, 1, 1, 1, "Rawket Lawnchair"));
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Rawket Lawnchair EQUIPPED");
                     } else {
-                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Rawket Lawnchair in model.Inventory :(");
+                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Rawket Lawnchair in Inventory :(");
                     }
                     monsterAttack();
                 }
                 case KeyEvent.VK_A -> {
-                    if (myDoomGuy.inventoryContains(new Weapon( "Pistol"))) {
+                    if (myDoomGuy.inventoryContains(new Weapon("Pistol"))) {
                         myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon("Pistol")));
-                        //myDoomGuy.equipWeapon(new model.Weapon(10, 0.8, 0.5, 10, "Pistol"));
+                        //myDoomGuy.equipWeapon(new Weapon(10, 0.8, 0.5, 10, "Pistol"));
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Pistol EQUIPPED");
                     } else {
-                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Pistol in model.Inventory :(");
+                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Pistol in Inventory :(");
                     }
                     monsterAttack();
                 }
                 case KeyEvent.VK_D -> {
                     if (myDoomGuy.inventoryContains(new Weapon("Shotgun"))) {
-                        myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon( "Shotgun")));
-                        //myDoomGuy.equipWeapon(new model.Weapon(1, 1, 1, 1, "Shotgun"));
+                        myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon("Shotgun")));
+                        //myDoomGuy.equipWeapon(new Weapon(1, 1, 1, 1, "Shotgun"));
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Shotgun EQUIPPED");
                     } else {
-                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Shotgun in model.Inventory :(");
+                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Shotgun in Inventory :(");
                     }
                     monsterAttack();
                 }
@@ -174,7 +172,7 @@ public class DungeonController extends JFrame implements KeyListener {
                         myDoomGuy.removeFromInventory(new VisionPotion());
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Vision Potion Used!");
                     } else {
-                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Vision Potion in model.Inventory!");
+                        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Vision Potion in Inventory!");
                     }
                     monsterAttack();
                 }
@@ -276,6 +274,10 @@ public class DungeonController extends JFrame implements KeyListener {
         }
     }
 
+    /**
+     * Unused
+     * @param theEvt the event to be processed
+     */
     @Override
     public void keyTyped(final KeyEvent theEvt) {
         return;
@@ -302,7 +304,7 @@ public class DungeonController extends JFrame implements KeyListener {
     private void enactMapState() {
         myCurrentState = GameState.MAP_STATE;
 
-        String[] old = myCurrentMenu;
+        final String[] old = myCurrentMenu;
         myCurrentMenu = MAP_MENU;
         myPcs.firePropertyChange(MENU, old, myCurrentMenu);
         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null,  "Entered Map State");
@@ -315,7 +317,7 @@ public class DungeonController extends JFrame implements KeyListener {
         myCurrentState = GameState.MENU_STATE;
         myMenuPosition = 0;
 
-        String[] old = myCurrentMenu;
+        final String[] old = myCurrentMenu;
         myCurrentMenu = MAIN_MENU;
 
         myPcs.firePropertyChange(MENU, old, MAIN_MENU);
@@ -323,11 +325,14 @@ public class DungeonController extends JFrame implements KeyListener {
         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null,  "Entered Menu State");
     }
 
+    /**
+     * Load into Title state, set default menu position.
+     */
     private void enactTitleState() {
         myCurrentState = GameState.TITLE_STATE;
         myMenuPosition = 0;
 
-        String[] old = myCurrentMenu;
+        final String[] old = myCurrentMenu;
         myCurrentMenu = TITLE_MENU;
 
         myPcs.firePropertyChange(MENU, old, TITLE_MENU);
@@ -335,6 +340,9 @@ public class DungeonController extends JFrame implements KeyListener {
         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null,  "Entered Title State");
     }
 
+    /**
+     * Loot current room.
+     */
     private void lootRoom() {
         final Room currentRoom = myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
                 (int) myDungeon.getPlayerPos().getY());
@@ -378,7 +386,7 @@ public class DungeonController extends JFrame implements KeyListener {
         //player inventory
         if (myMenuPosition == 0) {
             myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
-            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "model.Inventory Contains:");
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Inventory Contains:");
             if (myDoomGuy.getInventory().isEmpty()) {
                 myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Nothing you poor fool!");
             }
@@ -401,7 +409,7 @@ public class DungeonController extends JFrame implements KeyListener {
         //new game
         if (myMenuPosition == 0) {
             myDungeon = new Dungeon(5);
-            myDoomGuy = new DoomGuy(100, "model.DoomGuy", new Weapon("Pistol"));
+            myDoomGuy = new DoomGuy(100, "DoomGuy", new Weapon("Pistol"));
 
             //initial items
             myDoomGuy.addToInventory(new VisionPotion());
@@ -496,7 +504,7 @@ public class DungeonController extends JFrame implements KeyListener {
         String attackRes;
 
         if (!myDGAttacked) {
-            attackRes = "Doomguy Attacks! " + myDoomGuy.attack(currentRoom.getMonster());
+            attackRes = myDoomGuy.attack(currentRoom.getMonster());
         } else {
             attackRes = currentRoom.getMonster().toString() + " Attacks! " + currentRoom.getMonster().attack(myDoomGuy);
         }
@@ -532,7 +540,7 @@ public class DungeonController extends JFrame implements KeyListener {
         frame.pack();
 
 //        frame.setSize(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2);
-        frame.setSize(1000,500);
+        frame.setSize(1000, 500);
         frame.setLocation(SCREEN_SIZE.width / 2 - frame.getWidth() / 2,
                         SCREEN_SIZE.height / 2 - frame.getHeight() / 2);
         frame.addKeyListener(this);
@@ -540,6 +548,11 @@ public class DungeonController extends JFrame implements KeyListener {
         frame.setVisible(true);
     }
 
+    /**
+     * Starts game instance.
+     * @param theArgs unused.
+     * @throws IOException when IO doesn't work.
+     */
     public static void main(final String[] theArgs) throws IOException {
         DungeonController controller = new DungeonController();
 

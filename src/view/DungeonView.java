@@ -1,7 +1,7 @@
 package view;
 
-import controller.DungeonController;
 import model.Dungeon;
+import controller.DungeonController;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -53,7 +53,7 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
     private JPanel myMapPanel;
     /** GUI GridBag Constraints. */
     private GridBagConstraints myGBC;
-    /** GUI collection of Map's model.Room Labels. */
+    /** GUI collection of Map's Room Labels. */
     private Map<Point, JLabel> myMapLabels;
     /** GUI collection of Map's Content Labels. */
     private Map<Point, JLabel> myOverlayLabels;
@@ -268,7 +268,7 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
      * Called when player selects new game.
      * @param thePlayerPos starting position of player.
      */
-    public void resetMap(final Point thePlayerPos) {
+    private void resetMap(final Point thePlayerPos) {
         for (int row = 0; row < myDungeonSize; row++) {
             for (int col = 0; col < myDungeonSize; col++) {
                 JLabel lb = myMapLabels.get(new Point(row, col));
