@@ -52,10 +52,10 @@ public class TestDoomGuy {
 
     @Test
     void tGetWeapStats() {
-        assertEquals(1d, d.getAccuracy(),"Bad Acc");
-        assertEquals(1d, d.getFireRate(),"Bad FR");
-        assertEquals(1d, d.getDamage(),"Bad Dam");
-        assertEquals(1, d.getAmmo(),"Bad Ammo");
+        assertEquals(0.5d, d.getAccuracy(),"Bad Acc");
+        assertEquals(0.8d, d.getFireRate(),"Bad FR");
+        assertEquals(10d, d.getDamage(),"Bad Dam");
+        assertEquals(100, d.getAmmo(),"Bad Ammo");
     }
 
     @Test
@@ -106,8 +106,8 @@ public class TestDoomGuy {
 
         int count = 0;
         for (int i = 0; i < 100; i++) {
-            if (d.attack(m).equals("Attack Missed") && count++ > 30) {
-                fail("Missed with 80% accuracy 30 times");
+            if (d.attack(m).equals("Attack Missed") && count++ > 70) {
+                fail("Missed with 50% accuracy 70 times");
             }
         }
 
@@ -115,24 +115,21 @@ public class TestDoomGuy {
 
     @Test
     void tTakeDamage() {
-        Monster m = new Monster(1000,"M",new Weapon(1,1,1,1,"MW"));
-        d = new DoomGuy(1,"DG",
-                new Weapon(10,1,1,1,"Weapon Test"));
+        Monster m = new BaronOfHell();
 
-        ArrayList<String> al = new ArrayList<>();
-        for (int i = 8; i <= 12; i++) {
-            al.add("Damage taken: " + i);
+        d.setHealth(1000);
+        Weapon w = new Weapon("Shotgun");
+        d.addToInventory(w);
+        d.equipWeapon(w);
+
+        //40d,0.5f,0.7a,20am
+
+        for (int i = 0; i < 20; i++) {
+            m.attack(d);
         }
 
-        for (int i = 0; i < 10; i++) {
-            String res = d.attack(m);
-            if (!al.contains(res)) {
-                fail("Attack was: " + res);
-            }
-        }
-
-        if (m.getHealth() < (1000-120) || m.getHealth() > (1000-80)) {
-            fail("Bad damage, M HP: " + m.getHealth());
+        if (d.getHealth() < (1000-(6*20*0.6)) || d.getHealth() > (1000-(4*20*0.4))) {
+            fail("Bad damage, D HP: " + d.getHealth());
         }
     }
 
@@ -144,7 +141,7 @@ public class TestDoomGuy {
     @Test
     void tAddToInv() {
         Item test = new Pillar("JUnit");
-        Weapon weap = new Weapon(1,1,1,1,"Test");
+        Weapon weap = new Weapon("Shotgun");
         Inventory inv = d.getInventory();
         assertEquals(1,inv.inventorySize());
         d.addToInventory(test);
@@ -156,7 +153,7 @@ public class TestDoomGuy {
     @Test
     void tInvContains() {
         Item test = new Pillar("JUnit");
-        Weapon weap = new Weapon(1,1,1,1,"Test");
+        Weapon weap = new Weapon("Shotgun");
         Inventory inv = d.getInventory();
         assertEquals(1,inv.inventorySize());
         d.addToInventory(test);
@@ -172,7 +169,7 @@ public class TestDoomGuy {
     @Test
     void tInvRemove() {
         Item test = new Pillar("JUnit");
-        Weapon weap = new Weapon(1,1,1,1,"Test");
+        Weapon weap = new Weapon("Shotgun");
         Inventory inv = d.getInventory();
         assertEquals(1,inv.inventorySize());
         d.addToInventory(test);
@@ -190,20 +187,18 @@ public class TestDoomGuy {
 
     @Test
     void tEquipWeap() {
-        Weapon weap = new Weapon(1,1,1,1,"Test");
+        Weapon weap = new Weapon("Shotgun");
         d.addToInventory(weap);
 
         Weapon temp = d.getEquippedWeapon();
 
         d.equipWeapon(weap);
 
-        assertEquals(new Weapon(1,1,1,1,"Test"),
-                d.getEquippedWeapon(),"Weap swap");
+        assertEquals(weap,d.getEquippedWeapon(),"Weap swap");
 
         d.equipWeapon(temp);
 
-        assertEquals(new Weapon(1,1,1,1,"DGW"),
-                d.getEquippedWeapon(),"and back");
+        assertEquals(temp,d.getEquippedWeapon(),"and back");
     }
 
 }

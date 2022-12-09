@@ -15,8 +15,7 @@ public class TestRoom {
 
         @BeforeEach
         void reset() {
-                //TODO: May need to ask the sql server to instantiate both the inventory, monster, and stuff
-                testMonster = new Monster(25, "Caco", new Weapon(1,1,1,1,"DGW"));
+                testMonster = new Imp();
 
                 room = new Room();
         }

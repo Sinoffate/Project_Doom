@@ -9,35 +9,30 @@ public class TestWeapon {
 
     @BeforeEach
     void reset() {
-        w = new Weapon(1,1,1,1,"Weapon Test");
+        w = new Weapon("Pistol");
     }
 
-    @Test
-    void testConBad() {
-        assertThrows(IllegalArgumentException.class,
-                ()-> new Weapon(0,1,1,1," "), "Damage constructor test");
-        assertThrows(IllegalArgumentException.class,
-                ()-> new Weapon(1,0,1,1," "), "FR constructor test");
-        assertThrows(IllegalArgumentException.class,
-                ()-> new Weapon(1,1,0,1," "), "Acc constructor test min");
-        assertThrows(IllegalArgumentException.class,
-                ()-> new Weapon(1,1,1.1,1," "), "Acc constructor max");
-        assertThrows(IllegalArgumentException.class,
-                ()-> new Weapon(1,1,1,0," "), "Ammo constructor test");
-        assertThrows(IllegalArgumentException.class,
-                ()-> new Weapon(1,1,1,1,""), "String constructor test empty");
-        assertThrows(IllegalArgumentException.class,
-                ()-> new Weapon(1,1,1,1,null), "String constructor null");
-    }
-
-    @Test
-    void testConGood() {
-        Weapon test = new Weapon(1,1,1,1,"a");
-    }
+//    @Test
+//    void testConBad() {
+//        assertThrows(IllegalArgumentException.class,
+//                ()-> new Weapon(0,1,1,1," "), "Damage constructor test");
+//        assertThrows(IllegalArgumentException.class,
+//                ()-> new Weapon(1,0,1,1," "), "FR constructor test");
+//        assertThrows(IllegalArgumentException.class,
+//                ()-> new Weapon(1,1,0,1," "), "Acc constructor test min");
+//        assertThrows(IllegalArgumentException.class,
+//                ()-> new Weapon(1,1,1.1,1," "), "Acc constructor max");
+//        assertThrows(IllegalArgumentException.class,
+//                ()-> new Weapon(1,1,1,0," "), "Ammo constructor test");
+//        assertThrows(IllegalArgumentException.class,
+//                ()-> new Weapon(1,1,1,1,""), "String constructor test empty");
+//        assertThrows(IllegalArgumentException.class,
+//                ()-> new Weapon(1,1,1,1,null), "String constructor null");
+//    }
 
     @Test
     void testDamageGS() {
-        assertEquals(1d,w.getDamage(),"Damage not equal");
+        assertEquals(10d,w.getDamage(),"Damage not equal");
         w.setDamage(2d);
         assertEquals(2d,w.getDamage(),"Damage not equal");
         assertThrows(IllegalArgumentException.class,
@@ -48,7 +43,7 @@ public class TestWeapon {
 
     @Test
     void testFRGS() {
-        assertEquals(1d,w.getFireRate(),"FR not equal");
+        assertEquals(0.8d,w.getFireRate(),"FR not equal");
         w.setFireRate(2d);
         assertEquals(2d,w.getFireRate(),"FR not equal");
         assertThrows(IllegalArgumentException.class,
@@ -59,9 +54,9 @@ public class TestWeapon {
 
     @Test
     void testAccGS() {
-        assertEquals(1d,w.getAccuracy(),"Acc not equal");
-        w.setAccuracy(0.5d);
         assertEquals(0.5d,w.getAccuracy(),"Acc not equal");
+        w.setAccuracy(0.6d);
+        assertEquals(0.6d,w.getAccuracy(),"Acc not equal");
         assertThrows(IllegalArgumentException.class,
                 ()-> w.setAccuracy(0), "Acc 0 test");
         assertThrows(IllegalArgumentException.class,
@@ -72,18 +67,18 @@ public class TestWeapon {
 
     @Test
     void testAmmoGS() {
-        assertEquals(1,w.getAmmo(),"Ammo not equal");
+        assertEquals(100,w.getAmmo(),"Ammo not equal");
         w.setAmmo(2);
         assertEquals(2,w.getAmmo(),"Ammo not equal");
-        assertThrows(IllegalArgumentException.class,
-                ()-> w.setAmmo(0), "Ammo 0 test");
+        w.setAmmo(0);
+        assertEquals(0,w.getAmmo(), "Ammo 0 test");
         assertThrows(IllegalArgumentException.class,
                 ()-> w.setAmmo(-1), "Ammo -1 test");
     }
 
     @Test
     void testNameG() {
-        assertEquals("Weapon Test",w.getName(),"Name not equal");
+        assertEquals("Pistol",w.getName(),"Name not equal");
     }
 
     @Test
@@ -94,7 +89,7 @@ public class TestWeapon {
         }
         while (!rolls.isEmpty()) {
             double val = rolls.pop();
-            if (val < 0.8 || val > 1.2) {
+            if (val < 8 || val > 12) {
                 fail("Bad damage roll: " + val);
             }
         }
@@ -102,14 +97,14 @@ public class TestWeapon {
 
     @Test
     void testToString() {
-        assertEquals("Weapon Test " + 1,w.toString(),"ToString bad");
+        assertEquals("Pistol " + 100,w.toString(),"ToString bad");
     }
 
     @Test
     void testEquals() {
-        Weapon b = new Weapon(1,1,1,1,"Weapon Test");
+        Weapon b = new Weapon("Pistol");
         assertEquals(w,b,"Weapon copy not equal");
-        b = new Weapon(1,1,1,1,"Bad Weapon Test");
+        b = new Weapon("WaifuBlade");
         assertNotEquals(w,b,"Bad Weapon copy is equal");
         Object c = new Object();
         assertNotEquals(w,c,"Base Object is equal");
