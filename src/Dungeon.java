@@ -25,6 +25,9 @@ public class Dungeon {
      * @param theMapSize size of map x and y.
      */
     public Dungeon(final int theMapSize) {
+        if (theMapSize < 1) {
+            throw new IllegalArgumentException("Map size must be greater than 0");
+        }
         this.myMapSize = theMapSize;
         this.myHeroPosition = new Point(0, 0);
         this.myEnterPos = new Point(0, 0);
@@ -93,45 +96,6 @@ public class Dungeon {
         itemsToAdd.add(new Weapon("BFG"));
         itemsToAdd.add(new Weapon("Shotgun"));
         itemsToAdd.add(new Weapon("Rawket Lawnchair"));
-        final int drugsToAdd = (int) ((myMapSize * myMapSize - itemsToAdd.size()) * 0.3);
-        for (int i = 0; i < drugsToAdd; i++) {
-            itemsToAdd.add(DiceRoll.nextInt(3) > 0 ? new HealthPotion() : new VisionPotion());
-        }
-        return itemsToAdd;
-    }
-
-    private void addItems() {
-        final Queue<Item> itemList = chooseItemsHelper();
-        final HashSet<Point> invalidLoc = new HashSet<>();
-        Point thisRoll;
-
-        for (int i = 0; i < 7; i++) {
-            thisRoll = new Point(DiceRoll.nextInt(myMapSize - 1), DiceRoll.nextInt(myMapSize - 1));
-            while (invalidLoc.contains(thisRoll)) {
-                thisRoll = new Point(DiceRoll.nextInt(myMapSize - 1), DiceRoll.nextInt(myMapSize - 1));
-            }
-            myRooms[(int) thisRoll.getX()][(int) thisRoll.getY()].getInventory().addItem(itemList.poll());
-            invalidLoc.add(thisRoll);
-        }
-
-        while (!itemList.isEmpty()) {
-            thisRoll = new Point(DiceRoll.nextInt(myMapSize - 1), DiceRoll.nextInt(myMapSize - 1));
-            while (invalidLoc.contains(thisRoll)) {
-                thisRoll = new Point(DiceRoll.nextInt(myMapSize - 1), DiceRoll.nextInt(myMapSize - 1));
-            }
-            myRooms[(int) thisRoll.getX()][(int) thisRoll.getY()].getInventory().addItem(itemList.poll());
-        }
-    }
-
-    private Queue<Item> chooseItemsHelper() {
-        final Queue<Item> itemsToAdd = new LinkedList<>();
-        itemsToAdd.add(new Pillar("Bob"));
-        itemsToAdd.add(new Pillar("George"));
-        itemsToAdd.add(new Pillar("Sir Von Whiskers the III Twice Removed"));
-        itemsToAdd.add(new Pillar("Not Null But Close Enough"));
-        itemsToAdd.add(new Weapon(1000, 69, 1, 420, "BFG"));
-        itemsToAdd.add(new Weapon(40, 0.5, 0.7, 20, "Shotgun"));
-        itemsToAdd.add(new Weapon(80, 0.2, 0.9, 3, "Rawket Lawnchair"));
         final int drugsToAdd = (int) ((myMapSize * myMapSize - itemsToAdd.size()) * 0.3);
         for (int i = 0; i < drugsToAdd; i++) {
             itemsToAdd.add(DiceRoll.nextInt(3) > 0 ? new HealthPotion() : new VisionPotion());

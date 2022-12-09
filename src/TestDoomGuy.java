@@ -9,22 +9,22 @@ public class TestDoomGuy {
 
     @BeforeEach
     void reset() {
-        d = new DoomGuy(1,"DG",new Weapon(1,1,1,1,"DGW"));
+        d = new DoomGuy(1,"DG",new Weapon("Pistol"));
     }
 
     @Test
     void testConBad() {
         assertThrows(IllegalArgumentException.class,
                 () -> new DoomGuy(0,"DG",
-                        new Weapon(1,1,1,1,"DG Test")),
+                        new Weapon("Pistol")),
                 "DG con 0 HP");
         assertThrows(IllegalArgumentException.class,
                 () -> new DoomGuy(1,"",
-                        new Weapon(1,1,1,1,"DG Test")),
+                        new Weapon("Pistol")),
                 "DG con emp string");
         assertThrows(IllegalArgumentException.class,
                 () -> new DoomGuy(1,null,
-                        new Weapon(1,1,1,1,"DG Test")),
+                        new Weapon("Pistol")),
                 "DG con null name");
         assertThrows(IllegalArgumentException.class,
                 () -> new DoomGuy(1,"DG",
@@ -34,7 +34,7 @@ public class TestDoomGuy {
 
     @Test
     void testConGood() {
-        d = new DoomGuy(1,"DG",new Weapon(1,1,1,1,"DGW"));
+        d = new DoomGuy(1,"DG",new Weapon("Pistol"));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class TestDoomGuy {
     @Test
     void tGWeap() {
         Weapon t = d.getEquippedWeapon();
-        assertEquals(t,new Weapon(1,1,1,1,"DGW"),"Bad weap");
+        assertEquals(t,new Weapon("Pistol"),"Bad weap");
     }
 
     @Test
@@ -87,7 +87,11 @@ public class TestDoomGuy {
 
     @Test
     void tAttackAcc100() {
-        Monster m = new Monster(1000,"M",new Weapon(1,1,1,1,"MW"));
+        Monster m = new BaronOfHell();
+
+        Weapon w = new Weapon("BFG");
+        d.addToInventory(w);
+        d.equipWeapon(w);
 
         for (int i = 0; i < 20; i++) {
             if (d.attack(m).equals("Attack Missed")) {
@@ -97,10 +101,8 @@ public class TestDoomGuy {
     }
 
     @Test
-    void tAttackAcc80() {
-        Monster m = new Monster(1000,"M",new Weapon(1,1,1,1,"MW"));
-        d = new DoomGuy(1,"DG",
-                new Weapon(1,1,.8,1,"Weapon Test"));
+    void tAttackAcc50() {
+        Monster m = new Imp();
 
         int count = 0;
         for (int i = 0; i < 100; i++) {
@@ -109,20 +111,6 @@ public class TestDoomGuy {
             }
         }
 
-    }
-
-    @Test
-    void tAttackAcc0() {
-        Monster m = new Monster(1000,"M",new Weapon(1,1,1,1,"MW"));
-        d = new DoomGuy(1,"DG",
-                new Weapon(1,1,.00000001d,1,"Weapon Test"));
-
-        int count = 0;
-        for (int i = 0; i < 100; i++) {
-            if (!d.attack(m).equals("Attack Missed") && count++ > 1) {
-                fail("Hit twice somehow");
-            }
-        }
     }
 
     @Test

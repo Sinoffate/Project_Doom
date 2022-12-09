@@ -75,9 +75,10 @@ public class TestDungeon {
         d.movePlayer(new Point(0, 1));
         assertEquals(new Point(0, 1), d.getPlayerPos(), "Dungeon movePlayer test");
         d.movePlayer(new Point(1, 1));
-        assertEquals(new Point(1, 1), d.getPlayerPos(), "Dungeon movePlayer test");
+        assertEquals(new Point(1, 2), d.getPlayerPos(), "Dungeon movePlayer test");
         d.movePlayer(new Point(0, 1));
-        assertEquals(new Point(0, 1), d.getPlayerPos(), "Dungeon movePlayer test");
+        assertEquals(new Point(1, 3), d.getPlayerPos(), "Dungeon movePlayer test");
     }
+
 
 }

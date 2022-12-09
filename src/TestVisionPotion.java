@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestVisionPotion {
 
-    Item p;
+    VisionPotion p;
 
     @BeforeEach
     void reset() {
@@ -28,12 +28,19 @@ public class TestVisionPotion {
     }
 
     @Test
+    void testGetRadius() {
+        assertEquals(5,  p.getRadius(), "Bad radius");
+    }
+
+    @Test
     void testEquals() {
         Item i = new VisionPotion();
         VisionPotion p2 = new VisionPotion();
         assertEquals(p,i,"Item vs VisionPotion instantiation bad");
         assertEquals(p,p2,"VisionPotion vs VisionPotion instantiation bad");
         assertEquals(p,p,"Self test bad");
-
     }
+
+
+
 }

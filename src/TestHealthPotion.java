@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestHealthPotion {
 
-    Item p;
+    HealthPotion p;
 
     @BeforeEach
     void reset() {
@@ -35,6 +35,12 @@ public class TestHealthPotion {
         assertEquals(p,i,"Item vs HealthPotion instantiation bad");
         assertEquals(p,p2,"HealthPotion vs HealthPotion instantiation bad");
         assertEquals(p,p,"Self test bad");
+    }
 
+
+    @Test
+    void testUseHealthPotion() {
+        DungeonCharacter player = new DoomGuy(100, "doomGuy", new Weapon("Pistol"));
+        p.useHealthPotion(player);
     }
 }
