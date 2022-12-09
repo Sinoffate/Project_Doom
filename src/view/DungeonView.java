@@ -1,3 +1,8 @@
+package view;
+
+import controller.DungeonController;
+import model.Dungeon;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
@@ -48,7 +53,7 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
     private JPanel myMapPanel;
     /** GUI GridBag Constraints. */
     private GridBagConstraints myGBC;
-    /** GUI collection of Map's Room Labels. */
+    /** GUI collection of Map's model.Room Labels. */
     private Map<Point, JLabel> myMapLabels;
     /** GUI collection of Map's Content Labels. */
     private Map<Point, JLabel> myOverlayLabels;

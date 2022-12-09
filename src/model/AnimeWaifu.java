@@ -1,8 +1,10 @@
+package model;
+
 public class AnimeWaifu extends Monster {
     static final int THE_LOVE = 2;
 
     public AnimeWaifu() {
-        super(400, "AnimeWaifu", new Weapon("WaifuBlade"));
+        super(400, "model.AnimeWaifu", new Weapon("WaifuBlade"));
     }
 
     /**
@@ -18,7 +20,7 @@ public class AnimeWaifu extends Monster {
         this.setHealth((int) (this.getHealth() - Math.floor(theDamageTaken)));
         theOpponent.setHealth((int) theDamageTaken + THE_LOVE);
 
-        return "Damage taken: " + (int) theDamageTaken + " but AnimeWaifu still loves you, so you heal "
+        return "Damage taken: " + (int) theDamageTaken + " but model.AnimeWaifu still loves you, so you heal "
                 + THE_LOVE + " HP: " + ((int) theDamageTaken - THE_LOVE);
     }
 }

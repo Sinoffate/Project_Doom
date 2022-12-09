@@ -1,3 +1,5 @@
+package model;
+
 import java.awt.Point;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -6,10 +8,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Dungeon {
-    static final String HERO_POS = "HeroPos";
-    static final String TEXT_UPDATE = "TextUpdate";
-    static final String ROOM_VIS = "RoomVisibility";
-    static final String ROOM_CONTENT = "RoomContent";
+    public static final String HERO_POS = "HeroPos";
+    public static final String TEXT_UPDATE = "TextUpdate";
+    public static final String ROOM_VIS = "RoomVisibility";
+    public static final String ROOM_CONTENT = "RoomContent";
     private int myMapSize;
 
     private Room[][] myRooms;
@@ -20,7 +22,7 @@ public class Dungeon {
     private final PropertyChangeSupport myPcs;
 
     /**
-     * Creates a new Dungeon object.
+     * Creates a new model.Dungeon object.
      *
      * @param theMapSize size of map x and y.
      */
@@ -139,7 +141,7 @@ public class Dungeon {
     }
 
     /**
-     * @return The Monster in the room
+     * @return The model.Monster in the room
      */
     public Monster getMonster() {
         return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getMonster();

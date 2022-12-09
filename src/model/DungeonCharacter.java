@@ -1,6 +1,8 @@
+package model;
+
 public abstract class DungeonCharacter {
 
-    /** Weapon currently equipped. */
+    /** model.Weapon currently equipped. */
     private Weapon myEquippedWeapon;
 
     /** Current health. */

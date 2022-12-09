@@ -1,3 +1,5 @@
+package model;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,12 +24,12 @@ public final class Database {
 
     /**
      * This accesses a databases that are already created in the source file.
-     * Database will contain non-null references.
+     * model.Database will contain non-null references.
      */
     private Database() {
         try {
             myDs = new SQLiteDataSource();
-            myDs.setUrl("jdbc:sqlite:Project_Doom.db");
+            myDs.setUrl("jdbc:sqlite:src/model/Project_Doom.db");
         } catch (final Exception event) {
             event.printStackTrace();
             System.exit(0);
@@ -39,36 +41,36 @@ public final class Database {
         return INSTANCE;
     }
 
-    /**
-     * Insert data into the tables.
-     * This method may incremet the count of items if they are the same item
-     * name and type cannot be null.
-     *
-     * @param theName name of an item to add
-     * @param theType Type of an item to add
-     *
-     * Source from: <a href="https://www.sqlitetutorial.net/sqlite-java/insert/">Hello</a>
-     */
-    public void insert(final String theName, final String theType) {
-
-        if (theName == null || theType == null) {
-            throw new IllegalArgumentException("Name cannot be null");
-        }
-
-        final String query = "INSERT INTO inventory (NAME, TYPE) VALUES (?, ?)";
-
-        try (Connection connection = myDs.getConnection();
-             PreparedStatement prepStatement = connection.prepareStatement(query)) {
-                
-            prepStatement.setString(1, theName);
-            prepStatement.setString(2, theType);
-            prepStatement.executeUpdate();
-
-        } catch (final SQLException event) {
-            event.printStackTrace();
-            System.exit(0);
-        }
-    }
+//    /**
+//     * Insert data into the tables.
+//     * This method may incremet the count of items if they are the same item
+//     * name and type cannot be null.
+//     *
+//     * @param theName name of an item to add
+//     * @param theType Type of item to add
+//     *
+//     * Source from: <a href="https://www.sqlitetutorial.net/sqlite-java/insert/">Hello</a>
+//     */
+//    public void insert(final String theName, final String theType) {
+//
+//        if (theName == null || theType == null) {
+//            throw new IllegalArgumentException("Name cannot be null");
+//        }
+//
+//        final String query = "INSERT INTO inventory (NAME, TYPE) VALUES (?, ?)";
+//
+//        try (Connection connection = myDs.getConnection();
+//             PreparedStatement prepStatement = connection.prepareStatement(query)) {
+//
+//            prepStatement.setString(1, theName);
+//            prepStatement.setString(2, theType);
+//            prepStatement.executeUpdate();
+//
+//        } catch (final SQLException event) {
+//            event.printStackTrace();
+//            System.exit(0);
+//        }
+//    }
 
     /**
      * Selects specific item from specific table and returns associated values.

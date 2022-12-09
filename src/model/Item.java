@@ -1,3 +1,5 @@
+package model;
+
 /**
  * Simple item abstract for items to inherit from.
  * @author james deal, jered wiegel
@@ -14,7 +16,7 @@ public abstract class Item {
      */
     public Item(final String theName) {
         if (theName == null || "".equals(theName)) {
-            throw new IllegalArgumentException("Item.con fucked itself. Name empty or null.");
+            throw new IllegalArgumentException("model.Item.con fucked itself. Name empty or null.");
         }
         myName = theName;
     }
