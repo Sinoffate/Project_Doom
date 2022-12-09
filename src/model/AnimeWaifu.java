@@ -18,7 +18,7 @@ public class AnimeWaifu extends Monster {
             throw new IllegalArgumentException("DunCha.takeDamage, positive number passed: " + theDamageTaken);
         }
         this.setHealth((int) (this.getHealth() - Math.floor(theDamageTaken)));
-        theOpponent.setHealth((int) theDamageTaken + THE_LOVE);
+        theOpponent.setHealth(theOpponent.getHealth() + THE_LOVE);
 
         return "Damage taken: " + (int) theDamageTaken + " but model.AnimeWaifu still loves you, so you heal "
                 + THE_LOVE + " HP: " + ((int) theDamageTaken - THE_LOVE);
