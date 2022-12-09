@@ -1,7 +1,7 @@
 public abstract class DungeonCharacter {
 
     /** Weapon currently equipped. */
-    protected Weapon myEquippedWeapon;
+    private Weapon myEquippedWeapon;
 
     /** Current health. */
     private int myHealth;
@@ -14,7 +14,7 @@ public abstract class DungeonCharacter {
      * @param theName name of DC.
      * @param theWeapon starting weapon of DC.
      */
-    public DungeonCharacter(final int theHealth, final String theName, final Weapon theWeapon) {
+    DungeonCharacter(final int theHealth, final String theName, final Weapon theWeapon) {
         if (theHealth <= 0 || theName == null || "".equals(theName) || theWeapon == null) {
             throw new IllegalArgumentException("DC.con bad arguments: HP:" + theHealth);
         }
@@ -33,13 +33,18 @@ public abstract class DungeonCharacter {
             throw new NullPointerException("DunCha.attack, opponent was null");
         }
 
+        if (myEquippedWeapon.getAmmo() < 1) {
+            return myEquippedWeapon.getName() + " has no ammo left!";
+        }
+        myEquippedWeapon.setAmmo(myEquippedWeapon.getAmmo()-1);
+
         //Roll accuracy
         if (DiceRoll.nextFloat() > myEquippedWeapon.getAccuracy()) {
             return "Attack Missed";
         }
 
         //Roll Damage
-        return theOpponent.takeDamage(myEquippedWeapon.rollDamage());
+        return theOpponent.takeDamage(myEquippedWeapon.rollDamage(), this);
     }
 
     /**
@@ -47,7 +52,7 @@ public abstract class DungeonCharacter {
      * @param theDamageTaken Damage amount to round down and apply to character.
      * @return String containing resulting information for use in View.
      */
-    public String takeDamage(final double theDamageTaken) {
+    public String takeDamage(final double theDamageTaken, final DungeonCharacter theOpponent) {
         if (theDamageTaken < 0) {
             throw new IllegalArgumentException("DunCha.takeDamage, positive number passed: " + theDamageTaken);
         }
@@ -134,6 +139,10 @@ public abstract class DungeonCharacter {
      */
     public Weapon getEquippedWeapon() {
         return myEquippedWeapon;
+    }
+
+    public void setEquippedWeapon(Weapon theWeapon) {
+        this.myEquippedWeapon = theWeapon;
     }
 
     @Override

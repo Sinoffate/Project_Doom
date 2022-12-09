@@ -50,11 +50,54 @@ public class Dungeon {
             for (int j = 0; j < myMapSize; j++) {
                 if (DiceRoll.nextFloat(1) < 0.5 && myRooms[i][j].getMonster() == null &&
                     !(i == myEnterPos.x && j == myEnterPos.y)) {
-                    myRooms[i][j].setMonster(new Monster(100, "Baron of Hell",
-                            new Weapon(10, 0.8, 0.5, 10, "Whip")));
+                    if (DiceRoll.nextInt(2) != 0) {
+                        myRooms[i][j].setMonster(new BaronOfHell());
+                    } else {
+                        myRooms[i][j].setMonster(new Imp());
+                    }
                 }
             }
         }
+        myRooms[myExitPos.x][myExitPos.y].setMonster(new AnimeWaifu());
+    }
+
+    private void addItems() {
+        final Queue<Item> itemList = chooseItemsHelper();
+        final HashSet<Point> invalidLoc = new HashSet<>();
+        Point thisRoll;
+
+        for (int i = 0; i < 7; i++) {
+            thisRoll = new Point(DiceRoll.nextInt(myMapSize - 1), DiceRoll.nextInt(myMapSize - 1));
+            while (invalidLoc.contains(thisRoll)) {
+                thisRoll = new Point(DiceRoll.nextInt(myMapSize - 1), DiceRoll.nextInt(myMapSize - 1));
+            }
+            myRooms[(int) thisRoll.getX()][(int) thisRoll.getY()].getInventory().addItem(itemList.poll());
+            invalidLoc.add(thisRoll);
+        }
+
+        while (!itemList.isEmpty()) {
+            thisRoll = new Point(DiceRoll.nextInt(myMapSize - 1), DiceRoll.nextInt(myMapSize - 1));
+            while (invalidLoc.contains(thisRoll)) {
+                thisRoll = new Point(DiceRoll.nextInt(myMapSize - 1), DiceRoll.nextInt(myMapSize - 1));
+            }
+            myRooms[(int) thisRoll.getX()][(int) thisRoll.getY()].getInventory().addItem(itemList.poll());
+        }
+    }
+
+    private Queue<Item> chooseItemsHelper() {
+        final Queue<Item> itemsToAdd = new LinkedList<>();
+        itemsToAdd.add(new Pillar("Polymorphic Bob"));
+        itemsToAdd.add(new Pillar("Encapsulated George"));
+        itemsToAdd.add(new Pillar("Sir Von Whiskers the III Twice Inherited"));
+        itemsToAdd.add(new Pillar("Abstracted Not Null But Close Enough"));
+        itemsToAdd.add(new Weapon("BFG"));
+        itemsToAdd.add(new Weapon("Shotgun"));
+        itemsToAdd.add(new Weapon("Rawket Lawnchair"));
+        final int drugsToAdd = (int) ((myMapSize * myMapSize - itemsToAdd.size()) * 0.3);
+        for (int i = 0; i < drugsToAdd; i++) {
+            itemsToAdd.add(DiceRoll.nextInt(3) > 0 ? new HealthPotion() : new VisionPotion());
+        }
+        return itemsToAdd;
     }
 
     private void addItems() {
@@ -214,8 +257,8 @@ public class Dungeon {
         final Point oldPos = myHeroPosition;
         myHeroPosition = thePos;
         myPcs.firePropertyChange(HERO_POS, oldPos, myHeroPosition);
-        myPcs.firePropertyChange(TEXT_UPDATE, null, "Hero Position: " + " x = " +  myHeroPosition.getX() + ", y = " + myHeroPosition.getY());
-        System.out.println("Hero Position: " + " x = " +  myHeroPosition.getX() + ", y = " + myHeroPosition.getY());
+        //myPcs.firePropertyChange(TEXT_UPDATE, null, "Hero Position: " + " x = " +  myHeroPosition.getX() + ", y = " + myHeroPosition.getY());
+        //System.out.println("Hero Position: " + " x = " +  myHeroPosition.getX() + ", y = " + myHeroPosition.getY());
     }
 
     /**

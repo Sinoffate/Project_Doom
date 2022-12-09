@@ -3,81 +3,59 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import org.sqlite.SQLiteDataSource;
 
 /**
- * This class sets up SQLite database. Database should be accessed by the Inventory and Hero.
- * Inventory should be accessed by the entire inventory and Hero.
+ * This class sets up SQLite database.
+ * Items table and Weapons table are already created, and they will be
+ * accessed by this database class.
  * 
  * @author Jered Wiegel, Hyunggil Woo
- * @version 1.1
+ * @version 1.2
  */
-public class Database {
+public final class Database {
 
-    //TODO: a
-    private SQLiteDataSource myDs = null;
+    /** Returns an instance of this object. Singleton. */
+    private static final Database INSTANCE = new Database();
+    /** The database we have. */
+    private SQLiteDataSource myDs;
 
     /**
-     * Constructor for Database.
+     * This accesses a databases that are already created in the source file.
      * Database will contain non-null references.
      */
-    public Database() {
+    private Database() {
         try {
             myDs = new SQLiteDataSource();
             myDs.setUrl("jdbc:sqlite:Project_Doom.db");
-        } catch (final Exception theEvent) {
-            theEvent.printStackTrace();
+        } catch (final Exception event) {
+            event.printStackTrace();
             System.exit(0);
         }
         System.out.println("Opened database successfully");
-        createTables(); 
+    }
+
+    public static Database getInstance() {
+        return INSTANCE;
     }
 
     /**
-     * This method creates the tables in the database.
-     */
-    private void createTables() {
-        
-        //TODO: Does the number of items automatically increment?
-        String query = "CREATE TABLE IF NOT EXISTS inventory ( " +
-                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "NAME TEXT NOT NULL, " +
-                "TYPE TEXT NOT NULL )";
-
-        // query to create a table for a player
-        String query2 = "CREATE TABLE IF NOT EXISTS player ( " +
-                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "NAME TEXT NOT NULL, " +
-                "HEALTH INTEGER NOT NULL, " +
-                "INVENTORY_ID INTEGER NOT NULL, " +
-                "FOREIGN KEY (INVENTORY_ID) REFERENCES inventory(ID) )";
-
-
-        try (Connection connection = myDs.getConnection();
-             Statement statement = connection.createStatement()) {
-
-            statement.executeUpdate(query);
-            statement.executeUpdate(query2);
-
-        } catch (final SQLException theEvent) {
-            theEvent.printStackTrace();
-            System.exit(0);
-        }
-    }
-
-    /**
-     * This method inserts data into the tables.
+     * Insert data into the tables.
      * This method may incremet the count of items if they are the same item
+     * name and type cannot be null.
      *
      * @param theName name of an item to add
      * @param theType Type of an item to add
-     * 
-     * Source from: https://www.sqlitetutorial.net/sqlite-java/insert/
+     *
+     * Source from: <a href="https://www.sqlitetutorial.net/sqlite-java/insert/">Hello</a>
      */
     public void insert(final String theName, final String theType) {
 
-        String query = "INSERT INTO inventory (NAME, TYPE) VALUES (?, ?)";
+        if (theName == null || theType == null) {
+            throw new IllegalArgumentException("Name cannot be null");
+        }
+
+        final String query = "INSERT INTO inventory (NAME, TYPE) VALUES (?, ?)";
 
         try (Connection connection = myDs.getConnection();
              PreparedStatement prepStatement = connection.prepareStatement(query)) {
@@ -86,94 +64,54 @@ public class Database {
             prepStatement.setString(2, theType);
             prepStatement.executeUpdate();
 
-        } catch (final SQLException theEvent) {
-            theEvent.printStackTrace();
+        } catch (final SQLException event) {
+            event.printStackTrace();
             System.exit(0);
         }
     }
 
     /**
-     * Updates values in the corresponding database.
-     * 
-     * @param theName
-     * @param theType
+     * Selects specific item from specific table and returns associated values.
+     * @param theTable name of the Table.
+     * @param theEntry name of the item.
+     * Source: <a href="https://www.sqlitetutorial.net/sqlite-java/select/">Hello</a>
      */
-    public void update(final String theName, final String theType) {
-
-        //TODO: Check if the below query statement is correct
-
-        String query = "UPDATE inventory SET NAME = ? , " +
-                        "VALUE = ?";
-
-        try (Connection connection = myDs.getConnection();
-             PreparedStatement prepStatement = connection.prepareStatement(query)) {
-
-            // sets the corresponding values
-            prepStatement.setString(1, theName);
-            prepStatement.setString(2, theType);
-
-            prepStatement.executeUpdate();
-
-        } catch (final SQLException theEvent) {
-            theEvent.printStackTrace();
-            System.exit(0);
+    public String selectOne(final String theTable, final String theEntry) {
+        if (theTable == null) {
+            throw new IllegalArgumentException("Null table name");
         }
-    }
-
-    /**
-     * Removes an item from the inventory
-     * @param theItem
-     * 
-     * https://www.sqlitetutorial.net/sqlite-java/delete/
-     */
-    public void delete(final String theItem) {
-
-        String query = "DELETE FROM inventory WHERE NAME = ?";
-
-        try (Connection connection = myDs.getConnection();
-                PreparedStatement prepStatement = connection.prepareStatement(query)) {
-
-                prepStatement.setString(1, theItem);
-
-                prepStatement.executeUpdate();
-                
-        } catch (final SQLException theEvent) {
-            theEvent.printStackTrace();
-            System.exit(0);
+        if (!"Items".equals(theTable) && !"Weapons".equals(theTable)) {
+            throw new IllegalArgumentException("Bad table name: " + theTable);
         }
-    }
 
-    /**
-     * Resets all items in the inventory
-     */
-    public void reset() {
-
-    }
-
-    /**
-     * Selects all items stored in the table. I am not sure if data from both table gets selected.
-     * 
-     * Source: https://www.sqlitetutorial.net/sqlite-java/select/
-     */
-    public void selectAll() {
-
-        // Need to check if the below query statement is correct.
-        String query = "SELECT * FROM inventory";
+        final String query = "SELECT * FROM " + theTable + " WHERE Name = '" + theEntry + "'";
+        final StringBuilder sb = new StringBuilder();
 
         try (Connection connection = myDs.getConnection();
              Statement statement = connection.createStatement();
-             ResultSet rs = statement.executeQuery(query);) {
-            
-            while (rs.next()) {
-                System.out.println("ID: " + rs.getInt("ID") + "\t" +
-                                    "Name: " + rs.getString("NAME") + "\t" +
-                                    "Type: " + rs.getString("TYPE"));
+             ResultSet rs = statement.executeQuery(query)) {
+
+            if ("Items".equals(theTable)) {
+                final String res = rs.getString("Value");
+                sb.append(res);
             }
-        } catch (final SQLException theEvent) {
-            theEvent.printStackTrace();
+            if ("Weapons".equals(theTable)) {
+                String res = rs.getString("Damage");
+                sb.append(res).append(",");
+                res = rs.getString("FireRate");
+                sb.append(res).append(",");
+                res = rs.getString("Accuracy");
+                sb.append(res).append(",");
+                res = rs.getString("Ammo");
+                sb.append(res);
+
+            }
+
+        } catch (final SQLException event) {
+            event.printStackTrace();
             System.exit(0);
         }
+
+        return sb.toString();
     }
-
-
 }

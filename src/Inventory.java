@@ -15,7 +15,7 @@ import java.util.Set;
 public class Inventory {
 
     /** contain non-null objects*/
-    private Map< Item , Integer > myInventory;
+    private Map<Item , Integer> myInventory;
 
     /**
      * List of items will be stored into a list of items
@@ -90,6 +90,17 @@ public class Inventory {
 
     public Set<Item> getItems() {
         return myInventory.keySet();
+    }
+
+    public Item getItem(final Item theItem) {
+        if (containsItem(theItem)) {
+            for (Item i: myInventory.keySet()) {
+                if (i.equals(theItem)) {
+                    return i;
+                }
+            }
+        }
+        return null;
     }
 
     /**
