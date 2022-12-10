@@ -5,7 +5,7 @@ public class BaronOfHell extends Monster {
     static final int THE_RECOIL = 10;
 
     public BaronOfHell() {
-        super(100, "model.BaronOfHell", new Weapon("Claw"));
+        super(100, "BaronOfHell", new Weapon("Claw"));
     }
 
     /**
@@ -21,7 +21,7 @@ public class BaronOfHell extends Monster {
         this.setHealth((int) (this.getHealth() - Math.floor(theDamageTaken)));
         theOpponent.setHealth(theOpponent.getHealth() - THE_RECOIL);
 
-        return "Baron takes " + (int) theDamageTaken + " and hits model.DoomGuy for " + THE_RECOIL + "!";
+        return "Baron takes " + (int) theDamageTaken + " and hits DoomGuy for " + THE_RECOIL + "!";
     }
 
 }

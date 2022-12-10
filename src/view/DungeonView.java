@@ -143,6 +143,8 @@ public class DungeonView extends JPanel implements PropertyChangeListener {
 
         //setup text log
         myLogTextArea = new JTextArea(10, 30);
+        myLogTextArea.setEditable(false);
+        myLogTextArea.setFocusable(false);
         myLogTextArea.setFont(new Font("Serif", Font.PLAIN, 16));
         myLogScrollPane = new JScrollPane(myLogTextArea);
         myLogScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

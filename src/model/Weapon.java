@@ -1,7 +1,7 @@
 package model;
 
 /**
- * Concrete model.Weapon class for DungeonCharacters.
+ * Concrete Weapon class for DungeonCharacters.
  * @author james deal, jered wiegel
  * @version 0.1
  */
@@ -31,7 +31,7 @@ public class Weapon extends Item {
                   final int theAmm, final String theNam) {
         super(theNam);
         if (theDam <= 0 || theFR <= 0 || theAcc <= 0 || theAcc > 1 || theAmm < 1) {
-            throw new IllegalArgumentException("model.Weapon.con failed with following"
+            throw new IllegalArgumentException("Weapon.con failed with following"
                                      + " values: " + theDam + theFR + theAcc + theAmm);
         }
         myDamage = theDam;
@@ -41,7 +41,7 @@ public class Weapon extends Item {
     }
 
     /**
-     * model.Database Constructor for Weapons
+     * Database Constructor for Weapons
      * @param theWeaponName name of weapon to create.
      */
     public Weapon(final String theWeaponName) {
@@ -77,7 +77,7 @@ public class Weapon extends Item {
 
     public void setDamage(final double theDamage) {
         if (theDamage <= 0) {
-            throw new IllegalArgumentException("model.Weapon.setDam given value: " + theDamage);
+            throw new IllegalArgumentException("Weapon.setDam given value: " + theDamage);
         }
         this.myDamage = theDamage;
     }
@@ -88,7 +88,7 @@ public class Weapon extends Item {
 
     public void setFireRate(final double theFireRate) {
         if (theFireRate <= 0) {
-            throw new IllegalArgumentException("model.Weapon.setFR given value: " + theFireRate);
+            throw new IllegalArgumentException("Weapon.setFR given value: " + theFireRate);
         }
         this.myFireRate = theFireRate;
     }
@@ -99,7 +99,7 @@ public class Weapon extends Item {
 
     public void setAccuracy(final double theAccuracy) {
         if (theAccuracy <= 0 || theAccuracy > 1) {
-            throw new IllegalArgumentException("model.Weapon.setAcc given value: " + theAccuracy);
+            throw new IllegalArgumentException("Weapon.setAcc given value: " + theAccuracy);
         }
         this.myAccuracy = theAccuracy;
     }
@@ -110,7 +110,7 @@ public class Weapon extends Item {
 
     public void setAmmo(final int theAmmo) {
         if (theAmmo < 0) {
-            throw new IllegalArgumentException("model.Weapon.setAmmo given value: " + theAmmo);
+            throw new IllegalArgumentException("Weapon.setAmmo given value: " + theAmmo);
         }
         this.myAmmo = theAmmo;
     }

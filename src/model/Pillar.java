@@ -1,13 +1,13 @@
 package model;
 
 /**
- * model.Pillar item class.
+ * Pillar item class.
  * @author james deal, jered wiegel
  * @version 0.1
  */
 public class Pillar extends Item {
     /**
-     * model.Pillar creation.
+     * Pillar creation.
      * @param theName name of pillar.
      */
     public Pillar(final String theName) {

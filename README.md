@@ -27,6 +27,7 @@ This project was created by James R. Deal, Jered Wiegel, and Hyunggil Woo for TC
   - Creating and adjusting SQLite database files.
 
 ## Used Design Patterns
-- Singleton: model.DiceRoll, model.Database
-- Mock: model.Inventory (initial iteration)
-- MVC: view.DungeonView, controller.DungeonController
+- Singleton: DiceRoll, Database
+- Mock: Inventory (initial iteration)
+- MVC: DungeonView, DungeonController
+- Observer: PropertyChangeListeners
