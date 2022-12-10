@@ -29,7 +29,7 @@ public class TestVisionPotion {
 
     @Test
     void testGetRadius() {
-        assertEquals(5,  p.getRadius(), "Bad radius");
+        assertEquals(1,  p.getRadius(), "Bad radius");
     }
 
     @Test

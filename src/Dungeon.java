@@ -156,7 +156,7 @@ public class Dungeon {
         return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getInventory();
     }
 
-    private void setItems(final Inventory theItems) {
+    public void setItems(final Inventory theItems) {
         myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].setInventory(theItems);
     }
 

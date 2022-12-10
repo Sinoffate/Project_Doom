@@ -60,7 +60,16 @@ public class TestDungeon {
 
     @Test
     void testGetMonster() {
-        assertNull(d.getMonster(), "Dungeon getMonster test");
+        assertNotNull(d.getRoom(4,4).getMonster(), "Dungeon getMonster test");
+        d.movePlayer(new Point(4,4));
+        assertNotNull(d.getMonster(), "Waifu");
+    }
+
+    @Test
+    void testHasMonster() {
+        assertFalse(d.hasMonster(), "Dungeon hasMonster test");
+        d.movePlayer(new Point(4,4));
+        assertTrue(d.hasMonster(), "Waifu");
     }
 
     @Test
@@ -81,7 +90,7 @@ public class TestDungeon {
     }
 
     @Test
-    void TestToString() {
+    void testToString() {
         assertEquals("Map Size: 5 Hero Position: java.awt.Point[x=0,y=0] Enter Position: java.awt.Point[x=0,y=0]" +
                     " Exit Position: java.awt.Point[x=4,y=4]", d.toString(), "Dungeon toString test");
     }
