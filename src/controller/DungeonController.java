@@ -6,8 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.IOException;
-import java.io.Serial;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.swing.*;
@@ -17,7 +16,7 @@ import javax.swing.*;
  * @author Jered Wiegel and James Deal
  * @version 1.0
  */
-public class DungeonController extends JFrame implements KeyListener {
+public class DungeonController extends JFrame implements KeyListener, Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

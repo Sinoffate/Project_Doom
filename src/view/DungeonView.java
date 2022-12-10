@@ -10,6 +10,7 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
@@ -25,7 +26,7 @@ https://docs.oracle.com/javase/tutorial/uiswing/layout/gridbag.html
  * @author james deal
  * @version 0.3.33 this is (not) the end
  */
-public class DungeonView extends JPanel implements PropertyChangeListener {
+public class DungeonView extends JPanel implements PropertyChangeListener, Serializable {
 
     @Serial
     private static final long serialVersionUID = 4L;

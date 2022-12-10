@@ -1,10 +1,12 @@
 package model;
 
+import java.io.Serializable;
+
 /**
   * @author Hyunggil Woo
   * @author 1.2
   */
-public class Room {
+public class Room implements Serializable {
 
     /** Inventory<String> is non-null object*/
     private Inventory myInventory;
