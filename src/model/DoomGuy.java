@@ -1,5 +1,12 @@
 package model;
 
+/**
+ * DoomGuy is the main character of the game. He is the only character that can
+ * move around the map and interact with the environment.
+ *
+ * @author James R. Deal
+ * @version 1.0
+ */
 public class DoomGuy extends DungeonCharacter {
 
     /** Max health allowed for DGuy. */
@@ -37,6 +44,10 @@ public class DoomGuy extends DungeonCharacter {
         }
     }
 
+    /**
+     * Get the number of pillars collected.
+     * @return number of pillars collected.
+     */
     public int pillarCount() {
         return myPillarCount;
     }
@@ -62,6 +73,10 @@ public class DoomGuy extends DungeonCharacter {
         }
     }
 
+    /**
+     * This class provides the logic for the player
+     * to heal themselves.
+     */
     public void useItem(final Item theItem) {
         if (theItem == null) {
             throw new NullPointerException("DG.useItem : null item passed");
@@ -83,8 +98,6 @@ public class DoomGuy extends DungeonCharacter {
         //System.out.println(myInventory.toString());
         return myInventory.containsItem(theItem);
     }
-
-    //GetSet Methods
 
     /**
      * Get max health DGuy allowed to have.

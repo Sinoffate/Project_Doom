@@ -35,6 +35,10 @@ public abstract class Item {
         return false;
     }
 
+    /**
+     * defines hashcode based on name used for equality.
+     * @return hashcode based on name.
+     */
     @Override
     public int hashCode() {
         return this.myName.hashCode();
@@ -42,7 +46,7 @@ public abstract class Item {
 
     /**
      * Name of item.
-     * @return name.
+     * @return name of item.
      */
     public String getName() {
         return myName;

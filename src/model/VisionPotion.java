@@ -20,10 +20,18 @@ public class VisionPotion extends Item {
         myRadius = Integer.parseInt(potVal);
     }
 
+    /**
+     * Returns the vision range of the potion.
+     * @return vision range.
+     */
     public int getRadius() {
         return myRadius;
     }
 
+    /**
+     * Returns the name of the item.
+     * @return name of item.
+     */
     @Override
     public String toString() {
         return getName();

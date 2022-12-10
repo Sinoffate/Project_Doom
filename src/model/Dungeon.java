@@ -7,23 +7,35 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * Dungeon class provides the main game backend logic.
+ * @author Jered Wiegel
+ * @version 1.0
+ */
 public class Dungeon {
+    /** Constant for the Hero position property changes. */
     public static final String HERO_POS = "HeroPos";
+    /** Constant for the updates to text log property changes. */
     public static final String TEXT_UPDATE = "TextUpdate";
+    /** Constant for the updates to the map property changes. */
     public static final String ROOM_VIS = "RoomVisibility";
+    /** Constant for the updates to the map property changes. */
     public static final String ROOM_CONTENT = "RoomContent";
+    /** Variable holds squareroot of the size of the map. */
     private int myMapSize;
-
+    /** Variable holds all the rooms in the map. */
     private Room[][] myRooms;
+    /** Variable holds the current room the hero is in. */
     private Point myHeroPosition;
+    /** Variable holds the location of the entrance to the dungeon. */
     private Point myEnterPos;
+    /** Variable holds the location of the exit of the dungeon. */
     private Point myExitPos;
-
+    /** Variable facilitates the property changes to fire. */
     private final PropertyChangeSupport myPcs;
 
     /**
      * Creates a new Dungeon object.
-     *
      * @param theMapSize size of map x and y.
      */
     public Dungeon(final int theMapSize) {
@@ -37,6 +49,10 @@ public class Dungeon {
         addItems();
     }
 
+    /**
+     * Backend logic that builds each of the rooms in the dungeon.
+     * @return the 2D array of rooms.
+     */
     private Room[][] generateDungeon() {
         Room[][] dungeon = new Room[myMapSize][myMapSize];
         for (int i = 0; i < myMapSize; i++) {
@@ -47,6 +63,9 @@ public class Dungeon {
         return dungeon;
     }
 
+    /**
+     * Backend logic that adds monsters to the dungeon.
+     */
     private void addMonsters() {
         for (int i = 0; i < myMapSize; i++) {
             for (int j = 0; j < myMapSize; j++) {
@@ -63,6 +82,9 @@ public class Dungeon {
         myRooms[myExitPos.x][myExitPos.y].setMonster(new AnimeWaifu());
     }
 
+    /**
+     * Backend logic that adds items to the dungeon.
+     */
     private void addItems() {
         final Queue<Item> itemList = chooseItemsHelper();
         final HashSet<Point> invalidLoc = new HashSet<>();
@@ -86,6 +108,10 @@ public class Dungeon {
         }
     }
 
+    /**
+     * Helper method for addItems.
+     * @return a queue of items.
+     */
     private Queue<Item> chooseItemsHelper() {
         final Queue<Item> itemsToAdd = new LinkedList<>();
         itemsToAdd.add(new Pillar("Polymorphic Bob"));
@@ -102,6 +128,12 @@ public class Dungeon {
         return itemsToAdd;
     }
 
+    /**
+     * Class that grabs the room passed in
+     * @param theRow row of the room
+     * @param theCol column of the room
+     * @return the room at the row and column
+     */
     public Room getRoom(final int theRow, final int theCol) {
         if (theRow < 0 || theRow >= myMapSize || theCol < 0 || theCol >= myMapSize) {
             throw new IllegalArgumentException("Out of bounds");
@@ -110,6 +142,7 @@ public class Dungeon {
     }
 
     /**
+     * Gets the square root of the map size.
      * @return the myMapSize
      */
     public int getMapSize() {
@@ -117,6 +150,7 @@ public class Dungeon {
     }
 
     /**
+     * Gets the hero's current position.
      * @return The Hero's position as a Point.
      */
     public Point getPlayerPos() {
@@ -124,16 +158,15 @@ public class Dungeon {
     }
 
     /**
-     *
+     * Gets the entrance position.
      * @return The Entrance Position
      */
-
     public Point getEnterFlag() {
         return myEnterPos;
     }
 
     /**
-     *
+     * Gets the exit position.
      * @return The Exit Position
      */
     public Point getExitFlag() {
@@ -141,6 +174,7 @@ public class Dungeon {
     }
 
     /**
+     * Gets the monster at the Hero's current position.
      * @return The Monster in the room
      */
     public Monster getMonster() {
@@ -148,6 +182,7 @@ public class Dungeon {
     }
 
     /**
+     * Gets the inventory of the room at the Hero's current position.
      * @return A list of items
      */
 
@@ -155,14 +190,26 @@ public class Dungeon {
         return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getInventory();
     }
 
+    /**
+     * Sets the inventory of the room at the Hero's current position.
+     * @param theItems The new inventory
+     */
     private void setItems(final Inventory theItems) {
         myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].setInventory(theItems);
     }
 
+    /**
+     * Checks if current hero position has a monster.
+     * @return true if there is a monster, false otherwise
+     */
     public boolean hasMonster() {
         return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getMonster() != null;
     }
 
+    /**
+     * Checks if current hero position has items.
+     * @return true if there is an item, false otherwise
+     */
     public boolean hasItems() {
         return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getInventory().inventorySize() > 0;
     }
@@ -185,6 +232,9 @@ public class Dungeon {
         myPcs.firePropertyChange(ROOM_VIS, null, theRoomLocation);
     }
 
+    /**
+     * Backend logic for usage of a Vision Potion.
+     */
     public void useVisionPotion() {
         VisionPotion vp = new VisionPotion();
 
@@ -233,6 +283,10 @@ public class Dungeon {
         myPcs.addPropertyChangeListener(thePropertyName, theListener);
     }
 
+    /**
+     * Provides a string representation of important dungeon information.
+     * @return a string representation of the dungeon
+     */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Map Size: ").append(myMapSize).append(" Hero Position: ").append(myHeroPosition).append(" Enter Position: ").append(myEnterPos).append(" Exit Position: ").append(myExitPos);

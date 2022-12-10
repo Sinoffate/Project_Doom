@@ -46,7 +46,7 @@ public class Inventory {
 
     /**
      * Remove a thing from an inventory.
-     * Modifies the itself. 
+     * Modifies instance of inventory.
      * Effect: If count of item >= 1, count = count - 1, else count = 0
      * if thing does not exist, throw illegalArgumentException
      *
@@ -67,7 +67,6 @@ public class Inventory {
     /**
      * Checks if Item is present in model.Inventory.
      * throws IllegalArgumentException if item is null. Nothing is modified.
-     * 
      * @param theObject is non-null
      * @return true if thing is present, ow false.
      */
@@ -82,17 +81,25 @@ public class Inventory {
      * Returns number of unique items in Inventory
      * Size of inventory must be >= 0. It does not modify itself
      * or other fields.
-     * 
      * @return number of items in inventory.
      */
     public int inventorySize() {
         return this.myInventory.size();
     }
 
+    /**
+     * Returns a set of all items in inventory.
+     * @return set of items in inventory.
+     */
     public Set<Item> getItems() {
         return myInventory.keySet();
     }
 
+    /**
+     * Gets an item from inventory.
+     * @param theItem items to check for
+     * @return item if it exists, else null
+     */
     public Item getItem(final Item theItem) {
         if (containsItem(theItem)) {
             for (Item i: myInventory.keySet()) {
@@ -106,7 +113,6 @@ public class Inventory {
 
     /**
      * Prints a String version of the entire list of items.
-     * 
      * @return String version of a general inventory.
      */
     public String toString() {
@@ -117,6 +123,10 @@ public class Inventory {
         return sb.toString();
     }
 
+    /**
+     * Checks if an inventory is empty.
+     * @return true if inventory is empty, else false.
+     */
     public boolean isEmpty() {
         return myInventory.isEmpty();
     }

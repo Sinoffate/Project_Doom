@@ -66,15 +66,27 @@ public class Weapon extends Item {
         return (DiceRoll.nextFloat(DEVIANCE) + (1 - (DEVIANCE / 2))) * this.myDamage;
     }
 
+    /**
+     * Returns the name and ammo of the weapon.
+     * @return name and ammo as a String
+     */
     @Override
     public String toString() {
         return this.getName() + " " + myAmmo;
     }
 
+    /**
+     * Gets the damage of the weapon.
+     * @return damage.
+     */
     public double getDamage() {
         return myDamage;
     }
 
+    /**
+     * Sets the damage of the weapon.
+     * @param theDamage New damage value
+     */
     public void setDamage(final double theDamage) {
         if (theDamage <= 0) {
             throw new IllegalArgumentException("Weapon.setDam given value: " + theDamage);
@@ -82,10 +94,18 @@ public class Weapon extends Item {
         this.myDamage = theDamage;
     }
 
+    /**
+     * Gets the fire-rate of the weapon.
+     * @return fire-rate.
+     */
     public double getFireRate() {
         return myFireRate;
     }
 
+    /**
+     * Sets the fire-rate of the weapon.
+     * @param theFireRate New fire-rate value
+     */
     public void setFireRate(final double theFireRate) {
         if (theFireRate <= 0) {
             throw new IllegalArgumentException("Weapon.setFR given value: " + theFireRate);
@@ -93,10 +113,18 @@ public class Weapon extends Item {
         this.myFireRate = theFireRate;
     }
 
+    /**
+     * Gets the accuracy of the weapon.
+     * @return accuracy.
+     */
     public double getAccuracy() {
         return myAccuracy;
     }
 
+    /**
+     * Sets the accuracy of the weapon.
+     * @param theAccuracy New accuracy value
+     */
     public void setAccuracy(final double theAccuracy) {
         if (theAccuracy <= 0 || theAccuracy > 1) {
             throw new IllegalArgumentException("Weapon.setAcc given value: " + theAccuracy);
@@ -104,10 +132,18 @@ public class Weapon extends Item {
         this.myAccuracy = theAccuracy;
     }
 
+    /**
+     * Gets the ammo of the weapon.
+     * @return ammo.
+     */
     public int getAmmo() {
         return myAmmo;
     }
 
+    /**
+     * Sets the ammo of the weapon.
+     * @param theAmmo New ammo value
+     */
     public void setAmmo(final int theAmmo) {
         if (theAmmo < 0) {
             throw new IllegalArgumentException("Weapon.setAmmo given value: " + theAmmo);

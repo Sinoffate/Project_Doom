@@ -6,10 +6,9 @@ package model;
   */
 public class Room {
 
-
-
     /** Inventory<String> is non-null object*/
     private Inventory myInventory;
+    /** Holds monster object*/
     private Monster myMonster;
 
     /** Flag to check if the room is visited */
@@ -71,6 +70,7 @@ public class Room {
 
     /**
      * Checks discovered status of the room.
+     * @return true if room is discovered, else false
      */
     public boolean getDiscovered() {
         
@@ -99,7 +99,7 @@ public class Room {
         sb.append("Inventory<String>:\n");
         sb.append(myInventory.toString());
 
-        // prints each monsters in the room
+        // prints each monster in the room
         sb.append("Monsters:\n");
         sb.append(myMonster.toString());
 

@@ -1,5 +1,10 @@
 package model;
 
+/**
+ * Abstract class that defines the basic attributes of characters in the game.
+ * @author James R. Deal
+ * @version 1.0
+ */
 public abstract class DungeonCharacter {
 
     /** Weapon currently equipped. */
@@ -133,7 +138,9 @@ public abstract class DungeonCharacter {
     /**
      * Determine if character is alive.
      */
-    public boolean isAlive() {  return myHealth > 0;   }
+    public boolean isAlive() {
+        return myHealth > 0;
+    }
 
     /**
      * Get currently equipped weapon.
@@ -147,6 +154,10 @@ public abstract class DungeonCharacter {
         this.myEquippedWeapon = theWeapon;
     }
 
+    /**
+     * Returns a string representation of the DungeonCharacter object.
+     * @return String representation of the DungeonCharacter object.
+     */
     @Override
     public String toString() {
         return myName;

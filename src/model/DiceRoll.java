@@ -3,7 +3,8 @@ package model;
 import java.util.Random;
 
 /**
- * This class is used to generate random numbers.
+ * This class is a utility class that
+ * is used to generate random numbers.
  * @author James Deal and Jered Wiegel
  * @version 1.0
  */

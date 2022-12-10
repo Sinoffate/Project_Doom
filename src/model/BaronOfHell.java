@@ -1,9 +1,16 @@
 package model;
 
+/**
+ * BaronOfHell is a class that defines the special behavior
+ * of a lower class monster.
+ */
 public class BaronOfHell extends Monster {
     /** The damage BoH does back to the DG. */
     static final int THE_RECOIL = 10;
 
+    /**
+     * Constructor for the BaronOfHell class.
+     */
     public BaronOfHell() {
         super(100, "BaronOfHell", new Weapon("Claw"));
     }
@@ -23,5 +30,4 @@ public class BaronOfHell extends Monster {
 
         return "Baron takes " + (int) theDamageTaken + " and hits DoomGuy for " + THE_RECOIL + "!";
     }
-
 }
