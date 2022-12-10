@@ -1,11 +1,13 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * Abstract class that defines the basic attributes of characters in the game.
  * @author James R. Deal
  * @version 1.0
  */
-public abstract class DungeonCharacter {
+public abstract class DungeonCharacter implements Serializable {
 
     /** Weapon currently equipped. */
     private Weapon myEquippedWeapon;

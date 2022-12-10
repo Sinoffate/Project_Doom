@@ -3,6 +3,7 @@ package model;
 import java.awt.Point;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -12,7 +13,7 @@ import java.util.Queue;
  * @author Jered Wiegel
  * @version 1.0
  */
-public class Dungeon {
+public class Dungeon implements Serializable {
     /** Constant for the Hero position property changes. */
     public static final String HERO_POS = "HeroPos";
     /** Constant for the updates to text log property changes. */
@@ -253,6 +254,11 @@ public class Dungeon {
      * @param theDirection direction to move.
      */
     public void movePlayer(final Point theDirection) {
+/*      Fix to known bug of holding down movement key allowing combat to be skipped.
+        Commented out because we like the bug. It's a feature now.
+        if (hasMonster()) {
+            return;
+        }*/
         setPlayerPos(new Point((int) getPlayerPos().getX() + (int) theDirection.getX(),
                                (int) getPlayerPos().getY() + (int) theDirection.getY()));
         setRoomVisible(getPlayerPos());

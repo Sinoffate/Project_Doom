@@ -1,11 +1,13 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * Simple item abstract for items to inherit from.
  * @author james deal, jered wiegel
  * @version 0.1
  */
-public abstract class Item {
+public abstract class Item implements Serializable {
 
     /** Name of item. */
     private final String myName;
