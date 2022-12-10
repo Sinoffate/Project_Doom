@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -13,7 +14,7 @@ import java.util.Set;
  * @version 1.4
  * Date: November 15, 2022
  */
-public class Inventory {
+public class Inventory implements Serializable {
 
     /** contain non-null objects*/
     private Map<Item , Integer> myInventory;

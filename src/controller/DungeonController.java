@@ -35,7 +35,7 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
     /** List of Potion Radial menu items. */
     private static final String[] POTION_MENU = {"W: Health Potion", "S: Vision Potion"};
     /** List of Title menu items. */
-    private static final String[] TITLE_MENU = {"New Game", "Quit", "Watch Kung Fury!"};
+    private static final String[] TITLE_MENU = {"New Game", "Load Game", "Quit", "Watch Kung Fury!"};
     /** PCS Type for Menu position. */
     public static final String MENU_POS = "MenuPos";
     /** PCS Type for Menu State. */
@@ -376,6 +376,7 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
      * Select main menu option.
      */
     private void selectMenuOption() {
+        //{"Inventory", "Save", "Load", "Quit"};
 
         //player inventory
         if (myMenuPosition == 0) {
@@ -391,6 +392,21 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
             myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
         }
 
+        if (myMenuPosition == 1) {
+            saveData();
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"");
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"Game Saved");
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"");
+        }
+
+        if (myMenuPosition == 2) {
+            loadData();
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"");
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"Game Loaded");
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"");
+
+        }
+
         if (myMenuPosition == 3) {
             System.exit(0);
         }
@@ -400,18 +416,24 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
      * Select title menu option.
      */
     private void selectTitleOption() {
+        //{"New Game", "Load Game", "Quit", "Watch Kung Fury!"};
+
         //new game
         if (myMenuPosition == 0) {
             setupNewGame();
         }
 
-        //quit
         if (myMenuPosition == 1) {
+            loadData();
+        }
+
+        //quit
+        if (myMenuPosition == 2) {
             System.exit(0);
         }
 
         //watch kung fury
-        if (myMenuPosition == 2) {
+        if (myMenuPosition == 3) {
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                 final Desktop desktop = Desktop.getDesktop();
                 try {
@@ -542,6 +564,87 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
         frame.addKeyListener(this);
         frame.setFocusable(true);
         frame.setVisible(true);
+    }
+
+    /**
+     * Allows for serialized saving of game state.
+     */
+    private void saveData() {
+        // Serialization
+        try {
+
+            // Saving of object in a file
+            FileOutputStream file = new FileOutputStream
+                    ("savegame.doom");
+            ObjectOutputStream out = new ObjectOutputStream
+                    (file);
+
+            // Method for serialization of object
+            out.writeObject(myDungeon);
+            out.writeObject(myDoomGuy);
+
+            out.close();
+            file.close();
+
+            System.out.println("Controller instance has been serialized\n");
+
+        } catch (IOException ex) {
+            System.out.println("IOException is caught");
+        }
+    }
+
+    /**
+     * Loads serialized game state.
+     */
+    private void loadData() {
+        // Deserialization
+        try {
+
+            // Reading the object from a file
+            FileInputStream file = new FileInputStream
+                    ("savegame.doom");
+            ObjectInputStream in = new ObjectInputStream
+                    (file);
+
+            // Method for deserialization of object
+            myDungeon = (Dungeon)in.readObject();
+            myDoomGuy = (DoomGuy)in.readObject();
+
+            in.close();
+            file.close();
+            System.out.println("Object has been deserialized\n"
+                    + "Data after Deserialization.");
+
+        } catch (IOException ex) {
+            System.out.println("IOException is caught");
+        } catch (ClassNotFoundException ex) {
+            System.out.println("ClassNotFoundException" +
+                    " is caught");
+        }
+
+        //dungeon pcs
+        myDungeon.addPropertyChangeListener(Dungeon.HERO_POS, myView);
+        myDungeon.addPropertyChangeListener(Dungeon.TEXT_UPDATE, myView);
+        myDungeon.addPropertyChangeListener(Dungeon.ROOM_VIS, myView);
+        myDungeon.addPropertyChangeListener(Dungeon.ROOM_CONTENT, myView);
+
+        myPcs.firePropertyChange(RESET_MAP, null, myDungeon.getPlayerPos());
+        enactMapState();
+        myDungeon.setRoomVisible(myDungeon.getPlayerPos());
+        loadDataHelper();
+    }
+
+    /**
+     * Helper to serialized loading, to set up room visibility again.
+     */
+    private void loadDataHelper() {
+        for (int row = 0; row < DUNGEON_SIZE; row++) {
+            for (int col = 0; col < DUNGEON_SIZE; col++) {
+                if (myDungeon.getRoom(row,col).getDiscovered()) {
+                    myDungeon.setRoomVisible(new Point(row,col));
+                }
+            }
+        }
     }
 
     /**
