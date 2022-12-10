@@ -73,8 +73,15 @@ public class TestDungeon {
     }
 
     @Test
-    void testGetRoomInventory() {
-        assertEquals(new Inventory(), d.getRoomInventory(), "Dungeon getRoomInventory test");
+    void testRoomInventory() {
+        Inventory i = d.getRoomInventory();
+        int iS = i.inventorySize();
+        i.addItem(new HealthPotion());
+        assertEquals(i, d.getRoomInventory(), "Dungeon getRoomInventory test");
+        assertEquals(iS+1,d.getRoomInventory().inventorySize(),"item not added");
+        i = new Inventory();
+        d.setItems(i);
+        assertFalse(d.hasItems(), "Empty was bad");
     }
 
     @Test

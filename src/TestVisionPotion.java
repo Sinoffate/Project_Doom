@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestVisionPotion {
@@ -51,6 +53,14 @@ public class TestVisionPotion {
         assertFalse(d.getRoom(1, 2).getDiscovered(), "Room 1,2 should not be visible");
         assertFalse(d.getRoom(2, 2).getDiscovered(), "Room 2,2 should not be visible");
         assertFalse(d.getRoom(2, 1).getDiscovered(), "Room 2,1 should not be visible");
+    }
+
+    @Test
+    void testSetRoomVis() {
+        Dungeon d = new Dungeon(5);
+        assertFalse(d.getRoom(1, 0).getDiscovered(), "Room 0,0 should be visible");
+        d.setRoomVisible(new Point(1,0));
+        assertTrue(d.getRoom(1, 0).getDiscovered(), "Room 0,0 should be visible");
     }
 
 }
