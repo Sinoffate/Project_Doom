@@ -11,7 +11,7 @@ public class VisionPotion extends Item {
     private final int myRadius;
 
     /**
-     * model.VisionPotion constructor.
+     * VisionPotion constructor.
      */
     public VisionPotion() {
         super("Vision Potion");

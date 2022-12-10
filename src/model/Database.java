@@ -24,7 +24,7 @@ public final class Database {
 
     /**
      * This accesses a databases that are already created in the source file.
-     * model.Database will contain non-null references.
+     * Database will contain non-null references.
      */
     private Database() {
         try {
@@ -34,7 +34,6 @@ public final class Database {
             event.printStackTrace();
             System.exit(0);
         }
-        System.out.println("Opened database successfully");
     }
 
     public static Database getInstance() {

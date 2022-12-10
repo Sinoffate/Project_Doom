@@ -1,9 +1,11 @@
 package model;
 
 public class Imp extends Monster {
+
     final static int FRAILTY = 10;
+
     public Imp() {
-        super(40, "model.Imp", new Weapon("FireBall"));
+        super(40, "Imp", new Weapon("FireBall"));
     }
 
     /**
@@ -19,6 +21,6 @@ public class Imp extends Monster {
         this.setHealth((int) (this.getHealth() - Math.floor(theDamageTaken)));
         this.setHealth(this.getHealth() - FRAILTY);
 
-        return "model.Imp takes " + (int) theDamageTaken + " and falls downs some stairs for " + FRAILTY + "!";
+        return "Imp takes " + (int) theDamageTaken + " and falls downs some stairs for " + FRAILTY + "!";
     }
 }

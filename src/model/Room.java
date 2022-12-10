@@ -8,7 +8,7 @@ public class Room {
 
 
 
-    /** model.Inventory<String> is non-null object*/
+    /** Inventory<String> is non-null object*/
     private Inventory myInventory;
     private Monster myMonster;
 
@@ -17,7 +17,7 @@ public class Room {
 
     /**
      * Instantiates a room containing list of items.
-     * model.Room contains a {item(1), ... , item(n) and 1 random monster
+     * Room contains a {item(1), ... , item(n) and 1 random monster
      * Items and Monsters must not contain null objects;
      *          
      */
@@ -50,7 +50,7 @@ public class Room {
     /**
      * Shows the entire items inside the inventory
      * Items are not removed from the inventory
-     * model.Inventory<String> is not modified.
+     * Inventory<String> is not modified.
      * 
      * @return name of item
      */
@@ -59,8 +59,8 @@ public class Room {
     }
 
     /**
-     * Shows the entire monsters inside the model.Inventory<String>.
-     * Monsters are not removed from model.Room
+     * Shows the entire monsters inside the Inventory<String>.
+     * Monsters are not removed from Room
      * List of monsters is not modified
      * 
      * @return name of monster
@@ -96,7 +96,7 @@ public class Room {
         StringBuilder sb = new StringBuilder();
 
         // prints each item in the room
-        sb.append("model.Inventory<String>:\n");
+        sb.append("Inventory<String>:\n");
         sb.append(myInventory.toString());
 
         // prints each monsters in the room

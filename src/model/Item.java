@@ -16,7 +16,7 @@ public abstract class Item {
      */
     public Item(final String theName) {
         if (theName == null || "".equals(theName)) {
-            throw new IllegalArgumentException("model.Item.con fucked itself. Name empty or null.");
+            throw new IllegalArgumentException("Item.con did not like itself. Name empty or null.");
         }
         myName = theName;
     }

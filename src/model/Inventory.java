@@ -6,7 +6,7 @@ import java.util.Set;
 
 /**
  * A hero can view the entire list of items.
- * model.Inventory will contain list of items and the number of it
+ * Inventory will contain list of items and the number of it
  * that can be accessed.
  * 
  * @author Hyunggil Woo
@@ -29,8 +29,8 @@ public class Inventory {
 
     /**
     * Add thing to a list of items.
-    * model.Inventory  = List of item + item
-    * this = this + theObject. New model.Item will be added with number 1
+    * Inventory  = List of item + item
+    * this = this + theObject. New Item will be added with number 1
     * If same thing already exists, increment counter 
     * Throws illegal argument exception if added item is null.
     *
@@ -38,7 +38,7 @@ public class Inventory {
     */
     public void addItem(final Item theObject) {
         if (theObject == null) {
-            throw new IllegalArgumentException("model.Item is null");
+            throw new IllegalArgumentException("Item is null");
         }
 
         myInventory.merge(theObject, 1, Integer::sum);
@@ -65,7 +65,7 @@ public class Inventory {
     }
 
     /**
-     * Checks if model.Item is present in model.Inventory.
+     * Checks if Item is present in model.Inventory.
      * throws IllegalArgumentException if item is null. Nothing is modified.
      * 
      * @param theObject is non-null
@@ -79,7 +79,7 @@ public class Inventory {
     }
 
     /**
-     * Returns number of unique items in model.Inventory
+     * Returns number of unique items in Inventory
      * Size of inventory must be >= 0. It does not modify itself
      * or other fields.
      * 

@@ -22,7 +22,7 @@ public class Dungeon {
     private final PropertyChangeSupport myPcs;
 
     /**
-     * Creates a new model.Dungeon object.
+     * Creates a new Dungeon object.
      *
      * @param theMapSize size of map x and y.
      */
@@ -141,7 +141,7 @@ public class Dungeon {
     }
 
     /**
-     * @return The model.Monster in the room
+     * @return The Monster in the room
      */
     public Monster getMonster() {
         return myRooms[(int) myHeroPosition.getX()][(int) myHeroPosition.getY()].getMonster();

@@ -37,6 +37,14 @@ public class DungeonController extends JFrame implements KeyListener {
     private static final String[] POTION_MENU = {"W: Health Potion", "S: Vision Potion"};
     /** List of Title menu items. */
     private static final String[] TITLE_MENU = {"New Game", "Quit", "Watch Kung Fury!"};
+    /** PCS Type for Menu position. */
+    public static final String MENU_POS = "MenuPos";
+    /** PCS Type for Menu State. */
+    public static final String MENU = "Menu";
+    /** PCS Type for New Game Fire. */
+    public static final String RESET_MAP = "ResetMap";
+    /** Property Change Object. */
+    private final PropertyChangeSupport myPcs;
 
     /** Dungeon Object. */
     private Dungeon myDungeon;
@@ -52,14 +60,7 @@ public class DungeonController extends JFrame implements KeyListener {
     /** Current Menu. */
     private String[] myCurrentMenu;
 
-    /** Property Change Object. */
-    private final PropertyChangeSupport myPcs;
-    /** PCS Type for Menu position. */
-    public static final String MENU_POS = "MenuPos";
-    /** PCS Type for Menu State. */
-    public static final String MENU = "Menu";
-    /** PCS Type for New Game Fire. */
-    public static final String RESET_MAP = "ResetMap";
+    private static final int DUNGEON_SIZE = 5;
 
     /** Tracks which DunCha attacked last. */
     private boolean myDGAttacked;
@@ -68,7 +69,7 @@ public class DungeonController extends JFrame implements KeyListener {
      * Creates a new DungeonController object.
      */
     public DungeonController() {
-        myDungeon = new Dungeon(5);
+        myDungeon = new Dungeon(DUNGEON_SIZE);
         myDoomGuy = new DoomGuy(100, "DoomGuy", new Weapon("Pistol"));
 
         //initial items
@@ -92,7 +93,7 @@ public class DungeonController extends JFrame implements KeyListener {
         this.addPropertyChangeListener(RESET_MAP, myView);
 
         //Fenceposting creation
-        enactMapState();
+        enactTitleState();
         myDungeon.setRoomVisible(myDungeon.getPlayerPos());
     }
 
@@ -289,7 +290,7 @@ public class DungeonController extends JFrame implements KeyListener {
     private void enactCombatState() {
         myCurrentState = GameState.COMBAT_STATE;
         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
-        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You have encountered a monster!");
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You have encountered a " + myDungeon.getMonster().toString());
         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Press Q to attack!");
 
         final Room currentRoom = myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
@@ -408,23 +409,7 @@ public class DungeonController extends JFrame implements KeyListener {
     private void selectTitleOption() {
         //new game
         if (myMenuPosition == 0) {
-            myDungeon = new Dungeon(5);
-            myDoomGuy = new DoomGuy(100, "DoomGuy", new Weapon("Pistol"));
-
-            //initial items
-            myDoomGuy.addToInventory(new VisionPotion());
-            myDoomGuy.addToInventory(new HealthPotion());
-
-            //dungeon pcs
-            myDungeon.addPropertyChangeListener(Dungeon.HERO_POS, myView);
-            myDungeon.addPropertyChangeListener(Dungeon.TEXT_UPDATE, myView);
-            myDungeon.addPropertyChangeListener(Dungeon.ROOM_VIS, myView);
-            myDungeon.addPropertyChangeListener(Dungeon.ROOM_CONTENT, myView);
-
-            //Fenceposting creation
-            myPcs.firePropertyChange(RESET_MAP, null, myDungeon.getPlayerPos());
-            enactMapState();
-            myDungeon.setRoomVisible(myDungeon.getPlayerPos());
+            setupNewGame();
         }
 
         //quit
@@ -450,6 +435,26 @@ public class DungeonController extends JFrame implements KeyListener {
                 }
             }
         }
+    }
+
+    private void setupNewGame() {
+        myDungeon = new Dungeon(5);
+        myDoomGuy = new DoomGuy(100, "DoomGuy", new Weapon("Pistol"));
+
+        //initial items
+        myDoomGuy.addToInventory(new VisionPotion());
+        myDoomGuy.addToInventory(new HealthPotion());
+
+        //dungeon pcs
+        myDungeon.addPropertyChangeListener(Dungeon.HERO_POS, myView);
+        myDungeon.addPropertyChangeListener(Dungeon.TEXT_UPDATE, myView);
+        myDungeon.addPropertyChangeListener(Dungeon.ROOM_VIS, myView);
+        myDungeon.addPropertyChangeListener(Dungeon.ROOM_CONTENT, myView);
+
+        //Fenceposting creation
+        myPcs.firePropertyChange(RESET_MAP, null, myDungeon.getPlayerPos());
+        enactMapState();
+        myDungeon.setRoomVisible(myDungeon.getPlayerPos());
     }
 
     /**
@@ -551,9 +556,8 @@ public class DungeonController extends JFrame implements KeyListener {
     /**
      * Starts game instance.
      * @param theArgs unused.
-     * @throws IOException when IO doesn't work.
      */
-    public static void main(final String[] theArgs) throws IOException {
+    public static void main(final String[] theArgs) {
         DungeonController controller = new DungeonController();
 
         controller.runGame();

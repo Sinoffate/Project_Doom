@@ -29,13 +29,17 @@ public class DiceRoll {
     }
 
     /**
-     * Rolls a random number between 0 and 1.
+     * Rolls a random number with user defined upper bound.
      * @return random number.
      */
     public static float nextFloat(final float theBound) {
         return DICE_ROLL.nextFloat(theBound);
     }
 
+    /**
+     * Rolls a random number with user defined upper bound.
+     * @return random number.
+     */
     public static int nextInt(final int theBound) {
         return DICE_ROLL.nextInt(theBound);
     }
