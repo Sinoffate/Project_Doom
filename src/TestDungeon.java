@@ -80,5 +80,10 @@ public class TestDungeon {
         assertEquals(new Point(1, 3), d.getPlayerPos(), "Dungeon movePlayer test");
     }
 
+    @Test
+    void TestToString() {
+        assertEquals("Map Size: 5 Hero Position: java.awt.Point[x=0,y=0] Enter Position: java.awt.Point[x=0,y=0]" +
+                    " Exit Position: java.awt.Point[x=4,y=4]", d.toString(), "Dungeon toString test");
+    }
 
 }
