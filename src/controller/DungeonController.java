@@ -59,7 +59,7 @@ public class DungeonController extends JFrame implements KeyListener {
     private int myMenuPosition;
     /** Current Menu. */
     private String[] myCurrentMenu;
-
+    /** Map Size Variable. */
     private static final int DUNGEON_SIZE = 5;
 
     /** Tracks which DunCha attacked last. */
@@ -121,7 +121,6 @@ public class DungeonController extends JFrame implements KeyListener {
                 case KeyEvent.VK_S -> {
                     if (myDoomGuy.inventoryContains(new Weapon("Rawket Lawnchair"))) {
                         myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon("Rawket Lawnchair")));
-                        //myDoomGuy.equipWeapon(new Weapon(1, 1, 1, 1, "Rawket Lawnchair"));
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Rawket Lawnchair EQUIPPED");
                     } else {
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Rawket Lawnchair in Inventory :(");
@@ -131,7 +130,6 @@ public class DungeonController extends JFrame implements KeyListener {
                 case KeyEvent.VK_A -> {
                     if (myDoomGuy.inventoryContains(new Weapon("Pistol"))) {
                         myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon("Pistol")));
-                        //myDoomGuy.equipWeapon(new Weapon(10, 0.8, 0.5, 10, "Pistol"));
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Pistol EQUIPPED");
                     } else {
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Pistol in Inventory :(");
@@ -141,7 +139,6 @@ public class DungeonController extends JFrame implements KeyListener {
                 case KeyEvent.VK_D -> {
                     if (myDoomGuy.inventoryContains(new Weapon("Shotgun"))) {
                         myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon("Shotgun")));
-                        //myDoomGuy.equipWeapon(new Weapon(1, 1, 1, 1, "Shotgun"));
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Shotgun EQUIPPED");
                     } else {
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No Shotgun in Inventory :(");
@@ -193,7 +190,6 @@ public class DungeonController extends JFrame implements KeyListener {
             case KeyEvent.VK_A -> {
                 switch (myCurrentState) {
                     case MAP_STATE -> myDungeon.movePlayer(new Point(-1, 0));
-                    //case MENU_STATE -> System.out.println("Menu");
                 }
             }
             case KeyEvent.VK_S -> {
@@ -205,7 +201,6 @@ public class DungeonController extends JFrame implements KeyListener {
             case KeyEvent.VK_D -> {
                 switch (myCurrentState) {
                     case MAP_STATE -> myDungeon.movePlayer(new Point(1, 0));
-                    //case MENU_STATE -> System.out.println("Menu");
                 }
             }
             case KeyEvent.VK_ESCAPE -> {
@@ -217,7 +212,7 @@ public class DungeonController extends JFrame implements KeyListener {
             case KeyEvent.VK_E -> {
                 switch (myCurrentState) {
                     case MAP_STATE -> lootRoom();
-                    case MENU_STATE -> selectMenuOption(); //select menu option
+                    case MENU_STATE -> selectMenuOption();
                     case TITLE_STATE -> selectTitleOption();
                 }
             }
@@ -232,6 +227,7 @@ public class DungeonController extends JFrame implements KeyListener {
     }
 
     /**
+     * Defines the action that is triggered depending on current state of the game (WASD).
      * Fenceposting for alt-menu usage.
      * Checking for combat.
      * @param theEvt the event to be processed
@@ -374,8 +370,6 @@ public class DungeonController extends JFrame implements KeyListener {
         }
         final int oldPos = myMenuPosition;
         myMenuPosition += theMovement;
-
-        //System.out.println("Attempting menu movement: " + theMovement);
         myPcs.firePropertyChange(MENU_POS, oldPos, myMenuPosition);
     }
 
@@ -543,8 +537,6 @@ public class DungeonController extends JFrame implements KeyListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(myView);
         frame.pack();
-
-//        frame.setSize(SCREEN_SIZE.width / 2, SCREEN_SIZE.height / 2);
         frame.setSize(1000, 500);
         frame.setLocation(SCREEN_SIZE.width / 2 - frame.getWidth() / 2,
                         SCREEN_SIZE.height / 2 - frame.getHeight() / 2);

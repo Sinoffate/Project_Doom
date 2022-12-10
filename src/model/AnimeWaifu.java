@@ -9,7 +9,7 @@ public class AnimeWaifu extends Monster {
     static final int THE_LOVE = 2;
 
     /**
-     *
+     * Constructor for the AnimeWaifu class.
      */
     public AnimeWaifu() {
         super(400, "AnimeWaifu", new Weapon("WaifuBlade"));
