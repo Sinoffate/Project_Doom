@@ -1,3 +1,5 @@
+package model;
+
 abstract public class Monster extends DungeonCharacter {
 
     /**

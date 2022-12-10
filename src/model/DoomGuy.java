@@ -1,3 +1,5 @@
+package model;
+
 public class DoomGuy extends DungeonCharacter {
 
     /** Max health allowed for DGuy. */

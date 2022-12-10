@@ -1,8 +1,11 @@
-public class AnimeWaifu extends Monster {
-    static final int THE_LOVE = 2;
+package model;
 
-    public AnimeWaifu() {
-        super(400, "AnimeWaifu", new Weapon("WaifuBlade"));
+public class BaronOfHell extends Monster {
+    /** The damage BoH does back to the DG. */
+    static final int THE_RECOIL = 10;
+
+    public BaronOfHell() {
+        super(100, "model.BaronOfHell", new Weapon("Claw"));
     }
 
     /**
@@ -16,9 +19,9 @@ public class AnimeWaifu extends Monster {
             throw new IllegalArgumentException("DunCha.takeDamage, positive number passed: " + theDamageTaken);
         }
         this.setHealth((int) (this.getHealth() - Math.floor(theDamageTaken)));
-        theOpponent.setHealth((int) theDamageTaken + THE_LOVE);
+        theOpponent.setHealth(theOpponent.getHealth() - THE_RECOIL);
 
-        return "Damage taken: " + (int) theDamageTaken + " but AnimeWaifu still loves you, so you heal "
-                + THE_LOVE + " HP: " + ((int) theDamageTaken - THE_LOVE);
+        return "Baron takes " + (int) theDamageTaken + " and hits model.DoomGuy for " + THE_RECOIL + "!";
     }
+
 }

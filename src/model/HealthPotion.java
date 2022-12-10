@@ -1,3 +1,5 @@
+package model;
+
 /**
  * This class represents a health potion that can be used to heal the player.
  * @author Jered Wiegel

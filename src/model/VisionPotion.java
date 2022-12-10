@@ -1,3 +1,5 @@
+package model;
+
 /**
  * This class represents a potion and its functionality that gives the player vision.
  * @author Jered Wiegel
@@ -9,7 +11,7 @@ public class VisionPotion extends Item {
     private final int myRadius;
 
     /**
-     * VisionPotion constructor.
+     * model.VisionPotion constructor.
      */
     public VisionPotion() {
         super("Vision Potion");

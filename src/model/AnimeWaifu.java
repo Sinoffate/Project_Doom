@@ -1,7 +1,10 @@
-public class Imp extends Monster {
-    final static int FRAILTY = 10;
-    public Imp() {
-        super(40, "Imp", new Weapon("FireBall"));
+package model;
+
+public class AnimeWaifu extends Monster {
+    static final int THE_LOVE = 2;
+
+    public AnimeWaifu() {
+        super(400, "model.AnimeWaifu", new Weapon("WaifuBlade"));
     }
 
     /**
@@ -15,8 +18,9 @@ public class Imp extends Monster {
             throw new IllegalArgumentException("DunCha.takeDamage, positive number passed: " + theDamageTaken);
         }
         this.setHealth((int) (this.getHealth() - Math.floor(theDamageTaken)));
-        this.setHealth(this.getHealth() - FRAILTY);
+        theOpponent.setHealth(theOpponent.getHealth() + THE_LOVE);
 
-        return "Imp takes " + (int) theDamageTaken + " and falls downs some stairs for " + FRAILTY + "!";
+        return "Damage taken: " + (int) theDamageTaken + " but model.AnimeWaifu still loves you, so you heal "
+                + THE_LOVE + " HP: " + ((int) theDamageTaken - THE_LOVE);
     }
 }

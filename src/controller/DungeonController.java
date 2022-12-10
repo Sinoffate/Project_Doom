@@ -1,3 +1,6 @@
+package controller;
+import view.DungeonView;
+import model.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -52,11 +55,11 @@ public class DungeonController extends JFrame implements KeyListener {
     /** Property Change Object. */
     private final PropertyChangeSupport myPcs;
     /** PCS Type for Menu position. */
-    static final String MENU_POS = "MenuPos";
+    public static final String MENU_POS = "MenuPos";
     /** PCS Type for Menu State. */
-    static final String MENU = "Menu";
+    public static final String MENU = "Menu";
     /** PCS Type for New Game Fire. */
-    static final String RESET_MAP = "ResetMap";
+    public static final String RESET_MAP = "ResetMap";
 
     /** Tracks which DunCha attacked last. */
     private boolean myDGAttacked;

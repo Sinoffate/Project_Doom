@@ -1,3 +1,5 @@
+package model;
+
 /**
  * Defines the state of the game.
  * @author james deal, jered wiegel

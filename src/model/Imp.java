@@ -1,9 +1,9 @@
-public class BaronOfHell extends Monster {
-    /** The damage BoH does back to the DG. */
-    static final int THE_RECOIL = 10;
+package model;
 
-    public BaronOfHell() {
-        super(100, "BaronOfHell", new Weapon("Claw"));
+public class Imp extends Monster {
+    final static int FRAILTY = 10;
+    public Imp() {
+        super(40, "model.Imp", new Weapon("FireBall"));
     }
 
     /**
@@ -17,9 +17,8 @@ public class BaronOfHell extends Monster {
             throw new IllegalArgumentException("DunCha.takeDamage, positive number passed: " + theDamageTaken);
         }
         this.setHealth((int) (this.getHealth() - Math.floor(theDamageTaken)));
-        theOpponent.setHealth(theOpponent.getHealth() - THE_RECOIL);
+        this.setHealth(this.getHealth() - FRAILTY);
 
-        return "Baron takes " + (int) theDamageTaken + " and hits DoomGuy for " + THE_RECOIL + "!";
+        return "model.Imp takes " + (int) theDamageTaken + " and falls downs some stairs for " + FRAILTY + "!";
     }
-
 }

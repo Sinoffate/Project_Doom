@@ -1,3 +1,8 @@
+package view;
+
+import model.Dungeon;
+import controller.DungeonController;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;

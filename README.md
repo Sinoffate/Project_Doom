@@ -22,11 +22,11 @@ This project was created by James R. Deal, Jered Wiegel, and Hyunggil Woo for TC
 - JUnit 5
   - Implemented to test independent functionality of classes to validate correct/expected output
 - SQLite
-  - Databases used for Item stat lines.
+  - Databases used for model.Item stat lines.
 - DB Browser
   - Creating and adjusting SQLite database files.
 
 ## Used Design Patterns
-- Singleton: DiceRoll, Database
-- Mock: Inventory (initial iteration)
-- MVC: DungeonView, DungeonController
+- Singleton: model.DiceRoll, model.Database
+- Mock: model.Inventory (initial iteration)
+- MVC: view.DungeonView, controller.DungeonController
