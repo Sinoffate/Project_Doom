@@ -3,7 +3,7 @@ package model;
 /**
  * Defines the state of the game.
  * @author james deal, jered wiegel
- * @version 0.1
+ * @version 1.0
  */
 public enum GameState {
         /** Game State. */

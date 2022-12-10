@@ -36,6 +36,11 @@ public final class Database {
         }
     }
 
+    /**
+     * Returns an instance of this object.
+     *
+     * @return Database object.
+     */
     public static Database getInstance() {
         return INSTANCE;
     }
@@ -107,12 +112,10 @@ public final class Database {
                 sb.append(res);
 
             }
-
         } catch (final SQLException event) {
             event.printStackTrace();
             System.exit(0);
         }
-
         return sb.toString();
     }
 }
