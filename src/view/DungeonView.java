@@ -46,6 +46,9 @@ public class DungeonView extends JPanel implements PropertyChangeListener, Seria
     private static ImageIcon ROOM_CONTENT_MONSTER;
     /** Image used for room display when has jack. */
     private static ImageIcon ROOM_CONTENT_NOTHING;
+    /** Image used for fianl boss. */
+    private static ImageIcon WAIFU_IMAGE;
+
 
     /** Size of dungeon to display. */
     private final int myDungeonSize;
@@ -91,19 +94,21 @@ public class DungeonView extends JPanel implements PropertyChangeListener, Seria
         BufferedImage fogRoomImage = null;
         BufferedImage playerImage = null;
         BufferedImage visibleRoomImage = null;
+        BufferedImage waifuImage = null;
         BufferedImage jackImage = null;
         BufferedImage itemImage = null;
         BufferedImage monsterImage = null;
         BufferedImage itemMonsterImage = null;
 
         try {
-            fogRoomImage = ImageIO.read(new File("fellcleave75.png"));
-            playerImage = ImageIO.read(new File("emote75.png"));
-            visibleRoomImage = ImageIO.read(new File("AYAYA75.png"));
+            fogRoomImage = ImageIO.read(new File("fogroom.png"));
+            playerImage = ImageIO.read(new File("doomguy.png"));
+            visibleRoomImage = ImageIO.read(new File("visroom.png"));
             jackImage = ImageIO.read(new File("jack.png"));
             itemImage = ImageIO.read(new File("i.png"));
             monsterImage = ImageIO.read(new File("m.png"));
             itemMonsterImage = ImageIO.read(new File("mi.png"));
+            waifuImage = ImageIO.read(new File("waifu.png"));
         } catch (final IOException ioe) {
             System.out.println("Unable to fetch image.");
             ioe.printStackTrace();
@@ -124,6 +129,8 @@ public class DungeonView extends JPanel implements PropertyChangeListener, Seria
         ROOM_CONTENT_MONSTER = new ImageIcon(monsterImage);
         assert itemMonsterImage != null;
         ROOM_CONTENT_BOTH = new ImageIcon(itemMonsterImage);
+        assert waifuImage != null;
+        WAIFU_IMAGE = new ImageIcon(waifuImage);
     }
 
     /**
@@ -249,7 +256,11 @@ public class DungeonView extends JPanel implements PropertyChangeListener, Seria
      */
     private void setRoomVisible(final Point thePosition) {
         final JLabel lab = myMapLabels.get(thePosition);
-        lab.setIcon(VISIBLE_ROOM_TILE);
+        if (thePosition.equals(new Point(myDungeonSize-1,myDungeonSize-1))) {
+            lab.setIcon(WAIFU_IMAGE);
+        } else {
+            lab.setIcon(VISIBLE_ROOM_TILE);
+        }
     }
 
     /**
