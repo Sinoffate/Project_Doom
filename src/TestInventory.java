@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
  * Testing to see if inventory can store itesm for the hero but also items for each room and monsters in each room
  * @author Hyunggil Woo
  * @version 1.2
- * Date: November 16, 2022
+ * Date: December 10, 2022
  */
 
 public class TestInventory {
@@ -19,67 +19,24 @@ public class TestInventory {
     Inventory itemInventory; 
 
     /** Hard coded items to be used for items */
-    private final int MAX_ITEM_NUMBER = 5;
 
-    private String[] ITEMS = {"Potion", "Pillar", "BFG"};
-  
+    private Item[] ITEMS = {new Weapon("BFG"), new Weapon("Shotgun"), 
+                new Weapon("Pistol"), new Weapon("Rawket Lawnchair"), 
+                new VisionPotion(), new HealthPotion()};
+
     /**
-     * Generates a map of the list of items that will be stored in each inventory.
-     * It will generate a random number number of items in the list
-     * 
-     * @param E[] theList of objects stored in Database.
-     *         int theMax maximum number of objects. 
-     * @requires: Item will not contain null; 
-     * @throws: If itemList does not contain null, will not add the thing in the list
-     * @spec.modifies: Item[]
-     * @spec.effect: Generates a TreeMap of Item and a corresponding number of it.
-     * @return count of items generated from the list
+     * Inventory will contain an entire list of items
      */
-    private Map<String, Integer> generateInventory(final String[] theList, final int theMax) {
-        
-        // checks if itemList contains Null
-        for (int i = theList.length - 1; i > 0; i--) {
-            assert theList[i] == null; 
-        }
-
-        Map< String , Integer > inventory = new TreeMap<>();
-
-        // choose a random number between 1 - theMax
-        int numberOfItems = DiceRoll.nextInt(theMax) + 1;
-        int itemOption = theList.length;
-        
-        // add items in the list with a random in a map
-        for (int i = 0; i < numberOfItems; i++) {
-            
-            // randomly choose an thing from the list
-            String randomItem = theList[DiceRoll.nextInt(itemOption)];
-            
-            // add new word in a Item list
-            if (!inventory.containsKey(randomItem)) {
-                inventory.put(randomItem, 1);
-            } else {
-                // increment count of thing that already exist
-                int oldValue = inventory.get(randomItem);
-                inventory.put(randomItem, oldValue + 1);
-            }
-        }
-        return inventory;
-    }
-
-    @Test
-    public void testGenerateInventory() {
-                /** Hard coded items to be used for items */
-        final int MAX_ITEM_NUMBER = 5;
-
-        String[] ITEMS = {"Potion", "Pillar", "BFG"};
-
+    @BeforeEach
+    public void reset() {
+        itemInventory = new Inventory();
     }
 
     /**
      * Checks if the initial inventory contains nothing.
      */
     @Test
-    public void testDefaultConstructor() {
+    public void testEmptyInventory() {
         assertEquals("Potion:1, Pillar:1, BFG:1", itemInventory.toString());
     }
 
@@ -90,6 +47,27 @@ public class TestInventory {
     public void testAdd_OneItem() {
         itemInventory.addItem("Chain_Gun");
         assertEquals("Potion, Pillar, BFG, Chain_Gun",itemInventory.toString());
+    }
+
+    /**
+     * Test if Inventory correctly displays the correct item listed in the inventory.
+     */
+    @Test
+    public void testContains_FirstItem() {
+        assertEquals(true, itemInventory.containsItem("Potion"));
+    }
+
+    @Test
+    public void testContains_MiddleItem() {
+        assertEquals(true, itemInventory.containsItem("Pillar"));
+    }
+
+    /**
+     * Test if Inventory correctly displays the correct item listed in the inventory.
+     */
+    @Test
+    public void testContains_LastItem() {
+        assertEquals(true, itemInventory.containsItem("BFG"));
     }
 
     @Test
@@ -106,27 +84,5 @@ public class TestInventory {
         itemInventory.removeItem("BFG");
         assertEquals("Potion, Pillar", itemInventory.toString());
     }
-
-    /**
-     * Test if Inventory correctly displays the correct item listed in the inventory.
-     */
-    @Test
-    public void testContains_FirstItem() {
-        assertEquals(true, itemInventory.contains("Potion"));
-    }
-
-    @Test
-    public void testContains_MiddleItem() {
-        assertEquals(true, itemInventory.contains("Pillar"));
-    }
-
-    /**
-     * Test if Inventory correctly displays the correct item listed in the inventory.
-     */
-    @Test
-    public void testContains_LastItem() {
-        assertEquals(true, itemInventory.contains("BFG"));
-    }
-
 }
 
