@@ -394,16 +394,16 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
 
         if (myMenuPosition == 1) {
             saveData();
-            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"");
-            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"Game Saved");
-            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"");
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Game Saved");
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
         }
 
         if (myMenuPosition == 2) {
             loadData();
-            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"");
-            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"Game Loaded");
-            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE,null,"");
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Game Loaded");
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
 
         }
 
@@ -607,8 +607,8 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
                     (file);
 
             // Method for deserialization of object
-            myDungeon = (Dungeon)in.readObject();
-            myDoomGuy = (DoomGuy)in.readObject();
+            myDungeon = (Dungeon) in.readObject();
+            myDoomGuy = (DoomGuy) in.readObject();
 
             in.close();
             file.close();
@@ -617,9 +617,8 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
 
         } catch (IOException ex) {
             System.out.println("IOException is caught");
-        } catch (ClassNotFoundException ex) {
-            System.out.println("ClassNotFoundException" +
-                    " is caught");
+        } catch (final ClassNotFoundException ex) {
+            System.out.println("ClassNotFoundException is caught");
         }
 
         //dungeon pcs

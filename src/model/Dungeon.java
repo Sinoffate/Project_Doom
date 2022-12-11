@@ -40,6 +40,9 @@ public class Dungeon implements Serializable {
      * @param theMapSize size of map x and y.
      */
     public Dungeon(final int theMapSize) {
+        if (theMapSize < 1) {
+            throw new IllegalArgumentException("Map size must be greater than 0.");
+        }
         this.myMapSize = theMapSize;
         this.myHeroPosition = new Point(0, 0);
         this.myEnterPos = new Point(0, 0);

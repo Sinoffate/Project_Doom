@@ -3,6 +3,8 @@ package model;
 /**
  * AnimeWaifu is a class that defines the special behavior
  * of the monster that is the final boss of the game.
+ * @author Jered Wiegel
+ * @version 1.0
  */
 public class AnimeWaifu extends Monster {
     /** Healing amount that AnimeWaifu will heal the player. */
@@ -23,7 +25,8 @@ public class AnimeWaifu extends Monster {
     @Override
     public String takeDamage(final double theDamageTaken, final DungeonCharacter theOpponent) {
         if (theDamageTaken < 0) {
-            throw new IllegalArgumentException("DunCha.takeDamage, positive number passed: " + theDamageTaken);
+            throw new IllegalArgumentException("DunCha.takeDamage, "
+                    + "positive number passed: " + theDamageTaken);
         }
         this.setHealth((int) (this.getHealth() - Math.floor(theDamageTaken)));
         theOpponent.setHealth(theOpponent.getHealth() + THE_LOVE);
