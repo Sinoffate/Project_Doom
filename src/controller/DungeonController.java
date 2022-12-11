@@ -1,4 +1,10 @@
 package controller;
+import com.github.strikerx3.jxinput.XInputButtons;
+import com.github.strikerx3.jxinput.XInputComponents;
+import com.github.strikerx3.jxinput.XInputDevice;
+import com.github.strikerx3.jxinput.enums.XInputButton;
+import com.github.strikerx3.jxinput.exceptions.XInputNotLoadedException;
+import com.github.strikerx3.jxinput.listener.XInputDeviceListener;
 import view.DungeonView;
 import model.*;
 import java.awt.*;
@@ -16,7 +22,7 @@ import javax.swing.*;
  * @author Jered Wiegel and James Deal
  * @version 1.1
  */
-public class DungeonController extends JFrame implements KeyListener, Serializable {
+public class DungeonController extends JFrame implements KeyListener, Serializable, XInputDeviceListener {
 
     /** PCS Type for Menu position. */
     public static final String MENU_POS = "MenuPos";
@@ -98,6 +104,32 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
         //Fenceposting creation
         enactTitleState();
         myDungeon.setRoomVisible(myDungeon.getPlayerPos());
+
+        try {
+            xinputTest();
+        } catch (XInputNotLoadedException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    XInputDevice device;
+    XInputComponents components;
+    XInputButtons buttons;
+
+    private void xinputTest() throws XInputNotLoadedException {
+        // Retrieve all devices
+        XInputDevice[] devices = XInputDevice.getAllDevices();
+        for (XInputDevice d: devices) {
+            System.out.println(d.toString());
+        }
+
+        // Retrieve the device for player 1
+        //device = XInputDevice.getDeviceFor(1);
+        device = devices[3];
+
+        components = device.getComponents();
+        buttons = components.getButtons();
     }
 
     /**
@@ -657,6 +689,21 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
      */
     public void addPropertyChangeListener(final String thePropertyName, final PropertyChangeListener theListener) {
         myPcs.addPropertyChangeListener(thePropertyName, theListener);
+    }
+
+    @Override
+    public void connected() {
+        //let game run
+    }
+
+    @Override
+    public void disconnected() {
+        //let game run
+    }
+
+    @Override
+    public void buttonChanged(XInputButton xInputButton, boolean b) {
+        System.out.println(xInputButton.toString() + " " + b);
     }
 
 }
