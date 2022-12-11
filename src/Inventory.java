@@ -1,5 +1,4 @@
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -88,10 +87,20 @@ public class Inventory {
         return this.myInventory.size();
     }
 
+    /**
+     * Obtain the entire list of items.
+     * 
+     * @return entire list of items.
+     */
     public Set<Item> getItems() {
         return myInventory.keySet();
     }
 
+    /**
+     * 
+     * @param theItem
+     * @return
+     */
     public Item getItem(final Item theItem) {
         if (containsItem(theItem)) {
             for (Item i: myInventory.keySet()) {
