@@ -3,7 +3,7 @@ package model;
 /**
  * This class represents a health potion that can be used to heal the player.
  * @author Jered Wiegel
- * @version 1.0
+ * @version 1.1
  */
 public class HealthPotion extends Item {
 

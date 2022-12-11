@@ -16,13 +16,11 @@ import java.util.Set;
  */
 public class Inventory implements Serializable {
 
-    /** contain non-null objects*/
-    private Map<Item , Integer> myInventory;
+    /** contain non-null objects. */
+    private final Map<Item , Integer> myInventory;
 
     /**
-     * List of items will be stored into a list of items
-     * number of items in myInventory > 0
-     *
+     * List of items will be stored into a list of items.
      */
     public Inventory() {
         this.myInventory = new HashMap<>();
@@ -41,7 +39,6 @@ public class Inventory implements Serializable {
         if (theObject == null) {
             throw new IllegalArgumentException("Item is null");
         }
-
         myInventory.merge(theObject, 1, Integer::sum);
     }
 
@@ -50,14 +47,12 @@ public class Inventory implements Serializable {
      * Modifies instance of inventory.
      * Effect: If count of item >= 1, count = count - 1, else count = 0
      * if thing does not exist, throw illegalArgumentException
-     *
      * @param theObject is non-null
      */
     public void removeItem(final Item theObject) {
         if (theObject == null) {
             throw new IllegalArgumentException("You cannot remove null");
         }
-
         myInventory.merge(theObject, -1, Integer::sum);
 
         if (myInventory.get(theObject) <= 0) {
@@ -117,7 +112,7 @@ public class Inventory implements Serializable {
      * @return String version of a general inventory.
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         for (Map.Entry<Item, Integer> thing : myInventory.entrySet()) {
             sb.append(thing.getKey()).append(" : ").append(thing.getValue()).append("\n");
         }

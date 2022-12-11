@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Simple item abstract for items to inherit from.
  * @author james deal, jered wiegel
- * @version 0.1
+ * @version 1.0
  */
 public abstract class Item implements Serializable {
 
@@ -18,7 +18,7 @@ public abstract class Item implements Serializable {
      */
     public Item(final String theName) {
         if (theName == null || "".equals(theName)) {
-            throw new IllegalArgumentException("Item.con did not like itself. Name empty or null.");
+            throw new IllegalArgumentException("Item.con did not like name empty or null.");
         }
         myName = theName;
     }

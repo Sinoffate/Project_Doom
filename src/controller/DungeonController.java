@@ -14,10 +14,18 @@ import javax.swing.*;
 /**
  * Controller for the Project_Doom game.
  * @author Jered Wiegel and James Deal
- * @version 1.0
+ * @version 1.1
  */
 public class DungeonController extends JFrame implements KeyListener, Serializable {
 
+    /** PCS Type for Menu position. */
+    public static final String MENU_POS = "MenuPos";
+    /** PCS Type for Menu State. */
+    public static final String MENU = "Menu";
+    /** PCS Type for New Game Fire. */
+    public static final String RESET_MAP = "ResetMap";
+
+    /** Serial ID of executable instance. */
     @Serial
     private static final long serialVersionUID = 1L;
     /** A ToolKit. */
@@ -28,20 +36,18 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
     /** List of normal menu items. */
     private static final String[] MAIN_MENU = {"Inventory", "Save", "Load", "Quit"};
     /** List of map menu items. */
-    private static final String[] MAP_MENU = {"WASD to move", "E to Loot Room", "Hold Shift for Guns", "Hold Alt for Potions",
-                                                 "Escape key for menu", "Watch Kung Fury!"};
+    private static final String[] MAP_MENU = {"WASD to move", "E to Loot Room", "Hold Shift for Guns",
+                                              "Hold Alt for Potions", "Escape key for menu", "Watch Kung Fury!"};
     /** List of Weapon Radial menu items. */
     private static final String[] WEAPON_MENU = {"W: BFG", "A: Pistol", "S: Rawket Lawnchair", "D: Shotgun"};
     /** List of Potion Radial menu items. */
     private static final String[] POTION_MENU = {"W: Health Potion", "S: Vision Potion"};
     /** List of Title menu items. */
     private static final String[] TITLE_MENU = {"New Game", "Load Game", "Quit", "Watch Kung Fury!"};
-    /** PCS Type for Menu position. */
-    public static final String MENU_POS = "MenuPos";
-    /** PCS Type for Menu State. */
-    public static final String MENU = "Menu";
-    /** PCS Type for New Game Fire. */
-    public static final String RESET_MAP = "ResetMap";
+
+    /** Map Size Variable. */
+    private static final int DUNGEON_SIZE = 5;
+
     /** Property Change Object. */
     private final PropertyChangeSupport myPcs;
 
@@ -58,8 +64,6 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
     private int myMenuPosition;
     /** Current Menu. */
     private String[] myCurrentMenu;
-    /** Map Size Variable. */
-    private static final int DUNGEON_SIZE = 5;
 
     /** Tracks which DunCha attacked last. */
     private boolean myDGAttacked;
@@ -103,14 +107,13 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
     @Override
     public void keyPressed(final KeyEvent theEvt) {
 
-        //Change weapon "&lt;: Pistol", "^: BFG", "v: Rawket Lawnchair", "&gt;: Shotgun"
+        //Change weapon
         if (theEvt.isShiftDown() && (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE)) {
             myPcs.firePropertyChange(MENU, myCurrentMenu, WEAPON_MENU);
             switch (theEvt.getKeyCode()) {
                 case KeyEvent.VK_W -> {
                     if (myDoomGuy.inventoryContains(new Weapon("BFG"))) {
                         myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon("BFG")));
-                        //myDoomGuy.equipWeapon(new Weapon(1000, 100, 1, 1, "BFG"));
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "BFG EQUIPPED");
                     } else {
                         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "No BFG in Inventory :(");
@@ -256,14 +259,14 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
             }
         }
 
-        //Show Weapons
+        //Hide Weapons
         if (theEvt.getKeyCode() == KeyEvent.VK_SHIFT) {
             if (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE) {
                 myPcs.firePropertyChange(MENU, WEAPON_MENU, myCurrentMenu);
             }
         }
 
-        //Show Drugs
+        //Hide Drugs
         if (theEvt.getKeyCode() == KeyEvent.VK_ALT) {
             if (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE) {
                 myPcs.firePropertyChange(MENU, POTION_MENU, myCurrentMenu);
@@ -272,12 +275,11 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
     }
 
     /**
-     * Unused
+     * Unused.
      * @param theEvt the event to be processed
      */
     @Override
     public void keyTyped(final KeyEvent theEvt) {
-        return;
     }
 
     /**
@@ -524,7 +526,7 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
     private void combatRound() {
         final Room currentRoom = myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
                 (int) myDungeon.getPlayerPos().getY());
-        String attackRes;
+        final String attackRes;
 
         if (!myDGAttacked) {
             attackRes = myDoomGuy.attack(currentRoom.getMonster());
@@ -577,10 +579,8 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
         try {
 
             // Saving of object in a file
-            FileOutputStream file = new FileOutputStream
-                    ("savegame.doom");
-            ObjectOutputStream out = new ObjectOutputStream
-                    (file);
+            final FileOutputStream file = new FileOutputStream("savegame.doom");
+            final ObjectOutputStream out = new ObjectOutputStream(file);
 
             // Method for serialization of object
             out.writeObject(myDungeon);
@@ -588,11 +588,8 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
 
             out.close();
             file.close();
-
-            System.out.println("Controller instance has been serialized\n");
-
-        } catch (IOException ex) {
-            System.out.println("IOException is caught");
+        } catch (final IOException ex) {
+            System.out.println("IOException but probably worked anyway.");
         }
     }
 
@@ -604,10 +601,8 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
         try {
 
             // Reading the object from a file
-            FileInputStream file = new FileInputStream
-                    ("savegame.doom");
-            ObjectInputStream in = new ObjectInputStream
-                    (file);
+            final FileInputStream file = new FileInputStream("savegame.doom");
+            final ObjectInputStream in = new ObjectInputStream(file);
 
             // Method for deserialization of object
             myDungeon = (Dungeon) in.readObject();
@@ -615,10 +610,7 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
 
             in.close();
             file.close();
-            System.out.println("Object has been deserialized\n"
-                    + "Data after Deserialization.");
-
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             System.out.println("IOException is caught");
         } catch (final ClassNotFoundException ex) {
             System.out.println("ClassNotFoundException is caught");
@@ -654,7 +646,7 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
      * @param theArgs unused.
      */
     public static void main(final String[] theArgs) {
-        DungeonController controller = new DungeonController();
+        final DungeonController controller = new DungeonController();
 
         controller.runGame();
     }

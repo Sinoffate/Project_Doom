@@ -3,7 +3,7 @@ package model;
 /**
  * Pillar item class.
  * @author james deal, jered wiegel
- * @version 0.1
+ * @version 1.0
  */
 public class Pillar extends Item {
     /**

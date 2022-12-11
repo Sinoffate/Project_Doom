@@ -20,7 +20,6 @@ public class Room implements Serializable {
      * Instantiates a room containing list of items.
      * Room contains a {item(1), ... , item(n) and 1 random monster
      * Items and Monsters must not contain null objects;
-     *          
      */
     public Room() {
         this.myInventory = new Inventory();
@@ -30,18 +29,15 @@ public class Room implements Serializable {
 
     /**
      * Sets up an inventory in each room.
-     * 
      * @param theInventory is non-null
      */
     public void setInventory(final Inventory theInventory) {
         assert theInventory != null;
-
         myInventory = theInventory;
     }
 
     /**
      * Creates monsters in the room.
-     *
      * @param theMonster cannot be null
      */
     public void setMonster(final Monster theMonster) {
@@ -52,7 +48,6 @@ public class Room implements Serializable {
      * Shows the entire items inside the inventory
      * Items are not removed from the inventory
      * Inventory<String> is not modified.
-     * 
      * @return name of item
      */
     public Inventory getInventory() {
@@ -63,7 +58,6 @@ public class Room implements Serializable {
      * Shows the entire monsters inside the Inventory<String>.
      * Monsters are not removed from Room
      * List of monsters is not modified
-     * 
      * @return name of monster
      */
     public Monster getMonster() {
@@ -93,7 +87,7 @@ public class Room implements Serializable {
      * @return List of items and monsters in a room.
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
 
         // prints each item in the room
         sb.append("Inventory<String>:\n");

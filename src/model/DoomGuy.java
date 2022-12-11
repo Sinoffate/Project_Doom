@@ -5,7 +5,7 @@ package model;
  * move around the map and interact with the environment.
  *
  * @author James R. Deal
- * @version 1.0
+ * @version 1.1
  */
 public class DoomGuy extends DungeonCharacter {
 
@@ -95,7 +95,6 @@ public class DoomGuy extends DungeonCharacter {
      * @return true if found.
      */
     public boolean inventoryContains(final Item theItem) {
-        //System.out.println(myInventory.toString());
         return myInventory.containsItem(theItem);
     }
 

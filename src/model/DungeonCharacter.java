@@ -45,7 +45,7 @@ public abstract class DungeonCharacter implements Serializable {
         if (myEquippedWeapon.getAmmo() < 1) {
             return myEquippedWeapon.getName() + " has no ammo left!";
         }
-        myEquippedWeapon.setAmmo(myEquippedWeapon.getAmmo()-1);
+        myEquippedWeapon.setAmmo(myEquippedWeapon.getAmmo() - 1);
 
         //Roll accuracy
         if (DiceRoll.nextFloat() > myEquippedWeapon.getAccuracy()) {
@@ -154,7 +154,7 @@ public abstract class DungeonCharacter implements Serializable {
         return myEquippedWeapon;
     }
 
-    public void setEquippedWeapon(Weapon theWeapon) {
+    public void setEquippedWeapon(final Weapon theWeapon) {
         this.myEquippedWeapon = theWeapon;
     }
 

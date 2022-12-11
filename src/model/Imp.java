@@ -2,11 +2,13 @@ package model;
 
 /**
  * Imp class defines behaviors of a monster that can be encountered in the game.
+ * @author James Deal
+ * @version 1.0
  */
 public class Imp extends Monster {
 
-    /** Imp's unique effect */
-    final static int FRAILTY = 10;
+    /** Imp's unique effect. */
+    static final int FRAILTY = 10;
 
     /**
      * Constructor used to create an Imp.

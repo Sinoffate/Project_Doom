@@ -22,16 +22,16 @@ public class Dungeon implements Serializable {
     public static final String ROOM_VIS = "RoomVisibility";
     /** Constant for the updates to the map property changes. */
     public static final String ROOM_CONTENT = "RoomContent";
-    /** Variable holds squareroot of the size of the map. */
-    private int myMapSize;
+    /** Variable holds square root of the size of the map. */
+    private final int myMapSize;
     /** Variable holds all the rooms in the map. */
-    private Room[][] myRooms;
+    private final Room[][] myRooms;
     /** Variable holds the current room the hero is in. */
     private Point myHeroPosition;
     /** Variable holds the location of the entrance to the dungeon. */
-    private Point myEnterPos;
+    private final Point myEnterPos;
     /** Variable holds the location of the exit of the dungeon. */
-    private Point myExitPos;
+    private final Point myExitPos;
     /** Variable facilitates the property changes to fire. */
     private final PropertyChangeSupport myPcs;
 
@@ -58,7 +58,7 @@ public class Dungeon implements Serializable {
      * @return the 2D array of rooms.
      */
     private Room[][] generateDungeon() {
-        Room[][] dungeon = new Room[myMapSize][myMapSize];
+        final Room[][] dungeon = new Room[myMapSize][myMapSize];
         for (int i = 0; i < myMapSize; i++) {
             for (int j = 0; j < myMapSize; j++) {
                 dungeon[i][j] = new Room();
@@ -73,8 +73,8 @@ public class Dungeon implements Serializable {
     private void addMonsters() {
         for (int i = 0; i < myMapSize; i++) {
             for (int j = 0; j < myMapSize; j++) {
-                if (DiceRoll.nextFloat(1) < 0.5 && myRooms[i][j].getMonster() == null &&
-                    !(i == myEnterPos.x && j == myEnterPos.y)) {
+                if (DiceRoll.nextFloat(1) < 0.5 && myRooms[i][j].getMonster() == null
+                        && !(i == myEnterPos.x && j == myEnterPos.y)) {
                     if (DiceRoll.nextInt(2) != 0) {
                         myRooms[i][j].setMonster(new BaronOfHell());
                     } else {
@@ -133,7 +133,7 @@ public class Dungeon implements Serializable {
     }
 
     /**
-     * Class that grabs the room passed in
+     * Class that grabs the room passed in.
      * @param theRow row of the room
      * @param theCol column of the room
      * @return the room at the row and column
@@ -240,7 +240,7 @@ public class Dungeon implements Serializable {
      * Backend logic for usage of a Vision Potion.
      */
     public void useVisionPotion() {
-        VisionPotion vp = new VisionPotion();
+        final VisionPotion vp = new VisionPotion();
 
         for (int row = (int) (myHeroPosition.getX() - vp.getRadius()); row <= myHeroPosition.getX() + vp.getRadius(); row++) {
             for (int col = (int) (myHeroPosition.getY() - vp.getRadius()); col <= myHeroPosition.getY() + vp.getRadius(); col++) {
@@ -279,8 +279,6 @@ public class Dungeon implements Serializable {
         final Point oldPos = myHeroPosition;
         myHeroPosition = thePos;
         myPcs.firePropertyChange(HERO_POS, oldPos, myHeroPosition);
-        //myPcs.firePropertyChange(TEXT_UPDATE, null, "Hero Position: " + " x = " +  myHeroPosition.getX() + ", y = " + myHeroPosition.getY());
-        //System.out.println("Hero Position: " + " x = " +  myHeroPosition.getX() + ", y = " + myHeroPosition.getY());
     }
 
     /**
@@ -297,8 +295,10 @@ public class Dungeon implements Serializable {
      * @return a string representation of the dungeon
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Map Size: ").append(myMapSize).append(" Hero Position: ").append(myHeroPosition).append(" Enter Position: ").append(myEnterPos).append(" Exit Position: ").append(myExitPos);
+        final StringBuilder sb = new StringBuilder();
+        sb.append("Map Size: ").append(myMapSize).append(" Hero Position: ").
+                append(myHeroPosition).append(" Enter Position: ").
+                append(myEnterPos).append(" Exit Position: ").append(myExitPos);
         return sb.toString();
     }
 }

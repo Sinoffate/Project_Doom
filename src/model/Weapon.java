@@ -3,7 +3,7 @@ package model;
 /**
  * Concrete Weapon class for DungeonCharacters.
  * @author james deal, jered wiegel
- * @version 0.1
+ * @version 2.0
  */
 public class Weapon extends Item {
 
@@ -20,7 +20,7 @@ public class Weapon extends Item {
     private int myAmmo;
 
     /**
-     * Default constructor for weapon.
+     * Default constructor for weapon. Depreciated, left in case needed for testing.
      * @param theDam damage.
      * @param theFR fire-rate.
      * @param theAcc accuracy 0-1.

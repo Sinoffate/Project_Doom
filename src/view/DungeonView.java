@@ -1,7 +1,8 @@
 package view;
 
-import model.Dungeon;
+//Only imported usages are names of PCL fields.
 import controller.DungeonController;
+import model.Dungeon;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,15 +17,10 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-/*
-temp, documentation links;
-https://docs.oracle.com/javase/tutorial/uiswing/layout/gridbag.html
- */
-
 /**
  * GUI based view for Dungeons.
  * @author james deal
- * @version 0.3.33 this is (not) the end
+ * @version 2.22 This is (not) the end.
  */
 public class DungeonView extends JPanel implements PropertyChangeListener, Serializable {
 
@@ -46,9 +42,8 @@ public class DungeonView extends JPanel implements PropertyChangeListener, Seria
     private static ImageIcon ROOM_CONTENT_MONSTER;
     /** Image used for room display when has jack. */
     private static ImageIcon ROOM_CONTENT_NOTHING;
-    /** Image used for fianl boss. */
+    /** Image used for final boss. */
     private static ImageIcon WAIFU_IMAGE;
-
 
     /** Size of dungeon to display. */
     private final int myDungeonSize;
@@ -69,8 +64,6 @@ public class DungeonView extends JPanel implements PropertyChangeListener, Seria
     /** GUI Label to hold menu. */
     private JLabel myMenuLabel;
 
-    /** GUI Label to hold text log. */
-    private JScrollPane myLogScrollPane;
     /** GUI Element to fire updates to. */
     private JTextArea myLogTextArea;
 
@@ -139,7 +132,7 @@ public class DungeonView extends JPanel implements PropertyChangeListener, Seria
     private void setupComponents() {
         setLayout(new BorderLayout());
 
-        //temp so we understand where things go
+        //Unused border panels.
         //add(new JLabel("Doomguy stats: Idk prob dead"), BorderLayout.NORTH);
         //add(new JLabel("Bite me"), BorderLayout.SOUTH);
 
@@ -154,12 +147,12 @@ public class DungeonView extends JPanel implements PropertyChangeListener, Seria
         myLogTextArea.setEditable(false);
         myLogTextArea.setFocusable(false);
         myLogTextArea.setFont(new Font("Serif", Font.PLAIN, 16));
-        myLogScrollPane = new JScrollPane(myLogTextArea);
-        myLogScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        myLogScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        myLogScrollPane.setBackground(Color.GRAY);
+        final JScrollPane logScrollPane = new JScrollPane(myLogTextArea);
+        logScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        logScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        logScrollPane.setBackground(Color.GRAY);
         myLogTextArea.setBackground(Color.GRAY);
-        add(myLogScrollPane, BorderLayout.EAST);
+        add(logScrollPane, BorderLayout.EAST);
 
         //setup dungeon map component
         myMapPanel = new JPanel();  //panel itself
@@ -246,7 +239,14 @@ public class DungeonView extends JPanel implements PropertyChangeListener, Seria
      */
     private void updateTextLog(final String theNewLine) {
         myLogTextArea.setCaretPosition(myLogTextArea.getDocument().getLength());
-        myLogTextArea.append(theNewLine);
+        if (theNewLine.length() > 50) {
+            final int split = theNewLine.indexOf(',');
+            myLogTextArea.append(theNewLine.substring(0, split + 1));
+            myLogTextArea.append(System.lineSeparator());
+            myLogTextArea.append(theNewLine.substring(split + 1));
+        } else {
+            myLogTextArea.append(theNewLine);
+        }
         myLogTextArea.append(System.lineSeparator());
     }
 
@@ -256,7 +256,7 @@ public class DungeonView extends JPanel implements PropertyChangeListener, Seria
      */
     private void setRoomVisible(final Point thePosition) {
         final JLabel lab = myMapLabels.get(thePosition);
-        if (thePosition.equals(new Point(myDungeonSize-1,myDungeonSize-1))) {
+        if (thePosition.equals(new Point(myDungeonSize - 1, myDungeonSize - 1))) {
             lab.setIcon(WAIFU_IMAGE);
         } else {
             lab.setIcon(VISIBLE_ROOM_TILE);
@@ -303,7 +303,6 @@ public class DungeonView extends JPanel implements PropertyChangeListener, Seria
      */
     @Override
     public void propertyChange(final PropertyChangeEvent theEvt) {
-        //System.out.println("View: prop change");
         if (Dungeon.HERO_POS.equals(theEvt.getPropertyName())) {
             placePlayer((Point) theEvt.getNewValue());
         }

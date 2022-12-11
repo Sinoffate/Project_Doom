@@ -1,6 +1,5 @@
 package model;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,8 +10,8 @@ import org.sqlite.SQLiteDataSource;
  * Items table and Weapons table are already created, and they will be
  * accessed by this database class.
  * 
- * @author Jered Wiegel, Hyunggil Woo
- * @version 1.2
+ * @author Jered Wiegel, Hyunggil Woo, James Deal
+ * @version 2.1
  */
 public final class Database {
 
@@ -37,7 +36,6 @@ public final class Database {
 
     /**
      * Returns an instance of this object.
-     *
      * @return Database object.
      */
     public static Database getInstance() {
