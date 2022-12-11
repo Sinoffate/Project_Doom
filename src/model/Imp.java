@@ -23,11 +23,13 @@ public class Imp extends Monster {
     @Override
     public String takeDamage(final double theDamageTaken, final DungeonCharacter theOpponent) {
         if (theDamageTaken < 0) {
-            throw new IllegalArgumentException("DunCha.takeDamage, positive number passed: " + theDamageTaken);
+            throw new IllegalArgumentException("DunCha.takeDamage, positive number passed: "
+                    + theDamageTaken);
         }
         this.setHealth((int) (this.getHealth() - Math.floor(theDamageTaken)));
         this.setHealth(this.getHealth() - FRAILTY);
 
-        return "Imp takes " + (int) theDamageTaken + " and falls downs some stairs for " + FRAILTY + "!";
+        return "Imp takes " + (int) theDamageTaken + " and falls downs some stairs for "
+                + FRAILTY + "!";
     }
 }

@@ -5,7 +5,7 @@ package model;
  * @author Jered Wiegel
  * @version 1.0
  */
-abstract public class Monster extends DungeonCharacter {
+public abstract class Monster extends DungeonCharacter {
 
     /**
      * Default constructor for DC abstract objects.

@@ -250,7 +250,8 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
                 enactTitleState();
             } else {
                 myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
-                myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You only have: " + myDoomGuy.pillarCount() + " pillars you rube");
+                myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You only have: "
+                                                                    + myDoomGuy.pillarCount() + " pillars you rube");
                 myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
             }
         }
@@ -285,7 +286,8 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
     private void enactCombatState() {
         myCurrentState = GameState.COMBAT_STATE;
         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
-        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You have encountered a " + myDungeon.getMonster().toString());
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You have encountered a "
+                                                                                + myDungeon.getMonster().toString());
         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Press Q to attack!");
 
         final Room currentRoom = myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
@@ -364,7 +366,8 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
      * Move to new menu option.
      */
     private void menuMovement(final int theMovement) {
-        if ((myMenuPosition == 0 && theMovement == -1) || (myMenuPosition == myCurrentMenu.length - 1 && theMovement == 1)) {
+        if ((myMenuPosition == 0 && theMovement == -1)
+                || (myMenuPosition == myCurrentMenu.length - 1 && theMovement == 1)) {
             return;
         }
         final int oldPos = myMenuPosition;
@@ -639,8 +642,8 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
     private void loadDataHelper() {
         for (int row = 0; row < DUNGEON_SIZE; row++) {
             for (int col = 0; col < DUNGEON_SIZE; col++) {
-                if (myDungeon.getRoom(row,col).getDiscovered()) {
-                    myDungeon.setRoomVisible(new Point(row,col));
+                if (myDungeon.getRoom(row, col).getDiscovered()) {
+                    myDungeon.setRoomVisible(new Point(row, col));
                 }
             }
         }

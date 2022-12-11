@@ -41,7 +41,7 @@ public class Weapon extends Item {
     }
 
     /**
-     * Database Constructor for Weapons
+     * Constructor for Weapons.
      * @param theWeaponName name of weapon to create.
      */
     public Weapon(final String theWeaponName) {

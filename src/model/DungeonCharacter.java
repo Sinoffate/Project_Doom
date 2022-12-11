@@ -63,7 +63,8 @@ public abstract class DungeonCharacter implements Serializable {
      */
     public String takeDamage(final double theDamageTaken, final DungeonCharacter theOpponent) {
         if (theDamageTaken < 0) {
-            throw new IllegalArgumentException("DunCha.takeDamage, positive number passed: " + theDamageTaken);
+            throw new IllegalArgumentException("DunCha.takeDamage, positive number passed: "
+                                                                            + theDamageTaken);
         }
         myHealth -= Math.floor(theDamageTaken);
         return "Damage taken: " + (int) theDamageTaken;
@@ -77,7 +78,8 @@ public abstract class DungeonCharacter implements Serializable {
         if (theGains > 0) {
             myHealth += theGains;
         } else {
-            throw new IllegalArgumentException("DunCha.gainHealth, negative number given: " + theGains);
+            throw new IllegalArgumentException("DunCha.gainHealth, negative number given: "
+                                                                                + theGains);
         }
     }
 

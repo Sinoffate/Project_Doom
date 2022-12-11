@@ -4,16 +4,16 @@ import java.io.Serializable;
 
 /**
   * @author Hyunggil Woo
-  * @author 1.2
+  * @version 1.3
   */
 public class Room implements Serializable {
 
-    /** Inventory<String> is non-null object*/
+    /** Inventory<String> is non-null object. */
     private Inventory myInventory;
-    /** Holds monster object*/
+    /** Holds monster object. */
     private Monster myMonster;
 
-    /** Flag to check if the room is visited */
+    /** Flag to check if the room is visited. */
     private boolean myIsVisited;
 
     /**
@@ -75,14 +75,12 @@ public class Room implements Serializable {
      * @return true if room is discovered, else false
      */
     public boolean getDiscovered() {
-        
         return this.myIsVisited;
     }
     
     /**
      * This class sets up whether the room has been obscured or not. Related to Fog of War.
-     * 
-     * @param theDiscovered boolean value to set up whether the room has been discovered or not.
+     * @param theDiscovered whether the room has been discovered or not.
      */
     public void setDiscovered(final boolean theDiscovered) {
         myIsVisited = theDiscovered;
@@ -90,8 +88,8 @@ public class Room implements Serializable {
 
     /**
      * Prints a list of items and monsters in a room.
-     * If room is empty, it should return empty room. Otherwise, returns a list of items and monster 
-     * 
+     * If room is empty, it should return empty room
+     * Otherwise, returns a list of items and monster
      * @return List of items and monsters in a room.
      */
     public String toString() {
@@ -107,6 +105,4 @@ public class Room implements Serializable {
 
         return sb.toString();
     }
-
-
 }
