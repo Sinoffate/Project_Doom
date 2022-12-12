@@ -47,12 +47,12 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
     /** List of normal menu items. */
     private static final String[] MAIN_MENU = {"Inventory", "Save", "Load", "Quit"};
     /** List of map menu items. */
-    private static final String[] MAP_MENU = {"WASD to move", "E to Loot Room", "Hold Shift for Guns",
-                                              "Hold Alt for Potions", "Escape key for menu", "Watch Kung Fury!"};
+    private static final String[] MAP_MENU = {"WASD/ABXY to move", "E/SEL to Loot Room", "Shft/RSHL for Guns",
+                                              "Alt/LSHL for Potions", "Esc/STRT for menu", "Watch Kung Fury!"};
     /** List of Weapon Radial menu items. */
-    private static final String[] WEAPON_MENU = {"W: BFG", "A: Pistol", "S: Rawket Lawnchair", "D: Shotgun"};
+    private static final String[] WEAPON_MENU = {"W/Y: BFG", "A/X: Pistol", "S/A: Rawket Lawnchair", "D/B: Shotgun"};
     /** List of Potion Radial menu items. */
-    private static final String[] POTION_MENU = {"W: Health Potion", "S: Vision Potion"};
+    private static final String[] POTION_MENU = {"W/Y: Health Potion", "S/A: Vision Potion"};
     /** List of Title menu items. */
     private static final String[] TITLE_MENU = {"New Game", "Load Game", "Quit", "Watch Kung Fury!"};
 
@@ -85,7 +85,7 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
     XInputComponents components;
     /** Buttons of XInput device. */
     XInputButtons buttons;
-    /** Axes of XInput device (probably unused). */
+    /** Axes of XInput device (DPAD lives here). */
     XInputAxes axes;
 
     /**
@@ -141,6 +141,10 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
             if (d.poll()){
                 device = d;
             }
+        }
+
+        if (device == null) {
+            return;
         }
 
         // Retrieve the device for player X
@@ -270,10 +274,6 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
                     case MAP_STATE -> lootRoom();
                     case MENU_STATE -> selectMenuOption();
                     case TITLE_STATE -> selectTitleOption();
-                }
-            }
-            case KeyEvent.VK_Q -> {
-                switch (myCurrentState) {
                     case COMBAT_STATE -> combatAttack();
                 }
             }
@@ -344,7 +344,7 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "");
         myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "You have encountered a "
                                                                                 + myDungeon.getMonster().toString());
-        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Press Q to attack!");
+        myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null, "Press E/SEL to attack!");
 
         final Room currentRoom = myDungeon.getRoom((int) myDungeon.getPlayerPos().getX(),
                 (int) myDungeon.getPlayerPos().getY());
