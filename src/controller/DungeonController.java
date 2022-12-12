@@ -3,7 +3,6 @@ import com.github.strikerx3.jxinput.XInputAxes;
 import com.github.strikerx3.jxinput.XInputButtons;
 import com.github.strikerx3.jxinput.XInputComponents;
 import com.github.strikerx3.jxinput.XInputDevice;
-import com.github.strikerx3.jxinput.enums.XInputAxis;
 import com.github.strikerx3.jxinput.enums.XInputButton;
 import com.github.strikerx3.jxinput.exceptions.XInputNotLoadedException;
 import com.github.strikerx3.jxinput.listener.XInputDeviceListener;
@@ -80,13 +79,13 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
     private boolean myDGAttacked;
 
     /** xInput device to use. */
-    private XInputDevice device;
+    private XInputDevice myDevice;
     /** Components of XInput device. */
-    XInputComponents components;
+    XInputComponents myComponents;
     /** Buttons of XInput device. */
-    XInputButtons buttons;
+    XInputButtons myButtons;
     /** Axes of XInput device (DPAD lives here). */
-    XInputAxes axes;
+    XInputAxes myAxes;
 
     /**
      * Creates a new DungeonController object.
@@ -133,17 +132,17 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
      */
     private void xInputTest() throws XInputNotLoadedException {
         // Retrieve all devices
-        XInputDevice[] devices = XInputDevice.getAllDevices();
+        final XInputDevice[] devices = XInputDevice.getAllDevices();
         for (XInputDevice d: devices) {
             //System.out.println(d.poll());
 
             //find a connected device to use.
             if (d.poll()){
-                device = d;
+                myDevice = d;
             }
         }
 
-        if (device == null) {
+        if (myDevice == null) {
             return;
         }
 
@@ -151,11 +150,11 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
         //device = XInputDevice.getDeviceFor(1);
         //device = devices[3];
 
-        components = device.getComponents();
-        buttons = components.getButtons();
-        axes = components.getAxes();
+        myComponents = myDevice.getComponents();
+        myButtons = myComponents.getButtons();
+        myAxes = myComponents.getAxes();
 
-        device.addListener(this);
+        myDevice.addListener(this);
     }
 
     /**
@@ -407,11 +406,9 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
         }
 
         for (Item i: myDungeon.getRoomInventory().getItems()) {
-            while (myDungeon.getRoomInventory().containsItem(i)) {
-                myDoomGuy.addToInventory(i);
-                myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null,  "Looted: " + i.getName());
-                myDungeon.getRoomInventory().removeItem(i);
-            }
+            myDoomGuy.addToInventory(i);
+            myPcs.firePropertyChange(Dungeon.TEXT_UPDATE, null,  "Looted: " + i.getName());
+            myDungeon.getRoomInventory().removeItem(i);
         }
 
         myPcs.firePropertyChange(Dungeon.ROOM_CONTENT, new Point((int) myDungeon.getPlayerPos().getX(),
@@ -552,13 +549,13 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
         javax.swing.SwingUtilities.invokeLater(this::createAndShowGUI);
 
 
-        Runnable helloRunnable = new Runnable() {
+        final Runnable helloRunnable = new Runnable() {
             public void run() {
-                device.poll();
+                myDevice.poll();
             }
         };
 
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(helloRunnable, 0, 20, TimeUnit.MILLISECONDS);
     }
 
@@ -740,21 +737,21 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
 
     /**
      * Handles event input from controller. Based on timer in runGame().
-     * @param xInputButton button changed.
-     * @param b true if pressed, false if released.
+     * @param theXInputButton button changed.
+     * @param theB true if pressed, false if released.
      */
     @Override
-    public void buttonChanged(XInputButton xInputButton, boolean b) {
-        //System.out.println(xInputButton.toString() + " " + b);
+    public void buttonChanged(final XInputButton theXInputButton, final boolean theB) {
+        //System.out.println(theXInputButton.toString() + " " + theB);
 
         //key pressed
-        if (b) {
+        if (theB) {
             //Change weapon
-            if (xInputButton.equals(XInputButton.RIGHT_SHOULDER) && (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE)) {
+            if (theXInputButton.equals(XInputButton.RIGHT_SHOULDER) && (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE)) {
                 myPcs.firePropertyChange(MENU, myCurrentMenu, WEAPON_MENU);
             }
-            if (buttons.rShoulder) {
-                switch (xInputButton) {
+            if (myButtons.rShoulder) {
+                switch (theXInputButton) {
                     case Y -> {
                         if (myDoomGuy.inventoryContains(new Weapon("BFG"))) {
                             myDoomGuy.equipWeapon((Weapon) myDoomGuy.getInventory().getItem(new Weapon("BFG")));
@@ -798,12 +795,12 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
             } //end of weapon swap
 
             //Use potion
-            if ((xInputButton.equals(XInputButton.LEFT_SHOULDER) && (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE)))
+            if ((theXInputButton.equals(XInputButton.LEFT_SHOULDER) && (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE)))
             {
                 myPcs.firePropertyChange(MENU, myCurrentMenu, POTION_MENU);
             }
-            if (buttons.lShoulder) {
-                switch (xInputButton) {
+            if (myButtons.lShoulder) {
+                switch (theXInputButton) {
                     case Y -> {
                         if (myDoomGuy.inventoryContains(new HealthPotion())) {
                             myDoomGuy.useItem(new HealthPotion());
@@ -829,7 +826,7 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
                 return;
             } //end of pot swap
 
-            switch (xInputButton) {
+            switch (theXInputButton) {
                 case Y -> {
                     switch (myCurrentState) {
                         case MAP_STATE -> myDungeon.movePlayer(new Point(0, -1));
@@ -902,14 +899,14 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
             }
 
             //Hide Weapons
-            if (xInputButton.equals(XInputButton.RIGHT_SHOULDER)) {
+            if (theXInputButton.equals(XInputButton.RIGHT_SHOULDER)) {
                 if (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE) {
                     myPcs.firePropertyChange(MENU, WEAPON_MENU, myCurrentMenu);
                 }
             }
 
             //Hide Drugs
-            if (xInputButton.equals(XInputButton.LEFT_SHOULDER)) {
+            if (theXInputButton.equals(XInputButton.LEFT_SHOULDER)) {
                 if (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE) {
                     myPcs.firePropertyChange(MENU, POTION_MENU, myCurrentMenu);
                 }
