@@ -81,11 +81,11 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
     /** xInput device to use. */
     private XInputDevice myDevice;
     /** Components of XInput device. */
-    XInputComponents myComponents;
+    private XInputComponents myComponents;
     /** Buttons of XInput device. */
-    XInputButtons myButtons;
+    private XInputButtons myButtons;
     /** Axes of XInput device (DPAD lives here). */
-    XInputAxes myAxes;
+    private XInputAxes myAxes;
 
     /**
      * Creates a new DungeonController object.
