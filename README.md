@@ -1,6 +1,11 @@
 # Project_Doom
 This project was created by James Deal, Jered Wiegel, and Hyunggil Woo for TCSS 360 Software Development And Quality Assurance Techniques. The goal of the project was to enable collaborative development in a controlled setting while implementing concepts learned within the class.
 
+## Dependencies
+- XInput support required for controller.
+-- XInput has dependencies of vcredist, which is a Windows package.
+- Base Java compatibility for SQLite and XInput supplied in JAR files with project.
+
 ## How to play
 - WASD keys are used for movement.
 - E is used to select menu options and to loot rooms.
@@ -43,9 +48,9 @@ This project was created by James Deal, Jered Wiegel, and Hyunggil Woo for TCSS 
 - MVC: DungeonView, DungeonController
 - Observer: PropertyChangeListeners
 - Serializable: Save/Load functionality
+- Game Controller Input option 
 
 ## Known Bugs and "Features"
 - Holding down movement key to move multiple spaces will skip combat in spaces passed. A fix is implemented in the model for this, but we like this bug, so it is a feature now.
-- Sometimes a keypress will throw an exception and not fire properly. Assumed cause is large keyPressed method. Does not impact functionality enough to be considered for fix.
 - Window has to be clicked first for Shift key to work on Windows, because Windows is silly.
 - View imports Controller/Model, this is only for names of PCL fields. Likely remedy is a more structured PCL implementation.

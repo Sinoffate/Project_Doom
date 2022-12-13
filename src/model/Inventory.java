@@ -1,9 +1,7 @@
 package model;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A hero can view the entire list of items.
@@ -84,11 +82,18 @@ public class Inventory implements Serializable {
     }
 
     /**
-     * Returns a set of all items in inventory.
-     * @return set of items in inventory.
+     * Returns a list of all items in inventory.
+     * @return list of items in inventory.
      */
-    public Set<Item> getItems() {
-        return myInventory.keySet();
+    public List<Item> getItems() {
+        List<Item> res = new ArrayList<>();
+        for (Item i:myInventory.keySet()) {
+            int count = myInventory.get(i);
+            for (int j = 0; j < count; j++) {
+                res.add(i);
+            }
+        }
+        return res;
     }
 
     /**
