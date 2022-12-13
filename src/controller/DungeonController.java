@@ -120,7 +120,7 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
 
         try {
             xInputTest();
-        } catch (XInputNotLoadedException e) {
+        } catch (final XInputNotLoadedException e) {
             throw new RuntimeException(e);
         }
 
@@ -137,7 +137,7 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
             //System.out.println(d.poll());
 
             //find a connected device to use.
-            if (d.poll()){
+            if (d.poll()) {
                 myDevice = d;
             }
         }
@@ -795,8 +795,8 @@ public class DungeonController extends JFrame implements KeyListener, Serializab
             } //end of weapon swap
 
             //Use potion
-            if ((theXInputButton.equals(XInputButton.LEFT_SHOULDER) && (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE)))
-            {
+            if ((theXInputButton.equals(XInputButton.LEFT_SHOULDER)
+                    && (myCurrentState == GameState.COMBAT_STATE || myCurrentState == GameState.MAP_STATE))) {
                 myPcs.firePropertyChange(MENU, myCurrentMenu, POTION_MENU);
             }
             if (myButtons.lShoulder) {

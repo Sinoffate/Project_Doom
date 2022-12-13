@@ -83,7 +83,7 @@ public class Inventory implements Serializable {
 
     /**
      * Returns a list of all items in inventory.
-     * @return set of items in inventory.
+     * @return list of items in inventory.
      */
     public List<Item> getItems() {
         List<Item> res = new ArrayList<>();
